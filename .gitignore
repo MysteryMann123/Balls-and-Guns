@@ -1,0 +1,12 @@
+node_modules/
+dist/
+release/
+release-packager/
+release-portable/
+release-portable-2/
+release-portable-3/
+.vscode/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

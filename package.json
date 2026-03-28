@@ -1,0 +1,46 @@
+{
+  "name": "ballsandguns",
+  "version": "1.0.0",
+  "description": "BallsAndGuns desktop build",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "build:win": "electron-builder --win nsis",
+    "build:win:portable": "set CSC_IDENTITY_AUTO_DISCOVERY=false&& electron-builder --win portable --config.win.signAndEditExecutable=false --config.directories.output=release-portable",
+    "dist": "electron-builder",
+    "exe:win": "electron-packager . BallsAndGuns --platform=win32 --arch=x64 --out=release-packager --overwrite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^41.1.0",
+    "electron-builder": "^26.8.1",
+    "electron-packager": "^17.1.2"
+  },
+  "build": {
+    "appId": "com.ballsandguns.desktop",
+    "productName": "BallsAndGuns",
+    "files": [
+      "assets/**/*",
+      "js/**/*",
+      "electron/**/*",
+      "*.html",
+      "*.css",
+      "README.md",
+      "ASSETS.md",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

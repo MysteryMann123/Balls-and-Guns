@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balls & Guns - Main Menu</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .menu {
+            width: min(520px, 92vw);
+            background: #101010;
+            border: 2px solid #fff;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 0 24px rgba(255, 255, 255, 0.18);
+        }
+        h1 { margin: 0 0 4px; font-size: 28px; }
+        p { margin: 0; color: #cfcfcf; }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        label { font-weight: bold; }
+        input[type="number"], input[type="range"] {
+            width: 180px;
+        }
+        .hint { color: #9fd3ff; font-size: 13px; }
+        .weapon-rows {
+            border-top: 1px solid #2e2e2e;
+            margin-top: 4px;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 260px;
+            overflow: auto;
+        }
+        .weapon-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 12px;
+        }
+        .weapon-row select {
+            width: 180px;
+        }
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 6px 0;
+        }
+        .toggle-row label {
+            font-weight: bold;
+        }
+        .actions { display: flex; gap: 10px; margin-top: 6px; }
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-weight: bold;
+        }
+        .start { background: #39d98a; color: #111; }
+        .quick { background: #4e7cff; color: #fff; }
+        .stats { background: #a855f7; color: #fff; }
+    </style>
+</head>
+<body>
+    <form class="menu" id="menu-form">
+        <h1>Balls & Guns</h1>
+        <p>Configure simulation settings before starting.</p>
+
+        <div class="row">
+            <label for="balls">Ball Count</label>
+            <input id="balls" name="balls" type="number" min="2" max="12" value="4" required>
+        </div>
+
+        <div class="row">
+            <label for="teams">Team Count</label>
+            <input id="teams" name="teams" type="number" min="2" max="4" value="2" required>
+        </div>
+
+        <div class="row">
+            <label for="dropMs">Drop Frequency (ms)</label>
+            <input id="dropMs" name="dropMs" type="range" min="600" max="7000" step="100" value="4000">
+        </div>
+        <div class="hint" id="drop-label">4000 ms</div>
+
+        <div class="toggle-row">
+            <label for="weapon-drops">Weapon Drops</label>
+            <input id="weapon-drops" type="checkbox" checked>
+        </div>
+
+        <div class="toggle-row">
+            <label for="utility-drops">Utility Drops</label>
+            <input id="utility-drops" type="checkbox" checked>
+        </div>
+
+        <div class="weapon-rows" id="weapon-rows"></div>
+
+        <div class="actions">
+            <button class="start" type="submit">Start Game</button>
+            <button class="quick" type="button" id="quick-start">Quick Start</button>
+            <button class="stats" type="button" id="view-stats">View Stats</button>
+        </div>
+    </form>
+
+    <script type="module">
+        import { START_WEAPON_OPTIONS } from './js/constants.js';
+
+        const form = document.getElementById('menu-form');
+        const ballsInput = document.getElementById('balls');
+        const teamsInput = document.getElementById('teams');
+        const dropInput = document.getElementById('dropMs');
+        const dropLabel = document.getElementById('drop-label');
+        const quickStart = document.getElementById('quick-start');
+        const viewStats = document.getElementById('view-stats');
+        const weaponRows = document.getElementById('weapon-rows');
+        const weaponDropsInput = document.getElementById('weapon-drops');
+        const utilityDropsInput = document.getElementById('utility-drops');
+
+        const weaponOptions = START_WEAPON_OPTIONS;
+
+        function weaponLabel(type) {
+            if (type === 'shortcircuit') return 'short circuit';
+            if (type === 'rocketlauncher') return 'rocket launcher';
+            if (type === 'piplauncher') return 'pip launcher';
+            if (type === 'beggersbazooka') return "begger's bazooka";
+            if (type === 'widowmaker') return 'widowmaker';
+            if (type === 'sodapopper') return 'soda popper';
+            if (type === 'forceanature') return 'force-a-nature';
+            if (type === 'magicianhat') return 'magician hat';
+            if (type === 'crusaderscrossbow') return "crusader's crossbow";
+            if (type === 'directhit') return 'direct hit';
+            if (type === 'rocketjumper') return 'rocket jumper';
+            if (type === 'yellowtarge') return "chargin' targe";
+            if (type === 'grenadelauncher') return 'grenade launcher';
+            if (type === 'flamethrower') return 'flamethrower';
+            return type;
+        }
+
+        function ensureWeaponRows(ballCount) {
+            while (weaponRows.children.length < ballCount) {
+                const index = weaponRows.children.length + 1;
+                const row = document.createElement('div');
+                row.className = 'weapon-row';
+                const label = document.createElement('label');
+                label.setAttribute('for', `weapon-${index}`);
+                label.textContent = `Ball ${index} weapon`;
+
+                const select = document.createElement('select');
+                select.id = `weapon-${index}`;
+                select.name = `weapon-${index}`;
+                for (const weapon of weaponOptions) {
+                    const option = document.createElement('option');
+                    option.value = weapon;
+                    option.textContent = weaponLabel(weapon).toUpperCase();
+                    select.appendChild(option);
+                }
+                select.value = 'pistol';
+
+                row.appendChild(label);
+                row.appendChild(select);
+                weaponRows.appendChild(row);
+            }
+
+            while (weaponRows.children.length > ballCount) {
+                weaponRows.removeChild(weaponRows.lastElementChild);
+            }
+        }
+
+        function readSelectedWeapons(ballCount) {
+            const selected = [];
+            for (let i = 1; i <= ballCount; i++) {
+                const select = document.getElementById(`weapon-${i}`);
+                selected.push(select ? select.value : 'pistol');
+            }
+            return selected;
+        }
+
+        function clampSettings() {
+            const ballCount = Math.max(2, Math.min(12, Number(ballsInput.value) || 4));
+            const maxTeams = Math.min(6, ballCount);
+            const teamCount = Math.max(2, Math.min(maxTeams, Number(teamsInput.value) || 2));
+            const dropMs = Math.max(600, Math.min(7000, Number(dropInput.value) || 4000));
+
+            ensureWeaponRows(ballCount);
+
+            ballsInput.value = String(ballCount);
+            teamsInput.max = String(maxTeams);
+            teamsInput.value = String(teamCount);
+            dropInput.value = String(dropMs);
+            dropLabel.textContent = `${dropMs} ms`;
+
+            return { ballCount, teamCount, dropMs };
+        }
+
+        ballsInput.addEventListener('input', clampSettings);
+        teamsInput.addEventListener('input', clampSettings);
+        dropInput.addEventListener('input', clampSettings);
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const { ballCount, teamCount, dropMs } = clampSettings();
+            const selectedWeapons = readSelectedWeapons(ballCount);
+            const params = new URLSearchParams({
+                balls: String(ballCount),
+                teams: String(teamCount),
+                dropMs: String(dropMs),
+                weapons: selectedWeapons.join(','),
+                weaponDrops: weaponDropsInput.checked ? '1' : '0',
+                utilityDrops: utilityDropsInput.checked ? '1' : '0'
+            });
+            window.location.href = `game.html?${params.toString()}`;
+        });
+
+        quickStart.addEventListener('click', () => {
+            window.location.href = 'game.html';
+        });
+
+        viewStats.addEventListener('click', () => {
+            window.location.href = 'stats.html';
+        });
+
+        clampSettings();
+    </script>
+</body>
+</html>

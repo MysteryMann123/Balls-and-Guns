@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balls & Guns - Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #fff;">Balls & Guns</h1>
+
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <div class="ui" id="player-ui"></div>
+
+        <div class="status" id="status">Loading simulation...</div>
+        <div class="status" id="dealer-status"></div>
+
+        <div class="controls">
+            <p>Pickups can grant Dealer or Sniper weapons. Dealer draws from a finite 52-card deck and throws remaining cards until empty.</p>
+            <p>Refresh page to restart.</p>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
