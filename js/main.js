@@ -1,4 +1,4 @@
-import { BALL_MAX_HP, SODA_POPPER_CHARGE_DAMAGE_REQUIRED, SODA_POPPER_HYPE_DAMAGE_MULTIPLIER } from './constants.js';
+import { SODA_POPPER_CHARGE_DAMAGE_REQUIRED, SODA_POPPER_HYPE_DAMAGE_MULTIPLIER } from './constants.js';
 import { Game } from './game.js';
 
 const canvas = document.getElementById('gameCanvas');
@@ -38,6 +38,13 @@ const explosiveFlaskImage = new Image();
 explosiveFlaskImage.src = 'assets/Explosive_Flask.png';
 const bunnyProjectileImage = new Image();
 bunnyProjectileImage.src = 'assets/cute-bunny-rabbit-on-isolated-transparent-background-free-png-1435143763.png';
+const magicBulletProjectileImage = new Image();
+magicBulletProjectileImage.src = 'assets/MagicBullet.webp';
+const appleProjectileImage = new Image();
+appleProjectileImage.src = 'assets/apple-transparent-background-free-png-3539805000.png';
+appleProjectileImage.onerror = () => {
+    appleProjectileImage.src = 'assets/Apple.png';
+};
 explosiveFlaskImage.onerror = () => {
     explosiveFlaskImage.src = 'assets/BottleScreen.png';
 };
@@ -51,6 +58,46 @@ const crusadersCrossbowImage = new Image();
 crusadersCrossbowImage.src = "assets/RED_Crusader's_Crossbow.png";
 const smgImage = new Image();
 smgImage.src = 'assets/SMG.png';
+const tommyGunImage = new Image();
+tommyGunImage.src = 'assets/TOMMY_GUN.png';
+const egoWeaponMagicBulletImage = new Image();
+egoWeaponMagicBulletImage.src = 'assets/EGOWeaponMagicBullet.webp';
+const egoWeaponLonelinessImage = new Image();
+egoWeaponLonelinessImage.src = 'assets/EGOWeaponLoneliness.webp';
+const egoWeaponPenitenceImage = new Image();
+egoWeaponPenitenceImage.src = 'assets/EGOWeaponPenitence.webp';
+const egoWeaponParadiseLostImage = new Image();
+egoWeaponParadiseLostImage.src = 'assets/EGOWeaponParadiseLost.webp';
+const egoWeaponHarmonyImage = new Image();
+egoWeaponHarmonyImage.src = 'assets/EGOWeaponHarmony.webp';
+const egoWeaponHornetImage = new Image();
+egoWeaponHornetImage.src = 'assets/EGOWeaponHornet.png';
+const hornetShotgunSpriteImage = new Image();
+hornetShotgunSpriteImage.src = 'assets/Lobotomy_E.G.O_Hornet_Alteration_Shotgun_Sprite.png';
+const sporeImage = new Image();
+sporeImage.src = 'assets/25px-Spore.webp';
+const sporeRoundImage = new Image();
+sporeRoundImage.src = 'assets/25px-Spore_Round_-Base-.webp';
+const swordSharpenedImage = new Image();
+swordSharpenedImage.src = 'assets/EGOWeaponSwordSharpenedbyTears.webp';
+const blessingShieldImage = new Image();
+blessingShieldImage.src = 'assets/KnightOfDespairBlessingShield.png';
+const egoWeaponSolemnVowBlackImage = new Image();
+egoWeaponSolemnVowBlackImage.src = 'assets/EGOWeaponSolemnVow_Black.jpg';
+const egoWeaponSolemnVowWhiteImage = new Image();
+egoWeaponSolemnVowWhiteImage.src = 'assets/EGOWeaponSolemnVow_White.jpg';
+const kaleidoscopeMuzzleImage = new Image();
+kaleidoscopeMuzzleImage.src = 'assets/KaleidoscopeMuzzle.png';
+kaleidoscopeMuzzleImage.onerror = () => {
+    kaleidoscopeMuzzleImage.src = 'assets/ButterfliesSpriteSheet.png';
+};
+const funeralDeadButterfliesPortraitImage = new Image();
+funeralDeadButterfliesPortraitImage.src = 'assets/FuneraloftheDeadButterfliesPortrait.webp';
+funeralDeadButterfliesPortraitImage.onerror = () => {
+    funeralDeadButterfliesPortraitImage.src = 'assets/ButterfliesSpriteSheet.png';
+};
+const portalImage = new Image();
+portalImage.src = 'assets/DerFreischützPortal.png';
 const minigunImage = new Image();
 minigunImage.src = 'assets/Minigun_IMG.png';
 const blutsaugerImage = new Image();
@@ -85,6 +132,8 @@ const revolverImage = new Image();
 revolverImage.src = 'assets/Pistol.png';
 const pickupShotgunIcon = new Image();
 pickupShotgunIcon.src = 'assets/Shotgun_IMG.png';
+const familyBusinessImage = new Image();
+familyBusinessImage.src = 'assets/Familybusiness.PNG';
 const sodaPopperImage = new Image();
 sodaPopperImage.src = 'assets/250px-Soda_Popper.PNG';
 const forceANatureImage = new Image();
@@ -94,6 +143,8 @@ forceANatureImage.onerror = () => {
 };
 const magicianHatImage = new Image();
 magicianHatImage.src = 'assets/Magic-Hat-PNG-Image-File-3052888691.png';
+const musketImage = new Image();
+musketImage.src = 'assets/rifle-on-a-transparent-free-png-864369422.png';
 const smokeImage = new Image();
 smokeImage.src = 'assets/smoke_PNG55177-3419754768.png';
 const widowmakerImage = new Image();
@@ -123,11 +174,24 @@ const game = new Game(
     crusadersCrossbowProjectileImage,
     explosiveFlaskImage,
     bunnyProjectileImage,
+    magicBulletProjectileImage,
+    appleProjectileImage,
     sniperRifleImage,
     machinaImage,
     huntsmanImage,
     crusadersCrossbowImage,
     smgImage,
+    tommyGunImage,
+    egoWeaponMagicBulletImage,
+    egoWeaponLonelinessImage,
+    egoWeaponPenitenceImage,
+    egoWeaponParadiseLostImage,
+    egoWeaponHarmonyImage,
+    egoWeaponSolemnVowBlackImage,
+    egoWeaponSolemnVowWhiteImage,
+    kaleidoscopeMuzzleImage,
+    funeralDeadButterfliesPortraitImage,
+    portalImage,
     minigunImage,
     blutsaugerImage,
     shortCircuitImage,
@@ -144,18 +208,28 @@ const game = new Game(
     truePistolImage,
     revolverImage,
     pickupShotgunIcon,
+    familyBusinessImage,
     sodaPopperImage,
     forceANatureImage,
     magicianHatImage,
+    musketImage,
     widowmakerImage,
     scrumpyBottleImage,
     smokeImage,
+    egoWeaponHornetImage,
+    hornetShotgunSpriteImage,
+    sporeImage,
+    sporeRoundImage,
+    swordSharpenedImage,
+    blessingShieldImage,
     {
     pistol: truePistolImage,
     revolver: revolverImage,
     shotgun: pickupShotgunIcon,
+    familybusiness: familyBusinessImage,
     sodapopper: sodaPopperImage,
     forceanature: forceANatureImage,
+    musket: musketImage,
     magicianhat: magicianHatImage,
     widowmaker: widowmakerImage,
     poker: pickupPokerIcon,
@@ -163,6 +237,15 @@ const game = new Game(
     machina: machinaImage,
     huntsman: huntsmanImage,
     crusaderscrossbow: crusadersCrossbowImage,
+    smg: smgImage,
+    tommygun: tommyGunImage,
+    egomagicbullet: egoWeaponMagicBulletImage,
+    egoloneliness: egoWeaponLonelinessImage,
+    penitence: egoWeaponPenitenceImage,
+    paradiselost: egoWeaponParadiseLostImage,
+    harmony: egoWeaponHarmonyImage,
+    hornet: egoWeaponHornetImage,
+    solemnvow: egoWeaponSolemnVowBlackImage,
     minigun: minigunImage,
     blutsauger: blutsaugerImage,
         shortcircuit: shortCircuitImage,
@@ -170,6 +253,7 @@ const game = new Game(
     piplauncher: pipLauncherImage,
     beggersbazooka: beggersBazookaImage,
     directhit: directHitImage,
+    nearmissed: directHitImage,
     rocketjumper: rocketJumperImage,
     yellowtarge: yellowTargeImage,
     medigun: medigunImage,
@@ -200,7 +284,7 @@ function renderPlayerUi() {
             <div class="ball-icon" style="background: ${ball.color};"></div>
             <span>${ball.displayName} (T${ball.teamId})</span>
             <div class="hp-bar"><div class="hp-fill" id="ball${i + 1}-hp" style="width: 100%; background: ${ball.color};"></div></div>
-            <span class="hp-value" id="ball${i + 1}-hp-value">${BALL_MAX_HP} / ${BALL_MAX_HP}</span>
+            <span class="hp-value" id="ball${i + 1}-hp-value">${Math.round(ball.hp)} / ${Math.round(ball.maxHP)}</span>
             <span class="weapon-state" id="ball${i + 1}-weapon">${ball.weapon.getInfo()}</span>
             <span class="uber-state" id="ball${i + 1}-uber">UBER --</span>
         `;
@@ -231,16 +315,16 @@ function updateUI() {
 
     for (let i = 0; i < game.balls.length; i++) {
         const ball = game.balls[i];
-        const hpPercent = Math.max(0, (ball.hp / BALL_MAX_HP) * 100);
+        const hpPercent = Math.max(0, (ball.hp / ball.maxHP) * 100);
         const displayPercent = Math.min(100, hpPercent);
-        const isOverhealed = ball.hp > BALL_MAX_HP;
+        const isOverhealed = ball.hp > ball.maxHP;
         const bar = document.getElementById(`ball${i + 1}-hp`);
         const value = document.getElementById(`ball${i + 1}-hp-value`);
         const weaponState = document.getElementById(`ball${i + 1}-weapon`);
         const uberState = document.getElementById(`ball${i + 1}-uber`);
         bar.style.width = `${displayPercent}%`;
         bar.style.background = isOverhealed ? lightenHexColor(ball.color, 0.34) : ball.color;
-        value.textContent = `${Math.round(ball.hp)} / ${BALL_MAX_HP}`;
+        value.textContent = `${Math.round(ball.hp)} / ${Math.round(ball.maxHP)}`;
         weaponState.textContent = ball.weapon.getInfo(now);
 
         if (ball.weapon.type === 'sodapopper') {

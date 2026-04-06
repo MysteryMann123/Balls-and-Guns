@@ -8,14 +8,32 @@ import {
     DEAD_RINGER_HEAL_MAX_HP_RATIO,
     DEAD_RINGER_PICKUP_COOLDOWN_MS,
     DEAD_RINGER_SPEED_BOOST,
+    EGO_LONELINESS_SLOW_DURATION_MS,
+    EGO_LONELINESS_SLOW_MULTIPLIER,
     FLAMETHROWER_AFTERBURN_DAMAGE_MAX,
     FLAMETHROWER_AFTERBURN_DAMAGE_MIN,
     FLAMETHROWER_AFTERBURN_DURATION_MS,
     FLAMETHROWER_AFTERBURN_INTERVAL_MS,
+    MUSKET_BAYONET_BLEED_DAMAGE_MAX,
+    MUSKET_BAYONET_BLEED_DAMAGE_MIN,
+    MUSKET_BAYONET_BLEED_DURATION_MS,
+    MUSKET_BAYONET_BLEED_INTERVAL_MS,
+    MUSKET_BAYONET_HEAL_MULTIPLIER,
     CRITICAL_DURATION_MS,
     CRITICAL_HEAL_PER_SEC,
     EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER,
     EXPLOSIVE_FLASK_PIP_DAMAGE_MULTIPLIER,
+    PENITENCE_KNOCKBACK_RESISTANCE,
+    PENITENCE_MAX_HP_BONUS_RATIO,
+    PENITENCE_PICKUP_HEAL_RATIO,
+    PENITENCE_SPEED_BONUS_RATIO,
+    PENITENCE_SWING_ANIMATION_MS,
+    PARADISE_LOST_ADAPTIVE_INTERVAL_MS,
+    PARADISE_LOST_ADAPTIVE_RESISTANCE,
+    PARADISE_LOST_SELF_DOT_INTERVAL_MS,
+    PARADISE_LOST_SELF_DOT_MAX_RATIO,
+    PARADISE_LOST_SELF_DOT_MIN_RATIO,
+    HARMONY_HASTE_MAX_BONUS,
     PICKUP_DELAY_MS,
     REACTION_DELAY_MS,
     SPEED_BOOST_PERMANENT,
@@ -24,6 +42,12 @@ import {
     SODA_POPPER_HYPE_DAMAGE_MULTIPLIER,
     SODA_POPPER_HYPE_DURATION_MS,
     SODA_POPPER_HYPE_SPEED_BOOST,
+    SOLEMN_VOW_FUNERAL_PELLETS_REQUIRED,
+    SOLEMN_VOW_MUZZLE_FLASH_MS,
+    SWORD_SHARPENED_SHARPEN_DAMAGE_BONUS,
+    SWORD_SHARPENED_SHARPEN_MAX_STACKS,
+    SWORD_SHARPENED_SHARPEN_DURATION_MS,
+    SWORD_SHARPENED_SIZE,
     UBERCHARGE_DURATION_MS,
     UBERCHARGE_HEAL_PER_SEC,
     YELLOW_TARGE_DAMAGE_REDUCTION_ALL,
@@ -75,6 +99,14 @@ export class Ball {
             damageMax: FLAMETHROWER_AFTERBURN_DAMAGE_MAX,
             intervalMs: FLAMETHROWER_AFTERBURN_INTERVAL_MS
         };
+        this.bayonetBleed = {
+            until: 0,
+            nextTickAt: 0,
+            damageMin: MUSKET_BAYONET_BLEED_DAMAGE_MIN,
+            damageMax: MUSKET_BAYONET_BLEED_DAMAGE_MAX,
+            intervalMs: MUSKET_BAYONET_BLEED_INTERVAL_MS,
+            healMultiplier: MUSKET_BAYONET_HEAL_MULTIPLIER
+        };
 
         this.lastDamagedAt = Date.now();
         this.medigunState = {
@@ -115,14 +147,64 @@ export class Ball {
             pickupVulnUntil: 0
         };
 
+        this.lonelinessSlow = {
+            slowUntil: 0,
+            slowMultiplier: 1
+        };
+
+        this.penitence = {
+            maxHpBonus: 0,
+            speedBonus: 0,
+            swingStartedAt: 0,
+            swingUntil: 0
+        };
+
+        this.paradiseLost = {
+            adaptedDamageType: null,
+            nextAdaptAt: 0,
+            nextSelfDotAt: 0
+        };
+
+        this.harmony = {
+            hasteUntil: 0,
+            hasteBonus: 0
+        };
+
+        this.solemnVow = {
+            nextBlackShot: true,
+            muzzleFlashUntil: 0,
+            pelletsShotSinceFuneral: 0,
+            funeralUsedThisReload: false,
+            nextFuneralAllowedAt: 0
+        };
+
+        this.blessingShield = {
+            until: 0,
+            damageBlockRatio: 0
+        };
+
+        this.swordSharpenStacks = 0;
+        this.swordSharpenExpiresAt = 0;
+
+        this.shootLockedUntil = 0;
+
         this.nextPipFlaskAt = 0;
+        this.egoMagicBulletShotCount = 0;
     }
 
     update(otherBalls) {
         const hpRatio = this.hp / this.maxHP;
         const now = Date.now();
-        const flaskSlow = now < this.explosiveFlask.slowUntil ? this.explosiveFlask.slowMultiplier : 1;
-        const speed = Math.max(this.minSpeed, this.maxSpeed * hpRatio * flaskSlow);
+        const flaskSlow = this.weapon.type === 'paradiselost'
+            ? 1
+            : (now < this.explosiveFlask.slowUntil ? this.explosiveFlask.slowMultiplier : 1);
+        const lonelinessSlow = this.weapon.type === 'paradiselost'
+            ? 1
+            : (now < this.lonelinessSlow.slowUntil ? this.lonelinessSlow.slowMultiplier : 1);
+        const effectiveHpRatio = this.weapon.type === 'paradiselost'
+            ? (0.5 + 0.5 * hpRatio)
+            : hpRatio;
+        const speed = Math.max(this.minSpeed, this.maxSpeed * effectiveHpRatio * flaskSlow * lonelinessSlow);
 
         if (this.vel.magnitude() === 0) {
             this.vel = new Vector(1, 0).multiply(speed);
@@ -165,6 +247,20 @@ export class Ball {
     }
 
     equipWeapon(type) {
+        const previousType = this.weapon?.type;
+        if (previousType === 'penitence') {
+            if (this.penitence.maxHpBonus > 0) {
+                this.maxHP -= this.penitence.maxHpBonus;
+                this.hp = Math.min(this.hp, this.maxHP);
+                this.penitence.maxHpBonus = 0;
+            }
+            if (this.penitence.speedBonus > 0) {
+                this.maxSpeed -= this.penitence.speedBonus;
+                this.minSpeed -= this.penitence.speedBonus * 0.2;
+                this.penitence.speedBonus = 0;
+            }
+        }
+
         this.weapon = new Weapon(type);
         this.dealerWeaponState = type === 'dealer' ? this.dealerWeaponState : null;
         this.rocketJumperPhase = 'seekWall';
@@ -201,12 +297,56 @@ export class Ball {
             this.nextPipFlaskAt = 0;
         }
 
+        if (type !== 'egomagicbullet') {
+            this.egoMagicBulletShotCount = 0;
+        }
+
+        if (type !== 'egoloneliness') {
+            this.lonelinessSlow.slowUntil = 0;
+            this.lonelinessSlow.slowMultiplier = 1;
+        }
+
+        if (type !== 'paradiselost') {
+            this.paradiseLost.adaptedDamageType = null;
+            this.paradiseLost.nextAdaptAt = 0;
+            this.paradiseLost.nextSelfDotAt = 0;
+        } else {
+            const now = Date.now();
+            this.paradiseLost.nextSelfDotAt = now + PARADISE_LOST_SELF_DOT_INTERVAL_MS;
+            this.paradiseLost.nextAdaptAt = now;
+            this.paradiseLost.adaptedDamageType = null;
+        }
+
+        if (type !== 'harmony') {
+            this.harmony.hasteUntil = 0;
+            this.harmony.hasteBonus = 0;
+        }
+
+        this.solemnVow.nextBlackShot = true;
+        this.solemnVow.muzzleFlashUntil = 0;
+        this.solemnVow.pelletsShotSinceFuneral = 0;
+        this.solemnVow.funeralUsedThisReload = false;
+        this.solemnVow.nextFuneralAllowedAt = 0;
+
+        if (type === 'penitence') {
+            this.penitence.maxHpBonus = this.maxHP * PENITENCE_MAX_HP_BONUS_RATIO;
+            this.maxHP += this.penitence.maxHpBonus;
+            this.penitence.speedBonus = this.maxSpeed * PENITENCE_SPEED_BONUS_RATIO;
+            this.maxSpeed += this.penitence.speedBonus;
+            this.minSpeed += this.penitence.speedBonus * 0.2;
+            this.heal(this.maxHP * PENITENCE_PICKUP_HEAL_RATIO);
+            this.penitence.swingStartedAt = 0;
+            this.penitence.swingUntil = 0;
+        }
+
         this.nextShootAllowedAt = Date.now() + this.pickupDelayMs;
     }
 
-    takeDamage(amount, damageType = 'generic', sourceWeaponType = null) {
+    takeDamage(amount, damageType = 'generic', sourceWeaponType = null, ignoreBlessingShield = false) {
         let adjusted = amount;
         const now = Date.now();
+        const isParadiseLostAttack = sourceWeaponType === 'paradiselost';
+        const isHarmonySelfDamage = sourceWeaponType === 'harmony';
 
         if (now < this.explosiveFlask.pickupVulnUntil) {
             adjusted *= EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER;
@@ -217,7 +357,7 @@ export class Ball {
             adjusted *= EXPLOSIVE_FLASK_PIP_DAMAGE_MULTIPLIER;
         }
 
-        if (adjusted > 0 && this.deadRinger.has && now >= this.deadRinger.activeUntil) {
+        if (!isParadiseLostAttack && !isHarmonySelfDamage && adjusted > 0 && this.deadRinger.has && now >= this.deadRinger.activeUntil) {
             this.deadRinger.has = false;
             this.deadRinger.activeUntil = now + DEAD_RINGER_DURATION_MS;
             this.deadRinger.pickupAvailableAt = now + DEAD_RINGER_PICKUP_COOLDOWN_MS;
@@ -239,19 +379,34 @@ export class Ball {
             };
         }
 
-        if (now < this.deadRinger.activeUntil) {
+        if (!isParadiseLostAttack && !isHarmonySelfDamage && now < this.deadRinger.activeUntil) {
             adjusted *= (1 - DEAD_RINGER_DAMAGE_REDUCTION);
         }
 
-        if (this.weapon.type === 'yellowtarge') {
+        if (!isParadiseLostAttack && !isHarmonySelfDamage && !ignoreBlessingShield && now < this.blessingShield.until) {
+            adjusted *= (1 - this.blessingShield.damageBlockRatio);
+        }
+
+        if (!isParadiseLostAttack && !isHarmonySelfDamage && this.weapon.type === 'yellowtarge') {
             const reduction = damageType === 'explosive'
                 ? YELLOW_TARGE_DAMAGE_REDUCTION_EXPLOSIVE
                 : YELLOW_TARGE_DAMAGE_REDUCTION_ALL;
             adjusted *= (1 - reduction);
         }
 
-        if (now < this.effectTimers.scrumpyResistUntil) {
+        if (!isParadiseLostAttack && !isHarmonySelfDamage && now < this.effectTimers.scrumpyResistUntil) {
             adjusted *= (1 - SCRUMPY_DAMAGE_REDUCTION);
+        }
+
+        if (this.weapon.type === 'paradiselost' && adjusted > 0) {
+            if (now >= this.paradiseLost.nextAdaptAt) {
+                this.paradiseLost.adaptedDamageType = damageType;
+                this.paradiseLost.nextAdaptAt = now + PARADISE_LOST_ADAPTIVE_INTERVAL_MS;
+            }
+
+            if (this.paradiseLost.adaptedDamageType && damageType === this.paradiseLost.adaptedDamageType) {
+                adjusted *= (1 - PARADISE_LOST_ADAPTIVE_RESISTANCE);
+            }
         }
 
         if (adjusted > 0) {
@@ -259,11 +414,60 @@ export class Ball {
             this.medigunState.selfRegenAnchorHp = this.hp - adjusted;
         }
 
+        if (this.weapon.type === 'harmony' && adjusted > 0 && sourceWeaponType && sourceWeaponType !== 'harmony') {
+            this.weapon.addHarmonyHaste(now, adjusted, this.maxHP);
+            this.harmony.hasteBonus = this.weapon.harmonyHasteBonus;
+            this.harmony.hasteUntil = this.weapon.harmonyHasteUntil;
+
+            if (this.weapon.isReloading) {
+                const remaining = Math.max(0, this.weapon.reloadCompleteAt - now);
+                this.weapon.reloadCompleteAt = now + remaining * (1 - Math.min(HARMONY_HASTE_MAX_BONUS, adjusted / Math.max(1, this.maxHP)));
+            }
+        }
+
+        if (adjusted > 0 && this.game && Array.isArray(this.game.damagePopups)) {
+            this.game.damagePopups.push({
+                x: this.pos.x + (Math.random() * 16 - 8),
+                y: this.pos.y - this.radius - 12,
+                vy: -0.6 - Math.random() * 0.4,
+                lifeMs: 900,
+                createdAt: now,
+                text: `${Math.max(1, Math.round(adjusted))}`,
+                color: '#ff3b3b'
+            });
+
+            if (this.game.damagePopups.length > 80) {
+                this.game.damagePopups.splice(0, this.game.damagePopups.length - 80);
+            }
+        }
+
         this.hp = Math.max(0, this.hp - adjusted);
     }
 
     heal(amount) {
-        this.hp = Math.min(this.maxHP, this.hp + amount);
+        const now = Date.now();
+        const beforeHp = this.hp;
+        const effectiveHeal = now < this.bayonetBleed.until
+            ? amount * this.bayonetBleed.healMultiplier
+            : amount;
+        this.hp = Math.min(this.maxHP, this.hp + effectiveHeal);
+
+        const healed = this.hp - beforeHp;
+        if (healed > 0 && this.game && Array.isArray(this.game.damagePopups)) {
+            this.game.damagePopups.push({
+                x: this.pos.x + (Math.random() * 16 - 8),
+                y: this.pos.y - this.radius - 12,
+                vy: -0.55 - Math.random() * 0.35,
+                lifeMs: 900,
+                createdAt: now,
+                text: `+${Math.max(1, Math.round(healed))}`,
+                color: '#65ff65'
+            });
+
+            if (this.game.damagePopups.length > 80) {
+                this.game.damagePopups.splice(0, this.game.damagePopups.length - 80);
+            }
+        }
     }
 
     applyUbercharge(now, durationMs = UBERCHARGE_DURATION_MS) {
@@ -284,6 +488,7 @@ export class Ball {
     }
 
     applyExplosiveFlaskDebuff(now, durationMs, slowMultiplier, fromPickup = false) {
+        if (this.weapon.type === 'paradiselost') return;
         const until = now + durationMs;
         this.explosiveFlask.slowUntil = Math.max(this.explosiveFlask.slowUntil, until);
         this.explosiveFlask.slowMultiplier = Math.min(this.explosiveFlask.slowMultiplier, slowMultiplier);
@@ -293,6 +498,13 @@ export class Ball {
         } else {
             this.explosiveFlask.pipVulnUntil = Math.max(this.explosiveFlask.pipVulnUntil, until);
         }
+    }
+
+    applyLonelinessSlow(now, durationMs = EGO_LONELINESS_SLOW_DURATION_MS, slowMultiplier = EGO_LONELINESS_SLOW_MULTIPLIER) {
+        if (this.weapon.type === 'paradiselost') return;
+        const until = now + durationMs;
+        this.lonelinessSlow.slowUntil = Math.max(this.lonelinessSlow.slowUntil, until);
+        this.lonelinessSlow.slowMultiplier = Math.min(this.lonelinessSlow.slowMultiplier, slowMultiplier);
     }
 
     canPickupDeadRinger(now) {
@@ -323,8 +535,23 @@ export class Ball {
         }
     }
 
+    applyBayonetBleed(now, durationMs = MUSKET_BAYONET_BLEED_DURATION_MS, damageMin = MUSKET_BAYONET_BLEED_DAMAGE_MIN, damageMax = MUSKET_BAYONET_BLEED_DAMAGE_MAX, intervalMs = MUSKET_BAYONET_BLEED_INTERVAL_MS, healMultiplier = MUSKET_BAYONET_HEAL_MULTIPLIER) {
+        this.bayonetBleed.until = Math.max(this.bayonetBleed.until, now + durationMs);
+        this.bayonetBleed.damageMin = damageMin;
+        this.bayonetBleed.damageMax = damageMax;
+        this.bayonetBleed.intervalMs = intervalMs;
+        this.bayonetBleed.healMultiplier = healMultiplier;
+        if (this.bayonetBleed.nextTickAt <= now) {
+            this.bayonetBleed.nextTickAt = now + intervalMs;
+        }
+    }
+
     applyImpulse(vector) {
-        this.impulseVel.add(vector);
+        const impulse = vector.clone();
+        if (this.weapon.type === 'penitence') {
+            impulse.multiply(1 - PENITENCE_KNOCKBACK_RESISTANCE);
+        }
+        this.impulseVel.add(impulse);
     }
 
     isUberActive(now) {
@@ -337,6 +564,29 @@ export class Ball {
 
     isUntargetable(now) {
         return now < this.deadRinger.activeUntil;
+    }
+
+    isShootLocked(now) {
+        return now < this.shootLockedUntil;
+    }
+
+    applyShootLock(now, durationMs) {
+        this.shootLockedUntil = Math.max(this.shootLockedUntil, now + durationMs);
+        this.nextShootAllowedAt = Math.max(this.nextShootAllowedAt, this.shootLockedUntil);
+    }
+
+    canUseSolemnVowFuneral(now) {
+        if (this.weapon.type !== 'solemnvow') return false;
+        if (this.isShootLocked(now)) return false;
+        if (now < this.solemnVow.nextFuneralAllowedAt) return false;
+
+        return this.solemnVow.pelletsShotSinceFuneral >= SOLEMN_VOW_FUNERAL_PELLETS_REQUIRED
+            || (this.weapon.isReloading && !this.solemnVow.funeralUsedThisReload);
+    }
+
+    markSolemnVowPelletsFired(count) {
+        if (this.weapon.type !== 'solemnvow') return;
+        this.solemnVow.pelletsShotSinceFuneral += Math.max(0, count | 0);
     }
 
     registerSodaPopperDamage(amount, now = Date.now()) {
@@ -365,6 +615,10 @@ export class Ball {
         if (now < this.sodaPopper.hypeUntil) {
             multiplier *= SODA_POPPER_HYPE_DAMAGE_MULTIPLIER;
         }
+        // Apply sword sharpening stacks to wielder damage
+        if (now < this.swordSharpenExpiresAt && this.swordSharpenStacks > 0) {
+            multiplier *= (1 + SWORD_SHARPENED_SHARPEN_DAMAGE_BONUS * this.swordSharpenStacks);
+        }
         return multiplier;
     }
 
@@ -391,6 +645,18 @@ export class Ball {
             this.afterburn.nextTickAt = 0;
         }
 
+        while (this.bayonetBleed.nextTickAt > 0 && this.bayonetBleed.nextTickAt <= now && this.bayonetBleed.nextTickAt <= this.bayonetBleed.until && this.isAlive()) {
+            if (!this.isUberActive(now)) {
+                const bleedDamage = Math.floor(Math.random() * (this.bayonetBleed.damageMax - this.bayonetBleed.damageMin + 1)) + this.bayonetBleed.damageMin;
+                this.takeDamage(bleedDamage, 'bleed');
+            }
+            this.bayonetBleed.nextTickAt += this.bayonetBleed.intervalMs;
+        }
+
+        if (now > this.bayonetBleed.until) {
+            this.bayonetBleed.nextTickAt = 0;
+        }
+
         if (now >= this.deadRinger.activeUntil && this.deadRinger.speedBoostApplied > 0) {
             this.maxSpeed -= this.deadRinger.speedBoostApplied;
             this.minSpeed -= this.deadRinger.speedBoostApplied * 0.2;
@@ -406,13 +672,32 @@ export class Ball {
         if (now >= this.explosiveFlask.slowUntil) {
             this.explosiveFlask.slowMultiplier = 1;
         }
+
+        if (now >= this.lonelinessSlow.slowUntil) {
+            this.lonelinessSlow.slowMultiplier = 1;
+        }
+
+        if (this.weapon.type === 'harmony' && now >= this.harmony.hasteUntil) {
+            this.harmony.hasteBonus = 0;
+        }
+
+        if (this.weapon.type === 'paradiselost' && this.isAlive()) {
+            while (this.paradiseLost.nextSelfDotAt > 0 && this.paradiseLost.nextSelfDotAt <= now && this.isAlive()) {
+                const ratio = PARADISE_LOST_SELF_DOT_MIN_RATIO + Math.random() * (PARADISE_LOST_SELF_DOT_MAX_RATIO - PARADISE_LOST_SELF_DOT_MIN_RATIO);
+                const selfDamage = this.maxHP * ratio;
+                this.hp = Math.max(0, this.hp - selfDamage);
+                this.lastDamagedAt = now;
+                this.medigunState.selfRegenAnchorHp = this.hp;
+                this.paradiseLost.nextSelfDotAt += PARADISE_LOST_SELF_DOT_INTERVAL_MS;
+            }
+        }
     }
 
     isAlive() {
         return this.hp > 0;
     }
 
-    draw(ctx, now, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, widowmakerWeaponImage) {
+    draw(ctx, now, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, tommyGunImage, egoWeaponMagicBulletImage, egoWeaponLonelinessImage, egoWeaponPenitenceImage, egoWeaponParadiseLostImage, egoWeaponHarmonyImage, portalImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, familyBusinessWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, musketWeaponImage, widowmakerWeaponImage, hornetRifleImage, hornetShotgunImage, egoWeaponSolemnVowBlackImage, egoWeaponSolemnVowWhiteImage, kaleidoscopeMuzzleImage, swordSharpenedImage) {
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
@@ -478,6 +763,19 @@ export class Ball {
             ctx.restore();
         };
 
+
+        if (this.weapon.type === 'egomagicbullet' && portalImage && portalImage.complete && portalImage.naturalWidth > 0) {
+            const flicker = 0.86 + Math.sin(now / 90) * 0.12;
+            const portalSize = 22;
+            const offset = 20;
+            ctx.save();
+            ctx.translate(this.pos.x, this.pos.y);
+            ctx.rotate(this.aimAngle);
+            ctx.globalAlpha = Math.max(0.2, Math.min(1, flicker));
+            ctx.drawImage(portalImage, offset - portalSize / 2, -portalSize / 2, portalSize, portalSize);
+            ctx.restore();
+        }
+
         if (this.weapon.type === 'sniper' && sniperRifleImage && sniperRifleImage.complete && sniperRifleImage.naturalWidth > 0) {
             drawHeldWeapon(sniperRifleImage, 42, 18, true);
         } else if (this.weapon.type === 'machina' && machinaImage && machinaImage.complete && machinaImage.naturalWidth > 0) {
@@ -496,7 +794,7 @@ export class Ball {
             drawHeldWeapon(pipLauncherImage, 42, 18, true);
         } else if (this.weapon.type === 'beggersbazooka' && beggersBazookaImage && beggersBazookaImage.complete && beggersBazookaImage.naturalWidth > 0) {
             drawHeldWeapon(beggersBazookaImage, 44, 18, true);
-        } else if (this.weapon.type === 'directhit' && directHitImage && directHitImage.complete && directHitImage.naturalWidth > 0) {
+        } else if ((this.weapon.type === 'directhit' || this.weapon.type === 'nearmissed') && directHitImage && directHitImage.complete && directHitImage.naturalWidth > 0) {
             drawHeldWeapon(directHitImage, 44, 18, true);
         } else if (this.weapon.type === 'rocketjumper' && rocketJumperImage && rocketJumperImage.complete && rocketJumperImage.naturalWidth > 0) {
             drawHeldWeapon(rocketJumperImage, 44, 18, true);
@@ -510,6 +808,70 @@ export class Ball {
             drawHeldWeapon(flamethrowerImage, 44, 18, true);
         } else if (this.weapon.type === 'smg' && smgImage && smgImage.complete && smgImage.naturalWidth > 0) {
             drawHeldWeapon(smgImage, 40, 16, true);
+        } else if (this.weapon.type === 'tommygun' && tommyGunImage && tommyGunImage.complete && tommyGunImage.naturalWidth > 0) {
+            drawHeldWeapon(tommyGunImage, 42, 16, true);
+        } else if (this.weapon.type === 'egomagicbullet' && egoWeaponMagicBulletImage && egoWeaponMagicBulletImage.complete && egoWeaponMagicBulletImage.naturalWidth > 0) {
+            drawHeldWeapon(egoWeaponMagicBulletImage, 46, 18, true);
+        } else if (this.weapon.type === 'egoloneliness' && egoWeaponLonelinessImage && egoWeaponLonelinessImage.complete && egoWeaponLonelinessImage.naturalWidth > 0) {
+            drawHeldWeapon(egoWeaponLonelinessImage, 46, 18, true);
+        } else if (this.weapon.type === 'penitence' && egoWeaponPenitenceImage && egoWeaponPenitenceImage.complete && egoWeaponPenitenceImage.naturalWidth > 0) {
+            const isSwinging = now < this.penitence.swingUntil;
+            let swingOffset = 0;
+            if (isSwinging) {
+                const progress = Math.max(0, Math.min(1, (now - this.penitence.swingStartedAt) / PENITENCE_SWING_ANIMATION_MS));
+                const phase = progress < 0.5 ? (progress / 0.5) : ((1 - progress) / 0.5);
+                const maxArc = Math.PI * 0.36;
+                swingOffset = -maxArc + (phase * 2 * maxArc);
+            }
+
+            ctx.save();
+            ctx.translate(this.pos.x, this.pos.y);
+            ctx.rotate(this.aimAngle + swingOffset);
+            ctx.scale(-1, 1);
+            ctx.drawImage(egoWeaponPenitenceImage, -42 + 8, -22 / 2, 42, 22);
+            ctx.restore();
+        } else if (this.weapon.type === 'paradiselost' && egoWeaponParadiseLostImage && egoWeaponParadiseLostImage.complete && egoWeaponParadiseLostImage.naturalWidth > 0) {
+            ctx.save();
+            ctx.translate(this.pos.x, this.pos.y);
+            ctx.rotate(this.aimAngle);
+            ctx.scale(-1, 1);
+            ctx.globalAlpha = 0.88;
+            ctx.filter = 'saturate(0.58) brightness(1.12) contrast(0.92)';
+            ctx.drawImage(egoWeaponParadiseLostImage, -46 + 6, -18 / 2, 46, 18);
+            ctx.restore();
+        } else if (this.weapon.type === 'swordsharpened' && swordSharpenedImage && swordSharpenedImage.complete && swordSharpenedImage.naturalWidth > 0) {
+            ctx.save();
+            ctx.translate(this.pos.x, this.pos.y);
+            ctx.rotate(this.aimAngle);
+            ctx.drawImage(swordSharpenedImage, -40, -8, 40, 16);
+            ctx.restore();
+        } else if (this.weapon.type === 'hornet') {
+            const hornetForm = this.weapon.hornetForm || 'rifle';
+            if (hornetForm === 'shotgun' && hornetShotgunImage && hornetShotgunImage.complete && hornetShotgunImage.naturalWidth > 0) {
+                // Draw shotgun without flipping
+                ctx.save();
+                ctx.translate(this.pos.x, this.pos.y);
+                ctx.rotate(this.aimAngle);
+                ctx.drawImage(hornetShotgunImage, -6, -18 / 2, 44, 18);
+                ctx.restore();
+            } else if (hornetRifleImage && hornetRifleImage.complete && hornetRifleImage.naturalWidth > 0) {
+                drawHeldWeapon(hornetRifleImage, 46, 18, true);
+            }
+        } else if (this.weapon.type === 'harmony' && egoWeaponHarmonyImage && egoWeaponHarmonyImage.complete && egoWeaponHarmonyImage.naturalWidth > 0) {
+            drawHeldWeapon(egoWeaponHarmonyImage, 44, 18, true);
+        } else if (this.weapon.type === 'solemnvow' && egoWeaponSolemnVowBlackImage && egoWeaponSolemnVowBlackImage.complete && egoWeaponSolemnVowBlackImage.naturalWidth > 0 && egoWeaponSolemnVowWhiteImage && egoWeaponSolemnVowWhiteImage.complete && egoWeaponSolemnVowWhiteImage.naturalWidth > 0) {
+            ctx.save();
+            ctx.translate(this.pos.x, this.pos.y);
+            ctx.rotate(this.aimAngle);
+            ctx.scale(-1, 1);
+
+            // Black revolver (top)
+            ctx.drawImage(egoWeaponSolemnVowBlackImage, -28, -26, 34, 24);
+
+            // White revolver (bottom)
+            ctx.drawImage(egoWeaponSolemnVowWhiteImage, -28, 2, 34, 24);
+
+            ctx.restore();
         } else if (this.weapon.type === 'minigun' && minigunImage && minigunImage.complete && minigunImage.naturalWidth > 0) {
             drawHeldWeapon(minigunImage, 46, 18, false);
         } else if (this.weapon.type === 'pistol' && truePistolWeaponImage && truePistolWeaponImage.complete && truePistolWeaponImage.naturalWidth > 0) {
@@ -518,14 +880,49 @@ export class Ball {
             drawHeldWeapon(revolverWeaponImage, 34, 14, true);
         } else if (this.weapon.type === 'shotgun' && shotgunWeaponImage && shotgunWeaponImage.complete && shotgunWeaponImage.naturalWidth > 0) {
             drawHeldWeapon(shotgunWeaponImage, 42, 16, true);
+        } else if (this.weapon.type === 'familybusiness' && familyBusinessWeaponImage && familyBusinessWeaponImage.complete && familyBusinessWeaponImage.naturalWidth > 0) {
+            drawHeldWeapon(familyBusinessWeaponImage, 42, 16, false);
         } else if (this.weapon.type === 'sodapopper' && sodaPopperWeaponImage && sodaPopperWeaponImage.complete && sodaPopperWeaponImage.naturalWidth > 0) {
             drawHeldWeapon(sodaPopperWeaponImage, 42, 16, true);
         } else if (this.weapon.type === 'forceanature' && forceANatureWeaponImage && forceANatureWeaponImage.complete && forceANatureWeaponImage.naturalWidth > 0) {
             drawHeldWeapon(forceANatureWeaponImage, 42, 16, true);
         } else if (this.weapon.type === 'magicianhat' && magicianHatWeaponImage && magicianHatWeaponImage.complete && magicianHatWeaponImage.naturalWidth > 0) {
             drawHeldWeapon(magicianHatWeaponImage, 40, 24, true);
+        } else if (this.weapon.type === 'musket' && musketWeaponImage && musketWeaponImage.complete && musketWeaponImage.naturalWidth > 0) {
+            drawHeldWeapon(musketWeaponImage, 48, 18, true);
         } else if (this.weapon.type === 'widowmaker' && widowmakerWeaponImage && widowmakerWeaponImage.complete && widowmakerWeaponImage.naturalWidth > 0) {
             drawHeldWeapon(widowmakerWeaponImage, 42, 16, true);
+        }
+
+        if (this.weapon.type === 'solemnvow' && this.solemnVow.muzzleFlashUntil && now < this.solemnVow.muzzleFlashUntil) {
+            const flashLifeMs = SOLEMN_VOW_MUZZLE_FLASH_MS;
+            const flashProgress = 1 - Math.max(0, Math.min(1, (this.solemnVow.muzzleFlashUntil - now) / flashLifeMs));
+            const flicker = 0.82 + Math.sin(now / 24) * 0.18;
+            const muzzleDistance = 24;
+            const muzzleX = this.pos.x + Math.cos(this.aimAngle) * muzzleDistance;
+            const muzzleY = this.pos.y + Math.sin(this.aimAngle) * muzzleDistance;
+
+            ctx.save();
+            ctx.translate(muzzleX, muzzleY);
+            ctx.rotate(this.aimAngle);
+            ctx.globalAlpha = Math.max(0.1, 0.9 - flashProgress * 0.6) * flicker;
+            ctx.globalCompositeOperation = 'lighter';
+
+            if (kaleidoscopeMuzzleImage && kaleidoscopeMuzzleImage.complete && kaleidoscopeMuzzleImage.naturalWidth > 0) {
+                const size = 26 + (1 - flashProgress) * 8;
+                ctx.drawImage(kaleidoscopeMuzzleImage, -size / 2, -size / 2, size, size);
+            } else {
+                const burst = ctx.createRadialGradient(0, 0, 2, 0, 0, 20);
+                burst.addColorStop(0, 'rgba(255,255,255,0.85)');
+                burst.addColorStop(0.4, 'rgba(126,255,255,0.55)');
+                burst.addColorStop(1, 'rgba(126,255,255,0)');
+                ctx.fillStyle = burst;
+                ctx.beginPath();
+                ctx.arc(0, 0, 20, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.restore();
         }
 
         const hpRatio = this.hp / this.maxHP;

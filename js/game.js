@@ -9,8 +9,13 @@ import {
 import { Ball } from './ball.js';
 import { DealerWeapon } from './dealer.js';
 import {
+    applyEgoMagicBulletHoming as applyEgoMagicBulletHomingImpl,
+    fireEgoLonelinessTracer as fireEgoLonelinessTracerImpl,
     applyMagicianHatHoming as applyMagicianHatHomingImpl,
+    applyParadiseLostHoming as applyParadiseLostHomingImpl,
     findNearest as findNearestImpl,
+    fireEgoMagicTracer as fireEgoMagicTracerImpl,
+    fireHornetShotgunRay as fireHornetShotgunRayImpl,
     fireForceANatureRay as fireForceANatureRayImpl,
     fireMachinaTracer as fireMachinaTracerImpl,
     fireShotgunRay as fireShotgunRayImpl,
@@ -52,7 +57,7 @@ import { ballShooting as ballShootingImpl } from './gameShooting.js';
 import { draw as drawImpl } from './gameRender.js';
 
 export class Game {
-    constructor(canvas, pistolProjectileImage, syringeAmmoImage, rocketAmmoImage, grenadeAmmoImage, arrowProjectileImage, crusadersCrossbowProjectileImage, explosiveFlaskImage, bunnyProjectileImage, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, widowmakerWeaponImage, scrumpyBottleImage, smokeImage, pickupIcons, settings = {}) {
+    constructor(canvas, pistolProjectileImage, syringeAmmoImage, rocketAmmoImage, grenadeAmmoImage, arrowProjectileImage, crusadersCrossbowProjectileImage, explosiveFlaskImage, bunnyProjectileImage, magicBulletProjectileImage, appleProjectileImage, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, tommyGunImage, egoWeaponMagicBulletImage, egoWeaponLonelinessImage, egoWeaponPenitenceImage, egoWeaponParadiseLostImage, egoWeaponHarmonyImage, egoWeaponSolemnVowBlackImage, egoWeaponSolemnVowWhiteImage, kaleidoscopeMuzzleImage, funeralDeadButterfliesPortraitImage, portalImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, familyBusinessWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, musketWeaponImage, widowmakerWeaponImage, scrumpyBottleImage, smokeImage, hornetRifleImage, hornetShotgunImage, sporeImage, sporeRoundImage, swordSharpenedImage, blessingShieldImage, pickupIcons, settings = {}) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.pistolProjectileImage = pistolProjectileImage;
@@ -63,11 +68,24 @@ export class Game {
         this.crusadersCrossbowProjectileImage = crusadersCrossbowProjectileImage;
         this.explosiveFlaskImage = explosiveFlaskImage;
         this.bunnyProjectileImage = bunnyProjectileImage;
+        this.magicBulletProjectileImage = magicBulletProjectileImage;
+        this.appleProjectileImage = appleProjectileImage;
         this.sniperRifleImage = sniperRifleImage;
         this.machinaImage = machinaImage;
         this.huntsmanImage = huntsmanImage;
         this.crusadersCrossbowImage = crusadersCrossbowImage;
         this.smgImage = smgImage;
+        this.tommyGunImage = tommyGunImage;
+        this.egoWeaponMagicBulletImage = egoWeaponMagicBulletImage;
+        this.egoWeaponLonelinessImage = egoWeaponLonelinessImage;
+        this.egoWeaponPenitenceImage = egoWeaponPenitenceImage;
+        this.egoWeaponParadiseLostImage = egoWeaponParadiseLostImage;
+        this.egoWeaponHarmonyImage = egoWeaponHarmonyImage;
+        this.egoWeaponSolemnVowBlackImage = egoWeaponSolemnVowBlackImage;
+        this.egoWeaponSolemnVowWhiteImage = egoWeaponSolemnVowWhiteImage;
+        this.kaleidoscopeMuzzleImage = kaleidoscopeMuzzleImage;
+        this.funeralDeadButterfliesPortraitImage = funeralDeadButterfliesPortraitImage;
+        this.portalImage = portalImage;
         this.minigunImage = minigunImage;
         this.blutsaugerImage = blutsaugerImage;
         this.shortCircuitImage = shortCircuitImage;
@@ -84,12 +102,20 @@ export class Game {
         this.truePistolWeaponImage = truePistolWeaponImage;
         this.revolverWeaponImage = revolverWeaponImage;
         this.shotgunWeaponImage = shotgunWeaponImage;
+        this.familyBusinessWeaponImage = familyBusinessWeaponImage;
         this.sodaPopperWeaponImage = sodaPopperWeaponImage;
         this.forceANatureWeaponImage = forceANatureWeaponImage;
         this.magicianHatWeaponImage = magicianHatWeaponImage;
+        this.musketWeaponImage = musketWeaponImage;
         this.widowmakerWeaponImage = widowmakerWeaponImage;
         this.scrumpyBottleImage = scrumpyBottleImage;
         this.smokeImage = smokeImage;
+        this.hornetRifleImage = hornetRifleImage;
+        this.hornetShotgunImage = hornetShotgunImage;
+        this.sporeImage = sporeImage;
+        this.sporeRoundImage = sporeRoundImage;
+        this.swordSharpenedImage = swordSharpenedImage;
+        this.blessingShieldImage = blessingShieldImage;
         this.pickupIcons = pickupIcons || {};
 
         this.settings = buildGameSettings(settings, this.normalizeStartWeapons.bind(this));
@@ -102,6 +128,7 @@ export class Game {
         this.scrumpyPuddles = [];
         this.deadRingerDecoys = [];
         this.explosionEffects = [];
+        this.damagePopups = [];
         this.teleportSmokeEffects = [];
         this.pickups = [];
 
@@ -156,6 +183,7 @@ export class Game {
                     ARENA_HEIGHT
                 )
             );
+            balls[balls.length - 1].game = this;
         }
 
         return balls;
@@ -343,6 +371,10 @@ export class Game {
         return fireShotgunRayImpl(this, shooter, angle, now, damageMultiplier);
     }
 
+    fireHornetShotgunRay(shooter, angle, now, damageMultiplier = 1) {
+        return fireHornetShotgunRayImpl(this, shooter, angle, now, damageMultiplier);
+    }
+
     fireWidowmakerRay(shooter, angle, now, damageMultiplier = 1) {
         return fireWidowmakerRayImpl(this, shooter, angle, now, damageMultiplier);
     }
@@ -363,8 +395,28 @@ export class Game {
         return applyMagicianHatHomingImpl(this, projectile, now);
     }
 
+    applyEgoMagicBulletHoming(projectile, now) {
+        return applyEgoMagicBulletHomingImpl(this, projectile, now);
+    }
+
+    applyParadiseLostHoming(projectile, now) {
+        return applyParadiseLostHomingImpl(this, projectile, now);
+    }
+
+    applyLonelinessSlow(ball, now, durationMs, slowMultiplier) {
+        return ball.applyLonelinessSlow(now, durationMs, slowMultiplier);
+    }
+
     fireMachinaTracer(shooter, angle, now) {
         return fireMachinaTracerImpl(this, shooter, angle, now);
+    }
+
+    fireEgoMagicTracer(shooter, angle, now) {
+        return fireEgoMagicTracerImpl(this, shooter, angle, now);
+    }
+
+    fireEgoLonelinessTracer(shooter, angle, now) {
+        return fireEgoLonelinessTracerImpl(this, shooter, angle, now);
     }
 
     rayCircleHitDistance(originX, originY, dirX, dirY, centerX, centerY, radius, maxDistance) {

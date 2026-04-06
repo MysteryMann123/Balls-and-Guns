@@ -11,10 +11,14 @@ export class Pickup {
             this.color = '#ffd84d';
         } else if (weaponType === 'shotgun') {
             this.color = '#ff6600';
+        } else if (weaponType === 'familybusiness') {
+            this.color = '#d78f49';
         } else if (weaponType === 'sodapopper') {
             this.color = '#9fe9ff';
         } else if (weaponType === 'forceanature') {
             this.color = '#b6f4ff';
+        } else if (weaponType === 'musket') {
+            this.color = '#f1e6cf';
         } else if (weaponType === 'magicianhat') {
             this.color = '#e8d9ff';
         } else if (weaponType === 'widowmaker') {
@@ -29,6 +33,24 @@ export class Pickup {
             this.color = '#95f85f';
         } else if (weaponType === 'smg') {
             this.color = '#b5ff66';
+        } else if (weaponType === 'tommygun') {
+            this.color = '#d4a35a';
+        } else if (weaponType === 'egomagicbullet') {
+            this.color = '#b575ff';
+        } else if (weaponType === 'egoloneliness') {
+            this.color = '#9f9f9f';
+        } else if (weaponType === 'penitence') {
+            this.color = '#4ad66d';
+        } else if (weaponType === 'paradiselost') {
+            this.color = '#ff5d5d';
+        } else if (weaponType === 'harmony') {
+            this.color = '#dcecff';
+        } else if (weaponType === 'hornet') {
+            this.color = '#ffd84a';
+        } else if (weaponType === 'swordsharpened') {
+            this.color = '#4da6ff';
+        } else if (weaponType === 'solemnvow') {
+            this.color = '#f2f2f2';
         } else if (weaponType === 'minigun') {
             this.color = '#f5d142';
         } else if (weaponType === 'blutsauger') {
@@ -43,6 +65,8 @@ export class Pickup {
             this.color = '#ffa66d';
         } else if (weaponType === 'directhit') {
             this.color = '#ff8f4f';
+        } else if (weaponType === 'nearmissed') {
+            this.color = '#ffb58a';
         } else if (weaponType === 'rocketjumper') {
             this.color = '#8fd8ff';
         } else if (weaponType === 'medigun') {
@@ -91,10 +115,14 @@ export class Pickup {
                 ? pickupIcons.revolver
             : this.weaponType === 'shotgun'
                 ? pickupIcons.shotgun
+                : this.weaponType === 'familybusiness'
+                    ? pickupIcons.familybusiness || pickupIcons.shotgun
                 : this.weaponType === 'sodapopper'
                     ? pickupIcons.sodapopper || pickupIcons.shotgun
                 : this.weaponType === 'forceanature'
                     ? pickupIcons.forceanature || pickupIcons.sodapopper || pickupIcons.shotgun
+                : this.weaponType === 'musket'
+                    ? pickupIcons.musket || pickupIcons.forceanature || pickupIcons.shotgun
                 : this.weaponType === 'magicianhat'
                     ? pickupIcons.magicianhat || pickupIcons.forceanature || pickupIcons.sodapopper
                 : this.weaponType === 'widowmaker'
@@ -109,6 +137,26 @@ export class Pickup {
                             ? pickupIcons.huntsman
                         : this.weaponType === 'crusaderscrossbow'
                             ? pickupIcons.crusaderscrossbow || pickupIcons.huntsman
+                        : this.weaponType === 'smg'
+                            ? pickupIcons.smg
+                        : this.weaponType === 'tommygun'
+                            ? pickupIcons.tommygun || pickupIcons.smg
+                        : this.weaponType === 'egomagicbullet'
+                            ? pickupIcons.egomagicbullet || pickupIcons.tommygun || pickupIcons.smg
+                        : this.weaponType === 'egoloneliness'
+                            ? pickupIcons.egoloneliness || pickupIcons.revolver || pickupIcons.pistol
+                        : this.weaponType === 'penitence'
+                            ? pickupIcons.penitence || pickupIcons.egoloneliness || pickupIcons.revolver
+                        : this.weaponType === 'paradiselost'
+                            ? pickupIcons.paradiselost || pickupIcons.penitence || pickupIcons.revolver
+                        : this.weaponType === 'harmony'
+                            ? pickupIcons.harmony || pickupIcons.paradiselost || pickupIcons.solemnvow || pickupIcons.revolver
+                        : this.weaponType === 'hornet'
+                            ? pickupIcons.hornet || pickupIcons.sniper || pickupIcons.shotgun
+                        : this.weaponType === 'swordsharpened'
+                            ? pickupIcons.swordsharpened || pickupIcons.hornet || pickupIcons.sniper
+                        : this.weaponType === 'solemnvow'
+                            ? pickupIcons.solemnvow || pickupIcons.paradiselost || pickupIcons.revolver
                         : this.weaponType === 'minigun'
                             ? pickupIcons.minigun
                             : this.weaponType === 'blutsauger'
@@ -127,6 +175,8 @@ export class Pickup {
                                                     ? pickupIcons.beggersbazooka || pickupIcons.rocketlauncher
                                                 : this.weaponType === 'directhit'
                                                     ? pickupIcons.directhit || pickupIcons.rocketlauncher
+                                                    : this.weaponType === 'nearmissed'
+                                                        ? pickupIcons.nearmissed || pickupIcons.directhit || pickupIcons.rocketlauncher
                                                     : this.weaponType === 'rocketjumper'
                                                         ? pickupIcons.rocketjumper || pickupIcons.rocketlauncher
                                                         : this.weaponType === 'medigun'

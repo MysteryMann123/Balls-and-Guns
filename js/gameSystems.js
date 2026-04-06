@@ -296,7 +296,7 @@ export function updateShortCircuitFields(game, now) {
             const projectile = game.projectiles[i];
             if (projectile.ownerId === field.ownerId) continue;
             if (projectile.type === 'card') continue;
-            if (projectile.type === 'pistol' || projectile.type === 'revolver' || projectile.type === 'blutsauger' || projectile.type === 'smg' || projectile.type === 'minigun' || projectile.type === 'medigun' || projectile.type === 'flamethrower') continue;
+            if (projectile.type === 'pistol' || projectile.type === 'revolver' || projectile.type === 'egoloneliness' || projectile.type === 'paradiselost' || projectile.type === 'solemnvowblack' || projectile.type === 'solemnvowwhite' || projectile.type === 'solemnvowfuneral' || projectile.type === 'blutsauger' || projectile.type === 'smg' || projectile.type === 'tommygun' || projectile.type === 'egomagicbullet' || projectile.type === 'minigun' || projectile.type === 'medigun' || projectile.type === 'flamethrower') continue;
 
             const dx = projectile.pos.x - field.pos.x;
             const dy = projectile.pos.y - field.pos.y;

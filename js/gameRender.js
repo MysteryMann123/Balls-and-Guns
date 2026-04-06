@@ -114,19 +114,27 @@ export function draw(game) {
     }
 
     for (const projectile of game.projectiles) {
-        projectile.draw(ctx, game.pistolProjectileImage, game.syringeAmmoImage, game.rocketAmmoImage, game.grenadeAmmoImage, game.arrowProjectileImage, game.crusadersCrossbowProjectileImage, game.explosiveFlaskImage, game.scrumpyBottleImage, game.bunnyProjectileImage);
+        projectile.draw(ctx, game.pistolProjectileImage, game.syringeAmmoImage, game.rocketAmmoImage, game.grenadeAmmoImage, game.arrowProjectileImage, game.crusadersCrossbowProjectileImage, game.explosiveFlaskImage, game.scrumpyBottleImage, game.bunnyProjectileImage, game.magicBulletProjectileImage, game.appleProjectileImage, game.funeralDeadButterfliesPortraitImage, game.sporeImage, game.sporeRoundImage, game.swordSharpenedImage);
     }
 
     for (const ball of game.balls) {
         if (!ball.isAlive()) continue;
+        const now = Date.now();
         ball.draw(
             ctx,
-            Date.now(),
+            now,
             game.sniperRifleImage,
             game.machinaImage,
             game.huntsmanImage,
             game.crusadersCrossbowImage,
             game.smgImage,
+            game.tommyGunImage,
+            game.egoWeaponMagicBulletImage,
+            game.egoWeaponLonelinessImage,
+            game.egoWeaponPenitenceImage,
+            game.egoWeaponParadiseLostImage,
+            game.egoWeaponHarmonyImage,
+            game.portalImage,
             game.minigunImage,
             game.blutsaugerImage,
             game.shortCircuitImage,
@@ -143,10 +151,76 @@ export function draw(game) {
             game.truePistolWeaponImage,
             game.revolverWeaponImage,
             game.shotgunWeaponImage,
+            game.familyBusinessWeaponImage,
             game.sodaPopperWeaponImage,
             game.forceANatureWeaponImage,
             game.magicianHatWeaponImage,
-            game.widowmakerWeaponImage
+            game.musketWeaponImage,
+            game.widowmakerWeaponImage,
+            game.hornetRifleImage,
+            game.hornetShotgunImage,
+            game.egoWeaponSolemnVowBlackImage,
+            game.egoWeaponSolemnVowWhiteImage,
+            game.kaleidoscopeMuzzleImage,
+            game.swordSharpenedImage
         );
+
+        // Draw blessing shield indicator if active
+        if (now < ball.blessingShield.until) {
+            ctx.save();
+            const iconX = ball.pos.x;
+            const iconY = ball.pos.y - ball.radius - 18;
+
+            if (game.blessingShieldImage && game.blessingShieldImage.complete && game.blessingShieldImage.naturalWidth > 0) {
+                const iconSize = 28;
+                ctx.drawImage(game.blessingShieldImage, iconX - iconSize / 2, iconY - iconSize / 2, iconSize, iconSize);
+            } else {
+                ctx.fillStyle = 'rgba(77, 166, 255, 0.8)';
+                ctx.strokeStyle = '#4da6ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(iconX, iconY, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(iconX - 3, iconY);
+                ctx.lineTo(iconX - 1, iconY + 3);
+                ctx.lineTo(iconX + 4, iconY - 2);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+    }
+
+    for (let i = game.damagePopups.length - 1; i >= 0; i--) {
+        const popup = game.damagePopups[i];
+        const age = Date.now() - popup.createdAt;
+        if (age >= popup.lifeMs) {
+            game.damagePopups.splice(i, 1);
+            continue;
+        }
+
+        const t = age / popup.lifeMs;
+        const alpha = Math.max(0, 1 - t);
+        const rise = 20 * t;
+        const scale = 1 + (1 - t) * 0.2;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.font = `bold ${Math.round(16 * scale)}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'rgba(255,255,255,0.95)';
+        ctx.fillStyle = popup.color || '#ff3b3b';
+        ctx.shadowColor = 'rgba(0,0,0,0.65)';
+        ctx.shadowBlur = 4;
+        ctx.strokeText(popup.text, popup.x, popup.y - rise);
+        ctx.fillText(popup.text, popup.x, popup.y - rise);
+        ctx.restore();
+
+        popup.y -= popup.vy;
     }
 }
