@@ -598,7 +598,7 @@ export class Weapon {
         } else if (type === 'grenadelauncher') {
             this.maxAmmo = GRENADE_LAUNCHER_AMMO;
             this.ammo = GRENADE_LAUNCHER_AMMO;
-            this.reloadTimeMs = 6000;
+            this.reloadTimeMs = 4500;
             this.damage = GRENADE_LAUNCHER_DIRECT_DAMAGE;
             this.speed = GRENADE_LAUNCHER_SPEED;
             this.fireRate = 900;

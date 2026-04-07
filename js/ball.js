@@ -201,15 +201,17 @@ export class Ball {
         const lonelinessSlow = this.weapon.type === 'paradiselost'
             ? 1
             : (now < this.lonelinessSlow.slowUntil ? this.lonelinessSlow.slowMultiplier : 1);
-        const effectiveHpRatio = this.weapon.type === 'paradiselost'
-            ? (0.5 + 0.5 * hpRatio)
-            : hpRatio;
-        const speed = Math.max(this.minSpeed, this.maxSpeed * effectiveHpRatio * flaskSlow * lonelinessSlow);
+        if (!this.isPlayerControlled) {
+            const effectiveHpRatio = this.weapon.type === 'paradiselost'
+                ? (0.5 + 0.5 * hpRatio)
+                : hpRatio;
+            const speed = Math.max(this.minSpeed, this.maxSpeed * effectiveHpRatio * flaskSlow * lonelinessSlow);
 
-        if (this.vel.magnitude() === 0) {
-            this.vel = new Vector(1, 0).multiply(speed);
-        } else {
-            this.vel.normalize().multiply(speed);
+            if (this.vel.magnitude() === 0) {
+                this.vel = new Vector(1, 0).multiply(speed);
+            } else {
+                this.vel.normalize().multiply(speed);
+            }
         }
 
         const movement = this.vel.clone().add(this.impulseVel);
@@ -411,7 +413,7 @@ export class Ball {
 
         if (adjusted > 0) {
             this.lastDamagedAt = now;
-            this.medigunState.selfRegenAnchorHp = this.hp - adjusted;
+            this.medigunState.selfRegenAnchorHp = Math.max(0, this.hp - adjusted);
         }
 
         if (this.weapon.type === 'harmony' && adjusted > 0 && sourceWeaponType && sourceWeaponType !== 'harmony') {

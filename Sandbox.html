@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balls & Guns - Sandbox</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #1d3557 0%, #10131d 40%, #07090d 100%);
+            color: #fff;
+            font-family: Arial, sans-serif;
+            padding: 18px;
+        }
+        .page {
+            width: min(1180px, 96vw);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(10, 14, 22, 0.88);
+            border: 1px solid rgba(128, 188, 255, 0.28);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+        }
+        .title-block h1 {
+            margin: 0;
+            font-size: 30px;
+            letter-spacing: 0.6px;
+            color: #f7fbff;
+        }
+        .title-block p {
+            margin: 4px 0 0;
+            color: #a7c5ff;
+        }
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .button {
+            text-decoration: none;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: bold;
+            color: #111;
+            background: #ffd166;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .button.secondary {
+            background: #81c8ff;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 12px;
+            align-items: start;
+        }
+        .stage {
+            position: relative;
+            background: rgba(8, 10, 16, 0.92);
+            border-radius: 18px;
+            border: 1px solid rgba(128, 188, 255, 0.18);
+            padding: 14px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        .sandbox-hud {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 5;
+            border-radius: 10px;
+            padding: 8px 12px;
+            background: rgba(9, 16, 27, 0.82);
+            border: 1px solid rgba(129, 200, 255, 0.4);
+            color: #98f3c0;
+            font-weight: bold;
+            letter-spacing: 0.2px;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            background: #000;
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .panel {
+            background: rgba(10, 14, 22, 0.92);
+            border-radius: 16px;
+            border: 1px solid rgba(128, 188, 255, 0.18);
+            padding: 14px;
+        }
+        .panel h2 {
+            margin: 0 0 8px;
+            font-size: 17px;
+            color: #ffd166;
+        }
+        .panel p {
+            margin: 0;
+            color: #dbe7ff;
+            line-height: 1.45;
+        }
+        .panel .small {
+            margin-top: 8px;
+            color: #9eb8df;
+            font-size: 13px;
+        }
+        .ui {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .status {
+            min-height: 44px;
+            border-radius: 12px;
+            padding: 12px 14px;
+            background: rgba(16, 21, 31, 0.95);
+            border: 1px solid rgba(128, 188, 255, 0.15);
+            color: #dbe7ff;
+        }
+        .controls {
+            color: #abc0e0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .controls p { margin: 0 0 8px; }
+        @media (max-width: 980px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="toolbar">
+            <div class="title-block">
+                <h1>Sandbox Mode</h1>
+                <p>Pointer aim, WASD movement, left click to fire, two dummies with 100000 HP.</p>
+            </div>
+            <div class="toolbar-actions">
+                <a class="button secondary" href="index.html">Back to weapon selection</a>
+                <a class="button" href="game.html">Arena testing</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="stage">
+                <div class="sandbox-hud" id="sandbox-dps">DPS: 0.0</div>
+                <canvas id="gameCanvas" width="800" height="600"></canvas>
+                <div class="ui" id="player-ui"></div>
+            </div>
+
+            <div class="sidebar">
+                <div class="panel">
+                    <h2>Sandbox Notes</h2>
+                    <p id="status">Loading sandbox...</p>
+                    <p id="dealer-status" class="small"></p>
+                </div>
+                <div class="panel controls">
+                    <p>Move with <strong>WASD</strong>.</p>
+                    <p>Aim with the pointer over the arena.</p>
+                    <p>Hold left click to fire the selected weapon at the nearest dummy under the cursor.</p>
+                    <p>The static dummy stays still. The moving dummy roams with the same 100000 HP pool.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

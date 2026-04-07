@@ -81,6 +81,7 @@
         .start { background: #39d98a; color: #111; }
         .quick { background: #4e7cff; color: #fff; }
         .stats { background: #a855f7; color: #fff; }
+        .sandbox { background: #ff9f43; color: #111; }
     </style>
 </head>
 <body>
@@ -117,8 +118,9 @@
         <div class="weapon-rows" id="weapon-rows"></div>
 
         <div class="actions">
-            <button class="start" type="submit">Start Game</button>
+            <button class="start" type="submit">Arena Test</button>
             <button class="quick" type="button" id="quick-start">Quick Start</button>
+            <button class="sandbox" type="button" id="sandbox-start">Sandbox</button>
             <button class="stats" type="button" id="view-stats">View Stats</button>
         </div>
     </form>
@@ -132,6 +134,7 @@
         const dropInput = document.getElementById('dropMs');
         const dropLabel = document.getElementById('drop-label');
         const quickStart = document.getElementById('quick-start');
+        const sandboxStart = document.getElementById('sandbox-start');
         const viewStats = document.getElementById('view-stats');
         const weaponRows = document.getElementById('weapon-rows');
         const weaponDropsInput = document.getElementById('weapon-drops');
@@ -236,6 +239,14 @@
 
         quickStart.addEventListener('click', () => {
             window.location.href = 'game.html';
+        });
+
+        sandboxStart.addEventListener('click', () => {
+            const { ballCount } = clampSettings();
+            const selectedWeapons = readSelectedWeapons(ballCount);
+            const weapon = selectedWeapons[0] || 'pistol';
+            const params = new URLSearchParams({ weapon });
+            window.location.href = `Sandbox.html?${params.toString()}`;
         });
 
         viewStats.addEventListener('click', () => {

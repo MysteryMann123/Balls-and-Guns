@@ -1,26 +1,39 @@
 import { SODA_POPPER_CHARGE_DAMAGE_REQUIRED, SODA_POPPER_HYPE_DAMAGE_MULTIPLIER } from './constants.js';
 import { Game } from './game.js';
+import { fireControlledWeapon as fireControlledWeaponImpl } from './gameShooting.js';
 
 const canvas = document.getElementById('gameCanvas');
 const statusEl = document.getElementById('status');
 const dealerStatusEl = document.getElementById('dealer-status');
 const playerUiEl = document.getElementById('player-ui');
+const sandboxDpsEl = document.getElementById('sandbox-dps');
 
 const query = new URLSearchParams(window.location.search);
+const sandboxMode = query.get('sandbox') === '1' || window.location.pathname.toLowerCase().endsWith('/sandbox.html');
+const sandboxWeapon = (query.get('weapon') || 'pistol').trim().toLowerCase() || 'pistol';
 const queryWeapons = query.get('weapons');
 const startWeapons = queryWeapons
     ? queryWeapons.split(',').map(item => item.trim().toLowerCase()).filter(Boolean)
     : [];
 const allowWeaponDrops = query.get('weaponDrops') !== '0';
 const allowUtilityDrops = query.get('utilityDrops') !== '0';
-const gameSettings = {
-    ballCount: Number(query.get('balls')) || 4,
-    teamCount: Number(query.get('teams')) || 2,
-    dropFrequencyMs: Number(query.get('dropMs')) || 4000,
-    startWeapons,
-    allowWeaponDrops,
-    allowUtilityDrops
-};
+const gameSettings = sandboxMode
+    ? {
+        ballCount: 3,
+        teamCount: 2,
+        dropFrequencyMs: 7000,
+        startWeapons: [sandboxWeapon, 'pistol', 'pistol'],
+        allowWeaponDrops: false,
+        allowUtilityDrops: false
+    }
+    : {
+        ballCount: Number(query.get('balls')) || 4,
+        teamCount: Number(query.get('teams')) || 2,
+        dropFrequencyMs: Number(query.get('dropMs')) || 4000,
+        startWeapons,
+        allowWeaponDrops,
+        allowUtilityDrops
+    };
 
 const pistolProjectileImage = new Image();
 pistolProjectileImage.src = 'assets/bullet_pistolpng.png';
@@ -272,6 +285,74 @@ const game = new Game(
     gameSettings
 );
 
+const sandboxInput = sandboxMode
+    ? {
+        keys: new Set(),
+        pointerX: game.canvas.width / 2,
+        pointerY: game.canvas.height / 2,
+        isFiring: false
+    }
+    : null;
+
+const sandboxMetrics = sandboxMode
+    ? {
+        damageSamples: [],
+        hpById: new Map()
+    }
+    : null;
+
+if (sandboxMode) {
+    const player = game.balls[0];
+    const staticDummy = game.balls[1];
+    const movingDummy = game.balls[2];
+
+    player.isPlayerControlled = true;
+    player.teamId = 1;
+    player.displayName = 'Sandbox Tester';
+    player.maxHP = 100000;
+    player.hp = 100000;
+    player.maxSpeed = 4;
+    player.minSpeed = 0;
+    player.pos.x = 160;
+    player.pos.y = 300;
+    player.vel.x = 0;
+    player.vel.y = 0;
+    player.impulseVel.x = 0;
+    player.impulseVel.y = 0;
+    player.nextShootAllowedAt = 0;
+
+    staticDummy.isTrainingDummy = true;
+    staticDummy.teamId = 2;
+    staticDummy.displayName = 'Static Dummy';
+    staticDummy.maxHP = 100000;
+    staticDummy.hp = 100000;
+    staticDummy.maxSpeed = 0;
+    staticDummy.minSpeed = 0;
+    staticDummy.pos.x = 560;
+    staticDummy.pos.y = 300;
+    staticDummy.vel.x = 0;
+    staticDummy.vel.y = 0;
+    staticDummy.impulseVel.x = 0;
+    staticDummy.impulseVel.y = 0;
+
+    movingDummy.isTrainingDummy = true;
+    movingDummy.teamId = 2;
+    movingDummy.displayName = 'Moving Dummy';
+    movingDummy.maxHP = 100000;
+    movingDummy.hp = 100000;
+    movingDummy.maxSpeed = 4;
+    movingDummy.minSpeed = 1;
+    movingDummy.pos.x = 640;
+    movingDummy.pos.y = 170;
+    movingDummy.vel.x = -3.2;
+    movingDummy.vel.y = 2.4;
+    movingDummy.impulseVel.x = 0;
+    movingDummy.impulseVel.y = 0;
+
+    sandboxMetrics.hpById.set(staticDummy.id, staticDummy.hp);
+    sandboxMetrics.hpById.set(movingDummy.id, movingDummy.hp);
+}
+
 function renderPlayerUi() {
     playerUiEl.innerHTML = '';
 
@@ -308,6 +389,211 @@ function lightenHexColor(hex, factor = 0.28) {
     const toHex = (channel) => channel.toString(16).padStart(2, '0');
 
     return `#${toHex(mix(r))}${toHex(mix(g))}${toHex(mix(b))}`;
+}
+
+function getSandboxTarget(now) {
+    if (!sandboxMode) return null;
+
+    const player = game.balls[0];
+    const enemies = game.balls.filter(ball => ball.id !== player.id && ball.isAlive() && game.areEnemies(player, ball) && !ball.isUntargetable(now));
+    if (enemies.length === 0) return null;
+
+    // Prefer the dummy directly under the reticle.
+    let hovered = null;
+    let hoveredDistance = Infinity;
+    for (const candidate of enemies) {
+        const dx = candidate.pos.x - sandboxInput.pointerX;
+        const dy = candidate.pos.y - sandboxInput.pointerY;
+        const distance = Math.hypot(dx, dy);
+        if (distance <= candidate.radius + 6 && distance < hoveredDistance) {
+            hovered = candidate;
+            hoveredDistance = distance;
+        }
+    }
+    if (hovered) return hovered;
+
+    // Otherwise choose the first enemy intersected by the current aim ray.
+    const aimDx = sandboxInput.pointerX - player.pos.x;
+    const aimDy = sandboxInput.pointerY - player.pos.y;
+    const aimLength = Math.hypot(aimDx, aimDy);
+    if (aimLength > 0.0001) {
+        const dirX = aimDx / aimLength;
+        const dirY = aimDy / aimLength;
+        const maxDistance = Math.max(game.canvas.width, game.canvas.height) * 2;
+
+        let firstHit = null;
+        let firstHitDistance = Infinity;
+
+        for (const candidate of enemies) {
+            const hitDistance = game.rayCircleHitDistance(
+                player.pos.x,
+                player.pos.y,
+                dirX,
+                dirY,
+                candidate.pos.x,
+                candidate.pos.y,
+                candidate.radius,
+                maxDistance
+            );
+
+            if (hitDistance !== null && hitDistance < firstHitDistance) {
+                firstHit = candidate;
+                firstHitDistance = hitDistance;
+            }
+        }
+
+        if (firstHit) return firstHit;
+
+        // If no exact intersection, choose the closest target to the aim line in front of the player.
+        let bestAligned = null;
+        let bestLineDistance = Infinity;
+
+        for (const candidate of enemies) {
+            const toX = candidate.pos.x - player.pos.x;
+            const toY = candidate.pos.y - player.pos.y;
+            const projection = toX * dirX + toY * dirY;
+            if (projection <= 0) continue;
+
+            const closestX = player.pos.x + dirX * projection;
+            const closestY = player.pos.y + dirY * projection;
+            const lineDistance = Math.hypot(candidate.pos.x - closestX, candidate.pos.y - closestY);
+            const lockThreshold = candidate.radius + 20;
+
+            if (lineDistance <= lockThreshold && lineDistance < bestLineDistance) {
+                bestAligned = candidate;
+                bestLineDistance = lineDistance;
+            }
+        }
+
+        if (bestAligned) return bestAligned;
+    }
+
+    return null;
+}
+
+function updateSandboxControls() {
+    if (!sandboxMode) return;
+
+    const player = game.balls[0];
+    const moveX = (sandboxInput.keys.has('d') ? 1 : 0) - (sandboxInput.keys.has('a') ? 1 : 0);
+    const moveY = (sandboxInput.keys.has('s') ? 1 : 0) - (sandboxInput.keys.has('w') ? 1 : 0);
+
+    if (moveX === 0 && moveY === 0) {
+        player.vel.x = 0;
+        player.vel.y = 0;
+    } else {
+        const length = Math.hypot(moveX, moveY) || 1;
+        const speed = player.maxSpeed || 4;
+        player.vel.x = (moveX / length) * speed;
+        player.vel.y = (moveY / length) * speed;
+    }
+
+    player.aimAngle = Math.atan2(sandboxInput.pointerY - player.pos.y, sandboxInput.pointerX - player.pos.x);
+}
+
+function handleSandboxShot() {
+    if (!sandboxMode) return;
+
+    const now = Date.now();
+    const player = game.balls[0];
+    const lockedTarget = getSandboxTarget(now);
+    const target = lockedTarget || {
+        id: 'sandbox-aim-point',
+        pos: {
+            x: sandboxInput.pointerX,
+            y: sandboxInput.pointerY
+        },
+        isAlive: () => true,
+        isUntargetable: () => false
+    };
+
+    fireControlledWeaponImpl(game, player, target, now);
+}
+
+function updateSandboxDps(now) {
+    if (!sandboxMode || !sandboxMetrics) return;
+
+    for (let i = 1; i < game.balls.length; i++) {
+        const dummy = game.balls[i];
+        const previousHp = sandboxMetrics.hpById.get(dummy.id);
+        if (typeof previousHp === 'number' && dummy.hp < previousHp) {
+            sandboxMetrics.damageSamples.push({
+                time: now,
+                damage: previousHp - dummy.hp
+            });
+        }
+        sandboxMetrics.hpById.set(dummy.id, dummy.hp);
+    }
+
+    const cutoff = now - 1000;
+    while (sandboxMetrics.damageSamples.length > 0 && sandboxMetrics.damageSamples[0].time < cutoff) {
+        sandboxMetrics.damageSamples.shift();
+    }
+
+    let dps = 0;
+    for (const sample of sandboxMetrics.damageSamples) {
+        dps += sample.damage;
+    }
+
+    if (sandboxDpsEl) {
+        sandboxDpsEl.textContent = `DPS: ${dps.toFixed(1)}`;
+    }
+}
+
+if (sandboxMode) {
+    window.addEventListener('keydown', (event) => {
+        const key = event.key.toLowerCase();
+        if (key === 'w' || key === 'a' || key === 's' || key === 'd') {
+            sandboxInput.keys.add(key);
+            event.preventDefault();
+            return;
+        }
+
+        if (key === 'r') {
+            const player = game.balls[0];
+            const now = Date.now();
+            const reloadForm = player.weapon.type === 'hornet'
+                ? (player.weapon.hornetForm || 'rifle')
+                : null;
+            player.weapon.startReload(now, reloadForm);
+            event.preventDefault();
+        }
+    });
+
+    window.addEventListener('keyup', (event) => {
+        const key = event.key.toLowerCase();
+        if (key === 'w' || key === 'a' || key === 's' || key === 'd') {
+            sandboxInput.keys.delete(key);
+            event.preventDefault();
+        }
+    });
+
+    game.canvas.addEventListener('pointermove', (event) => {
+        const rect = game.canvas.getBoundingClientRect();
+        const scaleX = game.canvas.width / rect.width;
+        const scaleY = game.canvas.height / rect.height;
+        sandboxInput.pointerX = (event.clientX - rect.left) * scaleX;
+        sandboxInput.pointerY = (event.clientY - rect.top) * scaleY;
+    });
+
+    game.canvas.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        sandboxInput.isFiring = true;
+        handleSandboxShot();
+    });
+
+    window.addEventListener('pointerup', () => {
+        sandboxInput.isFiring = false;
+    });
+
+    window.addEventListener('blur', () => {
+        sandboxInput.isFiring = false;
+        sandboxInput.keys.clear();
+    });
+
+    game.canvas.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+    });
 }
 
 function updateUI() {
@@ -355,7 +641,11 @@ function updateUI() {
         }
     }
 
-    if (game.gameOver) {
+    if (sandboxMode) {
+        const weaponLabel = game.balls[0].weapon.getInfo(now);
+        statusEl.textContent = `Sandbox: ${weaponLabel} | WASD move | pointer aim | hold left click shoot | R reload.`;
+        dealerStatusEl.textContent = 'Training dummies: 100000 HP.';
+    } else if (game.gameOver) {
         if (game.winnerId === 'draw') {
             statusEl.textContent = 'Round ends in a draw.';
         } else if (game.winnerId.startsWith('team-')) {
@@ -375,11 +665,18 @@ function updateUI() {
         statusEl.textContent = weapons;
     }
 
-    dealerStatusEl.textContent = game.getDealerStatusText();
+    if (!sandboxMode) {
+        dealerStatusEl.textContent = game.getDealerStatusText();
+    }
 }
 
 function loop() {
+    updateSandboxControls();
+    if (sandboxMode && sandboxInput.isFiring) {
+        handleSandboxShot();
+    }
     game.update();
+    updateSandboxDps(Date.now());
     game.draw();
     updateUI();
     requestAnimationFrame(loop);
