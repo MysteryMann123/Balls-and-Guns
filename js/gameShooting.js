@@ -743,6 +743,97 @@ export function ballShooting(game, now) {
     }
 }
 
+export function triggerSecondaryAbility(game, shooter, target, now) {
+    if (!shooter.isAlive()) return false;
+    
+    const weaponType = shooter.weapon.type;
+    
+    // Pip Launcher: throw explosive flask
+    if (weaponType === 'piplauncher') {
+        if (now >= (shooter.nextPipFlaskAt || 0) && target && target.isAlive && target.isAlive()) {
+            game.throwExplosiveFlask(shooter, target, now, false);
+            shooter.nextPipFlaskAt = now + EXPLOSIVE_FLASK_COOLDOWN_MS;
+            return true;
+        }
+    }
+    
+    // Hornet: toggle between rifle and shotgun
+    if (weaponType === 'hornet') {
+        const newForm = shooter.weapon.hornetForm === 'rifle' ? 'shotgun' : 'rifle';
+        shooter.weapon.hornetForm = newForm;
+        return true;
+    }
+    
+    // Musket: bayonet stab attack
+    if (weaponType === 'musket') {
+        return tryMusketBayonet(game, shooter, now);
+    }
+    
+    // Penitence: swing attack
+    if (weaponType === 'penitence') {
+        if (now >= (shooter.nextPenitenceSwordSwingAt || 0)) {
+            const result = tryPenitenceSwing(game, shooter, now);
+            if (result) {
+                shooter.nextPenitenceSwordSwingAt = now + 500; // Add cooldown to prevent spam
+            }
+            return result;
+        }
+    }
+    
+    // Solemn Vow: funeral shot
+    if (weaponType === 'solemnvow') {
+        if (target && target.isAlive && target.isAlive() && shooter.canUseSolemnVowFuneral && shooter.canUseSolemnVowFuneral(now)) {
+            fireSolemnVowFuneral(game, shooter, target, now);
+            return true;
+        }
+    }
+    
+    // Yellow Targe: charge attack
+    if (weaponType === 'yellowtarge') {
+        if (target && target.isAlive && target.isAlive()) {
+            const dx = target.pos.x - shooter.pos.x;
+            const dy = target.pos.y - shooter.pos.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance <= YELLOW_TARGE_CHARGE_TRIGGER_RANGE && !shooter.targeChargeActive) {
+                const direction = new Vector(dx, dy).normalize();
+                shooter.applyImpulse(direction.multiply(YELLOW_TARGE_CHARGE_IMPULSE));
+                shooter.targeChargeActive = true;
+                shooter.targeChargeStartAt = now;
+                shooter.targeChargeDistance = 0;
+                shooter.targeLastPos = shooter.pos.clone();
+                shooter.targeTargetId = target.id;
+                shooter.aimAngle = Math.atan2(dy, dx);
+                return true;
+            }
+        }
+    }
+    
+    // Sword Sharpened: deploy blessing shield to nearby ally
+    if (weaponType === 'swordsharpened') {
+        const alliedBalls = game.balls.filter(b => b.isAlive() && b.teamId === shooter.teamId && b.id !== shooter.id);
+        let blessingTarget = shooter; // Default to self
+        if (alliedBalls.length > 0) {
+            let closestAlly = alliedBalls[0];
+            let closestDist = Math.hypot(closestAlly.pos.x - shooter.pos.x, closestAlly.pos.y - shooter.pos.y);
+            for (const ally of alliedBalls) {
+                const dist = Math.hypot(ally.pos.x - shooter.pos.x, ally.pos.y - shooter.pos.y);
+                if (dist < closestDist && dist <= SWORD_SHARPENED_BLESSING_SHIELD_RADIUS) {
+                    closestAlly = ally;
+                    closestDist = dist;
+                }
+            }
+            if (closestDist <= SWORD_SHARPENED_BLESSING_SHIELD_RADIUS) {
+                blessingTarget = closestAlly;
+            }
+        }
+        blessingTarget.blessingShield.until = now + SWORD_SHARPENED_BLESSING_SHIELD_DURATION_MS;
+        blessingTarget.blessingShield.damageBlockRatio = SWORD_SHARPENED_BLESSING_SHIELD_DAMAGE_BLOCK;
+        return true;
+    }
+    
+    return false;
+}
+
 export function fireControlledWeapon(game, shooter, target, now) {
     if (!shooter || !shooter.isAlive()) return false;
     if (!target || !target.isAlive()) return false;

@@ -1,6 +1,6 @@
 import { SODA_POPPER_CHARGE_DAMAGE_REQUIRED, SODA_POPPER_HYPE_DAMAGE_MULTIPLIER } from './constants.js';
 import { Game } from './game.js';
-import { fireControlledWeapon as fireControlledWeaponImpl } from './gameShooting.js';
+import { fireControlledWeapon as fireControlledWeaponImpl, triggerSecondaryAbility as triggerSecondaryAbilityImpl } from './gameShooting.js';
 
 const canvas = document.getElementById('gameCanvas');
 const statusEl = document.getElementById('status');
@@ -510,6 +510,25 @@ function handleSandboxShot() {
     fireControlledWeaponImpl(game, player, target, now);
 }
 
+function handleSandboxSecondaryAbility() {
+    if (!sandboxMode) return;
+
+    const now = Date.now();
+    const player = game.balls[0];
+    const lockedTarget = getSandboxTarget(now);
+    const target = lockedTarget || {
+        id: 'sandbox-aim-point',
+        pos: {
+            x: sandboxInput.pointerX,
+            y: sandboxInput.pointerY
+        },
+        isAlive: () => true,
+        isUntargetable: () => false
+    };
+
+    triggerSecondaryAbilityImpl(game, player, target, now);
+}
+
 function updateSandboxDps(now) {
     if (!sandboxMode || !sandboxMetrics) return;
 
@@ -577,9 +596,15 @@ if (sandboxMode) {
     });
 
     game.canvas.addEventListener('pointerdown', (event) => {
-        if (event.button !== 0) return;
-        sandboxInput.isFiring = true;
-        handleSandboxShot();
+        if (event.button === 0) {
+            // Left click: fire
+            sandboxInput.isFiring = true;
+            handleSandboxShot();
+        } else if (event.button === 2) {
+            // Right click: secondary ability
+            event.preventDefault();
+            handleSandboxSecondaryAbility();
+        }
     });
 
     window.addEventListener('pointerup', () => {
@@ -643,7 +668,7 @@ function updateUI() {
 
     if (sandboxMode) {
         const weaponLabel = game.balls[0].weapon.getInfo(now);
-        statusEl.textContent = `Sandbox: ${weaponLabel} | WASD move | pointer aim | hold left click shoot | R reload.`;
+        statusEl.textContent = `Sandbox: ${weaponLabel} | WASD move | pointer aim | left click shoot | right click ability | R reload.`;
         dealerStatusEl.textContent = 'Training dummies: 100000 HP.';
     } else if (game.gameOver) {
         if (game.winnerId === 'draw') {
