@@ -2,12 +2,33 @@ import {
     BALL_BASE_SPEED,
     BALL_MAX_HP,
     BALL_MIN_SPEED,
+    REACTION_DELAY_MS,
+} from './gameConfig.js';
+import {
     CRITICAL_DAMAGE_MULTIPLIER,
+    CRITICAL_DURATION_MS,
+    CRITICAL_HEAL_PER_SEC,
     DEAD_RINGER_DAMAGE_REDUCTION,
     DEAD_RINGER_DURATION_MS,
     DEAD_RINGER_HEAL_MAX_HP_RATIO,
     DEAD_RINGER_PICKUP_COOLDOWN_MS,
     DEAD_RINGER_SPEED_BOOST,
+    HEALTHICO_REGEN_PER_TICK,
+    HEALTHICO_REGEN_INTERVAL_MS,
+    HEALTHICO_REGEN_DURATION_MS,
+    PICKUP_DELAY_MS,
+    SCRUMPY_DAMAGE_REDUCTION,
+    SPEED_BOOST_PERMANENT,
+    UBERCHARGE_DURATION_MS,
+    UBERCHARGE_HEAL_PER_SEC,
+} from './pickupConstants.js';
+import {
+    ADORATION_SLOW_DURATION_MS,
+    ADORATION_SLOW_MULTIPLIER,
+    ADORATION_AFTERBURN_MULTIPLIER,
+    ADORATION_WIELDER_SPEED_MULTIPLIER,
+    SOUND_OF_STAR_WIELDER_SLOW_PER_STAR,
+    HYPOCRISY_AMMO_REFUND_RATIO,
     EGO_LONELINESS_SLOW_DURATION_MS,
     EGO_LONELINESS_SLOW_MULTIPLIER,
     FLAMETHROWER_AFTERBURN_DAMAGE_MAX,
@@ -19,8 +40,6 @@ import {
     MUSKET_BAYONET_BLEED_DURATION_MS,
     MUSKET_BAYONET_BLEED_INTERVAL_MS,
     MUSKET_BAYONET_HEAL_MULTIPLIER,
-    CRITICAL_DURATION_MS,
-    CRITICAL_HEAL_PER_SEC,
     EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER,
     EXPLOSIVE_FLASK_PIP_DAMAGE_MULTIPLIER,
     PENITENCE_KNOCKBACK_RESISTANCE,
@@ -34,10 +53,6 @@ import {
     PARADISE_LOST_SELF_DOT_MAX_RATIO,
     PARADISE_LOST_SELF_DOT_MIN_RATIO,
     HARMONY_HASTE_MAX_BONUS,
-    PICKUP_DELAY_MS,
-    REACTION_DELAY_MS,
-    SPEED_BOOST_PERMANENT,
-    SCRUMPY_DAMAGE_REDUCTION,
     SODA_POPPER_CHARGE_DAMAGE_REQUIRED,
     SODA_POPPER_HYPE_DAMAGE_MULTIPLIER,
     SODA_POPPER_HYPE_DURATION_MS,
@@ -48,14 +63,24 @@ import {
     SWORD_SHARPENED_SHARPEN_MAX_STACKS,
     SWORD_SHARPENED_SHARPEN_DURATION_MS,
     SWORD_SHARPENED_SIZE,
-    UBERCHARGE_DURATION_MS,
-    UBERCHARGE_HEAL_PER_SEC,
     YELLOW_TARGE_DAMAGE_REDUCTION_ALL,
-    YELLOW_TARGE_DAMAGE_REDUCTION_EXPLOSIVE
+    YELLOW_TARGE_DAMAGE_REDUCTION_EXPLOSIVE,
+    CRIMSON_SCAR_SPEED_BONUS,
+    CRIMSON_SCAR_DAMAGE_TAKEN_PENALTY,
+    CRIMSON_SCAR_MARK_DAMAGE_BONUS,
+    CRIMSON_SCAR_MARK_DURATION_MS,
+    CRIMSON_SCAR_BLEED_DAMAGE_MIN,
+    CRIMSON_SCAR_BLEED_DAMAGE_MAX,
+    CRIMSON_SCAR_BLEED_INTERVAL_MS,
+    LAETITIA_MARK_VULN_MULTIPLIER,
+    LAETITIA_MARK_TRIGGER_THRESHOLD_RATIO,
 } from './constants.js';
 import { PhysicsEngine } from './physics.js';
 import { Vector } from './vector.js';
 import { Weapon } from './weapon.js';
+
+const _egoWeaponLoveHateImage = new Image();
+_egoWeaponLoveHateImage.src = 'assets/EGOWeaponIntheNameofLoveandHate.webp';
 
 export class Ball {
     constructor(x, y, radius, color, id, displayName, teamId, arenaWidth, arenaHeight) {
@@ -107,6 +132,28 @@ export class Ball {
             intervalMs: MUSKET_BAYONET_BLEED_INTERVAL_MS,
             healMultiplier: MUSKET_BAYONET_HEAL_MULTIPLIER
         };
+        this.crimsonScarBleed = {
+            until: 0,
+            nextTickAt: 0,
+            damageMin: CRIMSON_SCAR_BLEED_DAMAGE_MIN,
+            damageMax: CRIMSON_SCAR_BLEED_DAMAGE_MAX,
+            intervalMs: CRIMSON_SCAR_BLEED_INTERVAL_MS,
+        };
+        this.crimsonScarMarkUntil = 0;
+        this.ammoCrateDoubleShotUntil = 0;
+        this.healthRegen = {
+            until: 0,
+            nextTickAt: 0,
+            perTick: HEALTHICO_REGEN_PER_TICK,
+            intervalMs: HEALTHICO_REGEN_INTERVAL_MS
+        };
+        this.sodaHoTs = [];
+        this.laetitiaGiftMark = { until: 0 };
+        this.laetitiaBlastCooldownUntil = 0;
+        this.faintAromaDebuff = {
+            until: 0,
+            healReductionRatio: 0
+        };
 
         this.lastDamagedAt = Date.now();
         this.medigunState = {
@@ -148,6 +195,11 @@ export class Ball {
         };
 
         this.lonelinessSlow = {
+            slowUntil: 0,
+            slowMultiplier: 1
+        };
+
+        this.adorationSlow = {
             slowUntil: 0,
             slowMultiplier: 1
         };
@@ -201,18 +253,30 @@ export class Ball {
         const lonelinessSlow = this.weapon.type === 'paradiselost'
             ? 1
             : (now < this.lonelinessSlow.slowUntil ? this.lonelinessSlow.slowMultiplier : 1);
+        const adorationSlowMult = this.weapon.type === 'paradiselost'
+            ? 1
+            : (now < this.adorationSlow.slowUntil ? this.adorationSlow.slowMultiplier : 1);
+        const adorationWielderPenalty = this.weapon.type === 'adoration' ? ADORATION_WIELDER_SPEED_MULTIPLIER : 1;
+        const soundOfStarPenalty = this.weapon.type === 'soundofstar'
+            ? Math.max(0.1, 1 - this.weapon.ammo * SOUND_OF_STAR_WIELDER_SLOW_PER_STAR)
+            : 1;
+        const crimsonScarSpeedMult = this.weapon.type === 'crimsonscar' ? (1 + CRIMSON_SCAR_SPEED_BONUS) : 1;
         const effectiveHpRatio = this.weapon.type === 'paradiselost'
             ? (0.5 + 0.5 * hpRatio)
             : hpRatio;
-        const speed = Math.max(this.minSpeed, this.maxSpeed * effectiveHpRatio * flaskSlow * lonelinessSlow);
-
-        if (this.vel.magnitude() === 0) {
-            this.vel = new Vector(1, 0).multiply(speed);
+        let movement;
+        if (this.controller === 'player') {
+            // Player vel is set directly from key input — skip AI normalization.
+            movement = this.vel.clone().add(this.impulseVel);
         } else {
-            this.vel.normalize().multiply(speed);
+            const speed = Math.max(this.minSpeed, this.maxSpeed * effectiveHpRatio * flaskSlow * lonelinessSlow * adorationSlowMult * adorationWielderPenalty * soundOfStarPenalty * crimsonScarSpeedMult);
+            if (this.vel.magnitude() === 0) {
+                this.vel = new Vector(1, 0).multiply(speed);
+            } else {
+                this.vel.normalize().multiply(speed);
+            }
+            movement = this.vel.clone().add(this.impulseVel);
         }
-
-        const movement = this.vel.clone().add(this.impulseVel);
         this.currentSpeed = movement.magnitude();
         this.pos.add(movement);
 
@@ -347,6 +411,7 @@ export class Ball {
         const now = Date.now();
         const isParadiseLostAttack = sourceWeaponType === 'paradiselost';
         const isHarmonySelfDamage = sourceWeaponType === 'harmony';
+        const isLaetitiaBlast = sourceWeaponType === 'laetitia_blast';
 
         if (now < this.explosiveFlask.pickupVulnUntil) {
             adjusted *= EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER;
@@ -398,6 +463,18 @@ export class Ball {
             adjusted *= (1 - SCRUMPY_DAMAGE_REDUCTION);
         }
 
+        if (sourceWeaponType === 'crimsonscar' && adjusted > 0 && now < this.crimsonScarMarkUntil) {
+            adjusted *= (1 + CRIMSON_SCAR_MARK_DAMAGE_BONUS);
+        }
+
+        if (this.weapon.type === 'crimsonscar' && adjusted > 0 && !isHarmonySelfDamage && !isParadiseLostAttack) {
+            adjusted *= (1 + CRIMSON_SCAR_DAMAGE_TAKEN_PENALTY);
+        }
+
+        if (now < this.laetitiaGiftMark.until && adjusted > 0) {
+            adjusted *= LAETITIA_MARK_VULN_MULTIPLIER;
+        }
+
         if (this.weapon.type === 'paradiselost' && adjusted > 0) {
             if (now >= this.paradiseLost.nextAdaptAt) {
                 this.paradiseLost.adaptedDamageType = damageType;
@@ -442,14 +519,34 @@ export class Ball {
         }
 
         this.hp = Math.max(0, this.hp - adjusted);
+
+        if (adjusted > 0 && !isLaetitiaBlast && now < this.laetitiaGiftMark.until && adjusted >= this.maxHP * LAETITIA_MARK_TRIGGER_THRESHOLD_RATIO && now >= (this.laetitiaBlastCooldownUntil || 0)) {
+            this.laetitiaBlastCooldownUntil = now + 500;
+            if (this.game) this.game.triggerLaetitiaBlast(this, now);
+        }
+
+        if (adjusted > 0 && this.weapon.type === 'hypocrisy') {
+            const refund = Math.floor(this.weapon.maxAmmo * HYPOCRISY_AMMO_REFUND_RATIO);
+            if (refund > 0) {
+                this.weapon.ammo = Math.min(this.weapon.maxAmmo, this.weapon.ammo + refund);
+                if (this.weapon.isReloading && this.weapon.ammo > 0) {
+                    this.weapon.isReloading = false;
+                }
+            }
+        }
+
+        if (sourceWeaponType === 'crimsonscar' && adjusted > 0) {
+            this.crimsonScarMarkUntil = Math.max(this.crimsonScarMarkUntil, now + CRIMSON_SCAR_MARK_DURATION_MS);
+        }
     }
 
     heal(amount) {
         const now = Date.now();
         const beforeHp = this.hp;
+        const aromaReduction = (now < this.faintAromaDebuff.until) ? (1 - this.faintAromaDebuff.healReductionRatio) : 1;
         const effectiveHeal = now < this.bayonetBleed.until
-            ? amount * this.bayonetBleed.healMultiplier
-            : amount;
+            ? amount * this.bayonetBleed.healMultiplier * aromaReduction
+            : amount * aromaReduction;
         this.hp = Math.min(this.maxHP, this.hp + effectiveHeal);
 
         const healed = this.hp - beforeHp;
@@ -507,6 +604,21 @@ export class Ball {
         this.lonelinessSlow.slowMultiplier = Math.min(this.lonelinessSlow.slowMultiplier, slowMultiplier);
     }
 
+    applyAdorationSlow(now, durationMs = ADORATION_SLOW_DURATION_MS, slowMultiplier = ADORATION_SLOW_MULTIPLIER) {
+        if (this.weapon.type === 'paradiselost') return;
+        const until = now + durationMs;
+        this.adorationSlow.slowUntil = Math.max(this.adorationSlow.slowUntil, until);
+        this.adorationSlow.slowMultiplier = Math.min(this.adorationSlow.slowMultiplier, slowMultiplier);
+    }
+
+    getEffectiveSlowMultiplier(now) {
+        let m = 1;
+        if (now < this.explosiveFlask.slowUntil)  m = Math.min(m, this.explosiveFlask.slowMultiplier);
+        if (now < this.lonelinessSlow.slowUntil)  m = Math.min(m, this.lonelinessSlow.slowMultiplier);
+        if (now < this.adorationSlow.slowUntil)   m = Math.min(m, this.adorationSlow.slowMultiplier);
+        return m;
+    }
+
     canPickupDeadRinger(now) {
         return !this.deadRinger.has && now >= this.deadRinger.pickupAvailableAt;
     }
@@ -544,6 +656,28 @@ export class Ball {
         if (this.bayonetBleed.nextTickAt <= now) {
             this.bayonetBleed.nextTickAt = now + intervalMs;
         }
+    }
+
+    applyHealthRegen(now, perTick = HEALTHICO_REGEN_PER_TICK, durationMs = HEALTHICO_REGEN_DURATION_MS, intervalMs = HEALTHICO_REGEN_INTERVAL_MS) {
+        this.healthRegen.until = Math.max(this.healthRegen.until, now + durationMs);
+        this.healthRegen.perTick = perTick;
+        this.healthRegen.intervalMs = intervalMs;
+        if (this.healthRegen.nextTickAt <= now) {
+            this.healthRegen.nextTickAt = now + intervalMs;
+        }
+    }
+
+    applySodaBlueHoT(now, perTick, durationMs, intervalMs) {
+        this.sodaHoTs.push({ perTick, intervalMs, nextTickAt: now + intervalMs, expiresAt: now + durationMs });
+    }
+
+    applyLaetitiaGiftMark(now, durationMs) {
+        this.laetitiaGiftMark.until = Math.max(this.laetitiaGiftMark.until, now + durationMs);
+    }
+
+    applyFaintAromaDebuff(now, durationMs, healReductionRatio) {
+        this.faintAromaDebuff.until = Math.max(this.faintAromaDebuff.until, now + durationMs);
+        this.faintAromaDebuff.healReductionRatio = healReductionRatio;
     }
 
     applyImpulse(vector) {
@@ -633,10 +767,28 @@ export class Ball {
             this.heal(CRITICAL_HEAL_PER_SEC * deltaSeconds);
         }
 
+        while (this.healthRegen.nextTickAt > 0 && this.healthRegen.nextTickAt <= now && this.healthRegen.nextTickAt <= this.healthRegen.until && this.isAlive()) {
+            this.heal(this.healthRegen.perTick);
+            this.healthRegen.nextTickAt += this.healthRegen.intervalMs;
+        }
+        if (now > this.healthRegen.until) {
+            this.healthRegen.nextTickAt = 0;
+        }
+
+        for (let _si = this.sodaHoTs.length - 1; _si >= 0; _si--) {
+            const _hot = this.sodaHoTs[_si];
+            if (now >= _hot.expiresAt) { this.sodaHoTs.splice(_si, 1); continue; }
+            while (_hot.nextTickAt <= now && _hot.nextTickAt <= _hot.expiresAt && this.isAlive()) {
+                this.heal(_hot.perTick);
+                _hot.nextTickAt += _hot.intervalMs;
+            }
+        }
+
         while (this.afterburn.nextTickAt > 0 && this.afterburn.nextTickAt <= now && this.afterburn.nextTickAt <= this.afterburn.until && this.isAlive()) {
             if (!this.isUberActive(now)) {
                 const burnDamage = Math.floor(Math.random() * (this.afterburn.damageMax - this.afterburn.damageMin + 1)) + this.afterburn.damageMin;
-                this.takeDamage(burnDamage, 'fire');
+                const adorationBoost = (now < this.adorationSlow.slowUntil) ? ADORATION_AFTERBURN_MULTIPLIER : 1;
+                this.takeDamage(burnDamage * adorationBoost, 'fire');
             }
             this.afterburn.nextTickAt += this.afterburn.intervalMs;
         }
@@ -655,6 +807,17 @@ export class Ball {
 
         if (now > this.bayonetBleed.until) {
             this.bayonetBleed.nextTickAt = 0;
+        }
+
+        while (this.crimsonScarBleed.nextTickAt > 0 && this.crimsonScarBleed.nextTickAt <= now && this.crimsonScarBleed.nextTickAt <= this.crimsonScarBleed.until && this.isAlive()) {
+            if (!this.isUberActive(now)) {
+                const bleedDamage = Math.floor(Math.random() * (this.crimsonScarBleed.damageMax - this.crimsonScarBleed.damageMin + 1)) + this.crimsonScarBleed.damageMin;
+                this.takeDamage(bleedDamage, 'bleed');
+            }
+            this.crimsonScarBleed.nextTickAt += this.crimsonScarBleed.intervalMs;
+        }
+        if (now > this.crimsonScarBleed.until) {
+            this.crimsonScarBleed.nextTickAt = 0;
         }
 
         if (now >= this.deadRinger.activeUntil && this.deadRinger.speedBoostApplied > 0) {
@@ -677,6 +840,10 @@ export class Ball {
             this.lonelinessSlow.slowMultiplier = 1;
         }
 
+        if (now >= this.adorationSlow.slowUntil) {
+            this.adorationSlow.slowMultiplier = 1;
+        }
+
         if (this.weapon.type === 'harmony' && now >= this.harmony.hasteUntil) {
             this.harmony.hasteBonus = 0;
         }
@@ -697,7 +864,7 @@ export class Ball {
         return this.hp > 0;
     }
 
-    draw(ctx, now, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, tommyGunImage, egoWeaponMagicBulletImage, egoWeaponLonelinessImage, egoWeaponPenitenceImage, egoWeaponParadiseLostImage, egoWeaponHarmonyImage, portalImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, familyBusinessWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, musketWeaponImage, widowmakerWeaponImage, hornetRifleImage, hornetShotgunImage, egoWeaponSolemnVowBlackImage, egoWeaponSolemnVowWhiteImage, kaleidoscopeMuzzleImage, swordSharpenedImage) {
+    draw(ctx, now, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, tommyGunImage, egoWeaponMagicBulletImage, egoWeaponLonelinessImage, egoWeaponPenitenceImage, egoWeaponParadiseLostImage, egoWeaponHarmonyImage, portalImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, lochnLoadImage, faintaromaWeaponImage, hairsprayImage, adorationWeaponImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, familyBusinessWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, musketWeaponImage, widowmakerWeaponImage, hornetRifleImage, hornetShotgunImage, egoWeaponSolemnVowBlackImage, egoWeaponSolemnVowWhiteImage, kaleidoscopeMuzzleImage, swordSharpenedImage, hypocrisyWeaponImage, crimsonScarGunImage, crimsonScarBladeImage, pinksWeaponImage, sodaWeaponImage, laetitiaWeaponImage) {
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
@@ -804,6 +971,14 @@ export class Ball {
             drawHeldWeapon(medigunImage, 44, 18, true);
         } else if (this.weapon.type === 'grenadelauncher' && grenadeLauncherImage && grenadeLauncherImage.complete && grenadeLauncherImage.naturalWidth > 0) {
             drawHeldWeapon(grenadeLauncherImage, 44, 18, true);
+        } else if (this.weapon.type === 'lochnload' && lochnLoadImage && lochnLoadImage.complete && lochnLoadImage.naturalWidth > 0) {
+            drawHeldWeapon(lochnLoadImage, 44, 18, true);
+        } else if (this.weapon.type === 'faintaroma' && faintaromaWeaponImage && faintaromaWeaponImage.complete && faintaromaWeaponImage.naturalWidth > 0) {
+            drawHeldWeapon(faintaromaWeaponImage, 36, 16, true);
+        } else if (this.weapon.type === 'hairspray' && hairsprayImage && hairsprayImage.complete && hairsprayImage.naturalWidth > 0) {
+            drawHeldWeapon(hairsprayImage, 40, 18, false);
+        } else if (this.weapon.type === 'adoration' && adorationWeaponImage && adorationWeaponImage.complete && adorationWeaponImage.naturalWidth > 0) {
+            drawHeldWeapon(adorationWeaponImage, 38, 16, true);
         } else if (this.weapon.type === 'flamethrower' && flamethrowerImage && flamethrowerImage.complete && flamethrowerImage.naturalWidth > 0) {
             drawHeldWeapon(flamethrowerImage, 44, 18, true);
         } else if (this.weapon.type === 'smg' && smgImage && smgImage.complete && smgImage.naturalWidth > 0) {
@@ -814,6 +989,8 @@ export class Ball {
             drawHeldWeapon(egoWeaponMagicBulletImage, 46, 18, true);
         } else if (this.weapon.type === 'egoloneliness' && egoWeaponLonelinessImage && egoWeaponLonelinessImage.complete && egoWeaponLonelinessImage.naturalWidth > 0) {
             drawHeldWeapon(egoWeaponLonelinessImage, 46, 18, true);
+        } else if (this.weapon.type === 'egolovehate' && _egoWeaponLoveHateImage && _egoWeaponLoveHateImage.complete && _egoWeaponLoveHateImage.naturalWidth > 0) {
+            drawHeldWeapon(_egoWeaponLoveHateImage, 46, 18, true);
         } else if (this.weapon.type === 'penitence' && egoWeaponPenitenceImage && egoWeaponPenitenceImage.complete && egoWeaponPenitenceImage.naturalWidth > 0) {
             const isSwinging = now < this.penitence.swingUntil;
             let swingOffset = 0;
@@ -892,6 +1069,20 @@ export class Ball {
             drawHeldWeapon(musketWeaponImage, 48, 18, true);
         } else if (this.weapon.type === 'widowmaker' && widowmakerWeaponImage && widowmakerWeaponImage.complete && widowmakerWeaponImage.naturalWidth > 0) {
             drawHeldWeapon(widowmakerWeaponImage, 42, 16, true);
+        } else if (this.weapon.type === 'hypocrisy' && hypocrisyWeaponImage && hypocrisyWeaponImage.complete && hypocrisyWeaponImage.naturalWidth > 0) {
+            drawHeldWeapon(hypocrisyWeaponImage, 42, 18, true);
+        } else if (this.weapon.type === 'crimsonscar') {
+            const csForm = this.weapon.crimsonScarForm || 'gun';
+            const csImg = csForm === 'blade' ? crimsonScarBladeImage : crimsonScarGunImage;
+            if (csImg && csImg.complete && csImg.naturalWidth > 0) {
+                drawHeldWeapon(csImg, 42, 18, true);
+            }
+        } else if (this.weapon.type === 'egopinks' && pinksWeaponImage && pinksWeaponImage.complete && pinksWeaponImage.naturalWidth > 0) {
+            drawHeldWeapon(pinksWeaponImage, 42, 18, true);
+        } else if (this.weapon.type === 'egosoda' && sodaWeaponImage && sodaWeaponImage.complete && sodaWeaponImage.naturalWidth > 0) {
+            drawHeldWeapon(sodaWeaponImage, 32, 18, true);
+        } else if (this.weapon.type === 'laetitia' && laetitiaWeaponImage && laetitiaWeaponImage.complete && laetitiaWeaponImage.naturalWidth > 0) {
+            drawHeldWeapon(laetitiaWeaponImage, 34, 18, true);
         }
 
         if (this.weapon.type === 'solemnvow' && this.solemnVow.muzzleFlashUntil && now < this.solemnVow.muzzleFlashUntil) {

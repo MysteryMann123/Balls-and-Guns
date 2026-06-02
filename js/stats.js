@@ -1,4 +1,5 @@
 import * as C from './constants.js';
+import { START_WEAPON_OPTIONS, DROP_UTILITY_TYPES } from './gameConfig.js';
 import { Weapon } from './weapon.js';
 
 const tabButtons = {
@@ -15,9 +16,10 @@ const detailImgWrapEl = document.getElementById('detail-img-wrap');
 const detailImgEl = document.getElementById('detail-img');
 const dealerTableWrapEl = document.getElementById('dealer-table-wrap');
 const dealerTableBodyEl = document.getElementById('dealer-table-body');
+const detailPanelEl = document.querySelector('.detail-full-panel');
 
-const weaponTypes = C.START_WEAPON_OPTIONS;
-const utilityTypes = C.DROP_UTILITY_TYPES;
+const weaponTypes = START_WEAPON_OPTIONS;
+const utilityTypes = DROP_UTILITY_TYPES;
 
 const riskClassColors = {
     ZAYIN: '#19e04b',
@@ -32,19 +34,27 @@ const utilityStats = {
         title: 'Ammo Crate',
         subtitle: 'Utility Drop',
         chips: [
-            ['Effect', 'Refill active weapon ammo'],
-            ['Scope', 'Current weapon only']
+            ['Effect', 'Refill + Double Shot'],
+            ['Double Shot Duration', `${(C.AMMO_CRATE_DOUBLE_SHOT_MS / 1000).toFixed(0)}s`]
         ],
-        notes: ['Fully restores ammo for finite-ammo weapons.']
+        notes: [
+            'Fully restores ammo for the active weapon on pickup.',
+            `For ${C.AMMO_CRATE_DOUBLE_SHOT_MS / 1000}s after pickup, every shot fires a second projectile at a slight spread angle.`,
+            'Works for all projectile weapons. Hitscan weapons (shotgun, widowmaker, etc.) also fire a duplicate ray.'
+        ]
     },
     healthico: {
         title: 'Health Pack',
         subtitle: 'Utility Drop',
         chips: [
-            ['Heal', `${C.HEALTHICO_HEAL} HP`],
-            ['Type', 'Instant']
+            ['Instant Heal', `${C.HEALTHICO_HEAL} HP`],
+            ['Regen', `+${C.HEALTHICO_REGEN_PER_TICK} HP / ${C.HEALTHICO_REGEN_INTERVAL_MS / 1000}s`],
+            ['Regen Duration', `${C.HEALTHICO_REGEN_DURATION_MS / 1000}s`],
         ],
-        notes: ['Heals on pickup, up to max HP.']
+        notes: [
+            `Instantly heals ${C.HEALTHICO_HEAL} HP on pickup.`,
+            `Then regenerates +${C.HEALTHICO_REGEN_PER_TICK} HP every ${C.HEALTHICO_REGEN_INTERVAL_MS / 1000}s for ${C.HEALTHICO_REGEN_DURATION_MS / 1000}s (${C.HEALTHICO_REGEN_PER_TICK * (C.HEALTHICO_REGEN_DURATION_MS / C.HEALTHICO_REGEN_INTERVAL_MS)} HP total).`,
+        ]
     },
     ubercharge: {
         title: 'Ubercharge Canteen',
@@ -285,6 +295,71 @@ const specialNotes = {
         'Bounces and loses momentum while traveling, then detonates on timer or impact.',
         'Can self-damage from own splash if standing in blast area.'
     ],
+    lochnload: [
+        'Arcing grenades that explode ONLY on direct hit — no bounce, no timer detonation.',
+        `Direct impact damage: ${C.LOCH_N_LOAD_DIRECT_DAMAGE} (same as Grenade Launcher).`,
+        `+${C.LOCH_N_LOAD_FAST_MOVE_BONUS * 100}% bonus damage to targets moving faster than ${C.LOCH_N_LOAD_FAST_SPEED_RATIO * 100}% of their max speed.`,
+        `Faster projectile speed (${C.LOCH_N_LOAD_SPEED} vs ${C.GRENADE_LAUNCHER_SPEED}) and quicker reload.`,
+        `Smaller splash radius: ${C.LOCH_N_LOAD_SPLASH_RADIUS}px (vs ${C.GRENADE_LAUNCHER_SPLASH_RADIUS}px).`,
+        'Missing the target destroys the grenade — no second chances from bouncing.'
+    ],
+    hairspray: [
+        'Fires a slow cloud of hairspray that drifts forward and lingers at max range.',
+        `Each tick deals ${C.HAIRSPRAY_TICK_DAMAGE_MIN}–${C.HAIRSPRAY_TICK_DAMAGE_MAX} damage. Tick interval: ${C.HAIRSPRAY_TICK_INTERVAL_MS}ms.`,
+        `Near zone (0–${C.HAIRSPRAY_NEAR_ZONE_END}px): ${C.HAIRSPRAY_NEAR_MAX_TICKS} tick max. Middle zone (–${C.HAIRSPRAY_MID_ZONE_END}px): ${C.HAIRSPRAY_MID_MAX_TICKS} ticks max. Far zone: ${C.HAIRSPRAY_FAR_MAX_TICKS} ticks max.`,
+        'The cloud can hit multiple enemies simultaneously as it passes through.',
+        `Cloud radius: ${C.HAIRSPRAY_CLOUD_RADIUS}px. Max range: ${C.HAIRSPRAY_MAX_RANGE}px. Lingers at end for ${C.HAIRSPRAY_LINGER_MS}ms.`,
+        'Tagged ZAYIN for the fun of it.'
+    ],
+    hypocrisy: [
+        `WAW E.G.O weapon — fires an arrow that starts slow (${C.HYPOCRISY_FIRE_RATE_BASE}ms) and ramps down to ${C.HYPOCRISY_FIRE_RATE_MIN}ms with continuous fire (${C.HYPOCRISY_RAMP_RATE_MS_PER_SEC}ms per second reduction). Resets after ${C.HYPOCRISY_IDLE_RESET_MS}ms idle.`,
+        `Damage per shot: ${C.HYPOCRISY_DAMAGE_MIN}–${C.HYPOCRISY_DAMAGE_MAX}. Ammo: ${C.HYPOCRISY_AMMO} shots, reloads in ${C.HYPOCRISY_RELOAD_MS / 1000}s.`,
+        `Damage is multiplied by up to x${C.HYPOCRISY_DAMAGE_MULTIPLIER_MAX} at the slowest fire rate, scaling linearly down to x1 at the fastest (${C.HYPOCRISY_FIRE_RATE_MIN}ms).`,
+        `When the wielder takes damage, ${Math.round(C.HYPOCRISY_AMMO_REFUND_RATIO * 100)}% of max ammo (${Math.floor(C.HYPOCRISY_AMMO * C.HYPOCRISY_AMMO_REFUND_RATIO)} arrows) is refunded. If reloading, the reload is cancelled.`,
+        'Rewards patience and aggression simultaneously: slow deliberate fire hits hardest, but sustained fire and tanking shots keeps ammo flowing.'
+    ],
+    crimsonscar: [
+        `WAW E.G.O weapon — switches between gun and blade depending on distance (threshold: ${C.CRIMSON_SCAR_RANGE_SWITCH_DISTANCE}px). Grants +${Math.round(C.CRIMSON_SCAR_SPEED_BONUS * 100)}% move speed but takes +${Math.round(C.CRIMSON_SCAR_DAMAGE_TAKEN_PENALTY * 100)}% damage.`,
+        `Gun mode: fires ${C.CRIMSON_SCAR_BURST_COUNT} bullets in rapid burst (${C.CRIMSON_SCAR_BURST_INTERVAL_MS}ms between shots, ${C.CRIMSON_SCAR_FIRE_RATE}ms between bursts). ${C.CRIMSON_SCAR_GUN_DAMAGE_MIN}–${C.CRIMSON_SCAR_GUN_DAMAGE_MAX} damage per bullet. ${C.CRIMSON_SCAR_GUN_AMMO} shots total, reloads in ${C.CRIMSON_SCAR_RELOAD_MS / 1000}s.`,
+        `Blade mode (melee, unlimited): ${C.CRIMSON_SCAR_BLADE_DAMAGE_MIN}–${C.CRIMSON_SCAR_BLADE_DAMAGE_MAX} damage per swing. Inflicts bleed: ${C.CRIMSON_SCAR_BLEED_DAMAGE_MIN}–${C.CRIMSON_SCAR_BLEED_DAMAGE_MAX} damage every ${C.CRIMSON_SCAR_BLEED_INTERVAL_MS}ms for ${C.CRIMSON_SCAR_BLEED_DURATION_MS / 1000}s.`,
+        `Hits with this weapon mark the target (shown as a red target icon) for ${C.CRIMSON_SCAR_MARK_DURATION_MS / 1000}s. CrimsonScar wielders deal +${Math.round(C.CRIMSON_SCAR_MARK_DAMAGE_BONUS * 100)}% damage to marked targets.`,
+        'Speed advantage and burst damage reward aggressive play; the damage penalty punishes passive positioning.'
+    ],
+    egopinks: [
+        `ALEPH E.G.O weapon — a reskinned Machina that fires piercing rounds with signature hot-pink tracer rays (${C.PINKS_TRACER_COLOR}) instead of team-colored tracers.`,
+        `Damage per shot: ${C.PINKS_DAMAGE_MIN}–${C.PINKS_DAMAGE_MAX}. Pierces through multiple targets; ignores repeated hits on the same ball.`,
+        'The tracer color is always pink regardless of team — a deliberate stylistic distinction from the standard Machina.',
+    ],
+    egosoda: [
+        `ZAYIN E.G.O weapon — a Pistol reskin that fires one of three colored projectiles each shot: red (${Math.round((1 - C.EGOSODA_PURPLE_CHANCE) * 50)}%), blue (${Math.round((1 - C.EGOSODA_PURPLE_CHANCE) * 50)}%), or rare purple (${Math.round(C.EGOSODA_PURPLE_CHANCE * 100)}%).`,
+        `Red on hit: immediately heals the shooter for ${C.EGOSODA_RED_HEAL_MIN}–${C.EGOSODA_RED_HEAL_MAX} HP.`,
+        `Blue on hit: heals the shooter ${C.EGOSODA_BLUE_HEAL_MIN}–${C.EGOSODA_BLUE_HEAL_MAX} HP every ${C.EGOSODA_BLUE_HEAL_INTERVAL_MS / 1000}s for ${C.EGOSODA_BLUE_HEAL_DURATION_MS / 1000}s.`,
+        `Purple on hit: shooter loses ${Math.round(C.EGOSODA_PURPLE_SELF_DAMAGE_PCT * 100 * 10) / 10}% of their own max HP, but deals an extra ${C.EGOSODA_PURPLE_DAMAGE_MIN}–${C.EGOSODA_PURPLE_DAMAGE_MAX} + ${Math.round(C.EGOSODA_PURPLE_MAX_HP_PCT_MIN * 100 * 10) / 10}–${Math.round(C.EGOSODA_PURPLE_MAX_HP_PCT_MAX * 100 * 10) / 10}% of the target's max HP as bonus damage.`,
+    ],
+    laetitia: [
+        `HE E.G.O weapon — a single-shot pistol that inflicts the Laetitia Gift Mark on hit, making enemies take ${Math.round((C.LAETITIA_MARK_VULN_MULTIPLIER - 1) * 100)}% more damage from all sources for ${C.LAETITIA_MARK_DURATION_MS / 1000}s.`,
+        `On-hit damage: ${C.LAETITIA_DAMAGE_MIN}–${C.LAETITIA_DAMAGE_MAX}. Single shot per reload (${C.LAETITIA_RELOAD_MS / 1000}s).`,
+        `When a marked enemy takes ≥${Math.round(C.LAETITIA_MARK_TRIGGER_THRESHOLD_RATIO * 100)}% of their max HP in a single hit, a blast triggers at ${C.LAETITIA_BLAST_RADIUS}px radius.`,
+        `Blast deals ${Math.round(C.LAETITIA_BLAST_DAMAGE_MIN_RATIO * 100)}–${Math.round(C.LAETITIA_BLAST_DAMAGE_MAX_RATIO * 100)}% of nearby enemies' max HP and applies the same mark to them.`,
+        'Blast damage itself does not re-trigger the blast (anti-cascade). A 500ms per-ball cooldown also prevents rapid re-triggering.',
+        'Marked enemies are shown with a pulsing pink ring.'
+    ],
+    adoration: [
+        'EGO Weapon — Risk Class ALEPH. A melting heart projectile that pierces and corrupts enemies with overwhelming slow.',
+        `Damage per shot: ${C.ADORATION_DAMAGE_MIN}–${C.ADORATION_DAMAGE_MAX}, pierces up to ${C.ADORATION_PIERCE_COUNT} enemies.`,
+        `On hit: slows enemy to ${Math.round(C.ADORATION_SLOW_MULTIPLIER * 100)}% move speed for ${C.ADORATION_SLOW_DURATION_MS / 1000}s.`,
+        `Any afterburn damage dealt to an adoration-slowed target is multiplied by x${C.ADORATION_AFTERBURN_MULTIPLIER}.`,
+        `Damage bonus scales with how slowed the target is (any slow source): bonus = 1 + (1 − target slow ratio).`,
+        `Wielder is ${Math.round((1 - C.ADORATION_WIELDER_SPEED_MULTIPLIER) * 100)}% slower while equipped.`
+    ],
+    faintaroma: [
+        'EGO Weapon — Risk Class WAW. A delicate arrow that trails a toxic floral aura.',
+        `Direct hit: ${C.FAINT_AROMA_DAMAGE_MIN}–${C.FAINT_AROMA_DAMAGE_MAX} damage, pierces up to ${C.FAINT_AROMA_PIERCE_COUNT} enemies.`,
+        `AOE trail around the arrow poisons enemies within ${C.FAINT_AROMA_AOE_RADIUS}px.`,
+        `Poison ticks ${C.FAINT_AROMA_DOT_DAMAGE_MIN}–${C.FAINT_AROMA_DOT_DAMAGE_MAX} damage every ${C.FAINT_AROMA_DOT_INTERVAL_MS}ms for ${C.FAINT_AROMA_DOT_DURATION_MS / 1000}s.`,
+        `Reduces healing received by ${C.FAINT_AROMA_HEAL_REDUCTION * 100}% for the duration of the poison.`,
+        'Pink flower particles trail behind the arrow to mark the toxic zone.'
+    ],
     smg: [
         'Rapid close-range bullet spray with low per-shot damage.',
         `Damage per shot: ${new Weapon('smg').damage}, fires projectile bullets in spread pattern.`,
@@ -343,6 +418,23 @@ const specialNotes = {
         `Far form: rifle shot for ${C.HORNET_RIFLE_DAMAGE_MIN}-${C.HORNET_RIFLE_DAMAGE_MAX} with ${C.HORNET_RIFLE_AMMO} ammo at ${C.HORNET_FIRE_RATE}ms interval; applies afterburn ${C.HORNET_RIFLE_AFTERBURN_DAMAGE_MIN}-${C.HORNET_RIFLE_AFTERBURN_DAMAGE_MAX} every ${(C.HORNET_RIFLE_AFTERBURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(C.HORNET_RIFLE_AFTERBURN_DURATION_MS / 1000).toFixed(1)}s.`,
         `Reactive bees: when hit by enemies, summons a homing bee (${C.HORNET_BEE_DAMAGE_MIN}-${C.HORNET_BEE_DAMAGE_MAX} sting) that applies the same afterburn; max ${C.HORNET_BEE_MAX_ACTIVE} bees active per wielder.`
     ],
+    egolovehate: [
+        'WAW E.G.O weapon — fires a single piercing round every 200 ms with a randomly chosen damage type per shot.',
+        `Red (25%): ${C.EGO_LOVE_HATE_RED_DAMAGE_MIN}-${C.EGO_LOVE_HATE_RED_DAMAGE_MAX} slashing damage.`,
+        `Black (25%): ${C.EGO_LOVE_HATE_BLACK_DAMAGE_MIN}-${C.EGO_LOVE_HATE_BLACK_DAMAGE_MAX} blunt damage + ${C.EGO_LOVE_HATE_BLACK_BURN_MIN}-${C.EGO_LOVE_HATE_BLACK_BURN_MAX} burn every ${(C.EGO_LOVE_HATE_BLACK_BURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(C.EGO_LOVE_HATE_BLACK_BURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `White (25%): ${C.EGO_LOVE_HATE_WHITE_DAMAGE_MIN}-${C.EGO_LOVE_HATE_WHITE_DAMAGE_MAX} divine damage + ${C.EGO_LOVE_HATE_WHITE_BURN_MIN}-${C.EGO_LOVE_HATE_WHITE_BURN_MAX} burn every ${(C.EGO_LOVE_HATE_WHITE_BURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(C.EGO_LOVE_HATE_WHITE_BURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Pale (25%): deals ${(C.EGO_LOVE_HATE_PALE_MIN_RATIO * 100).toFixed(0)}%-${(C.EGO_LOVE_HATE_PALE_MAX_RATIO * 100).toFixed(0)}% of the target's max HP as spiritual damage.`,
+        'All projectiles pierce through every target — they never stop on collision.',
+        'Allied hits heal for half the equivalent damage instead of dealing damage (Pale heals half of its max HP ratio).'
+    ],
+    soundofstar: [
+        `ALEPH E.G.O weapon — each charge (1 per ${C.SOUND_OF_STAR_CHARGE_MS}ms) summons a glowing star that physically orbits the wielder at radius ${C.SOUND_OF_STAR_ORBIT_RADIUS}px.`,
+        `Locked from firing until all ${C.SOUND_OF_STAR_MAX_AMMO}/${C.SOUND_OF_STAR_MAX_AMMO} charges are held. Once full, fires one star per fire interval (100ms) toward the nearest enemy (or cursor). Recharges from zero after the burst.`,
+        `Fired stars deal ${C.SOUND_OF_STAR_DAMAGE_MIN}–${C.SOUND_OF_STAR_DAMAGE_MAX} damage and home toward the nearest enemy in a spiraling wobble path.`,
+        `Orbiting stars passively deal ${Math.round(C.SOUND_OF_STAR_DAMAGE_MIN * C.SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER)}–${Math.round(C.SOUND_OF_STAR_DAMAGE_MAX * C.SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER)} contact damage to enemies they touch (${C.SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER * 100}% of shot damage, once per 0.5s per star).`,
+        `Both fired and contact hits ignite the target: ${C.SOUND_OF_STAR_BURN_DAMAGE_MIN}–${C.SOUND_OF_STAR_BURN_DAMAGE_MAX} burn every ${(C.SOUND_OF_STAR_BURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(C.SOUND_OF_STAR_BURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Wielder slows ${C.SOUND_OF_STAR_WIELDER_SLOW_PER_STAR * 100}% per star held (up to ${C.SOUND_OF_STAR_MAX_AMMO * C.SOUND_OF_STAR_WIELDER_SLOW_PER_STAR * 100}% at full charge) — fully loaded carries maximum cost before the burst.`
+    ],
     swordsharpened: [
         'WAW E.G.O weapon Sword Sharpened by Tears: throwable melee blade that pierces and sticks to enemies, growing stronger with each hit.',
         `Blessing Shield: grants ${(C.SWORD_SHARPENED_BLESSING_SHIELD_DAMAGE_BLOCK * 100).toFixed(0)}% damage reduction to nearby ally for ${(C.SWORD_SHARPENED_BLESSING_SHIELD_DURATION_MS / 1000).toFixed(1)}s or self if no ally in range.`,
@@ -394,6 +486,8 @@ const typeImages = {
     paradiselost: 'assets/EGOWeaponParadiseLost.webp',
     harmony: 'assets/EGOWeaponHarmony.webp',
     hornet: 'assets/EGOWeaponHornet.png',
+    egolovehate: 'assets/EGOWeaponIntheNameofLoveandHate.webp',
+    soundofstar: 'assets/EGOWeaponSoundofaStar.webp',
     swordsharpened: 'assets/EGOWeaponSwordSharpenedbyTears.webp',
     solemnvow: 'assets/EGOWeaponSolemnVow.webp',
     minigun: 'assets/Minigun_IMG.png',
@@ -408,6 +502,15 @@ const typeImages = {
     medigun: 'assets/RED_Medigun.png',
     yellowtarge: 'assets/YellowTarge.png',
     grenadelauncher: 'assets/Grenade_Launcher.png',
+    lochnload: 'assets/LochnLoad.png',
+    hypocrisy: 'assets/EGOWeaponHypocrisy.webp',
+    crimsonscar: 'assets/EGOWeaponCrimsonScar.webp',
+    egopinks: 'assets/EGOWeaponPinks.webp',
+    egosoda: 'assets/EGOWeaponSoda.webp',
+    laetitia: 'assets/EGOWeaponLaetitia.webp',
+    adoration: 'assets/EGOWeaponAdoration.webp',
+    faintaroma: 'assets/EGOWeaponReverberation.webp',
+    hairspray: 'assets/Emz_hairspray.jpg',
     dealer: 'assets/Poker.jpg',
     ammoico: 'assets/Ammoico.png',
     healthico: 'assets/Healthico.png',
@@ -438,11 +541,22 @@ function formatLabel(value) {
     if (value === 'paradiselost') return 'EGO Weapon Paradise Lost';
     if (value === 'harmony') return 'EGO Weapon Harmony';
     if (value === 'hornet') return 'EGO Weapon Hornet';
+    if (value === 'egolovehate') return 'EGO: In the Name of Love and Hate';
+    if (value === 'soundofstar') return 'EGO: Sound of a Star';
     if (value === 'swordsharpened') return 'EGO Weapon Sword Sharpened by Tears';
     if (value === 'solemnvow') return 'EGO Weapon Solemn Vow';
     if (value === 'magicianhat') return 'Magician Hat';
     if (value === 'crusaderscrossbow') return "Crusader's Crossbow";
     if (value === 'grenadelauncher') return 'Grenade Launcher';
+    if (value === 'lochnload') return 'Loch-n-Load';
+    if (value === 'hypocrisy') return 'EGO: Hypocrisy';
+    if (value === 'crimsonscar') return 'EGO: CrimsonScar';
+    if (value === 'egopinks') return 'EGO: Pinks';
+    if (value === 'egosoda') return 'EGO: Soda';
+    if (value === 'laetitia') return 'EGO: Laetitia';
+    if (value === 'adoration') return 'EGO: Adoration';
+    if (value === 'faintaroma') return 'Faint Aroma';
+    if (value === 'hairspray') return 'Hairspray';
     if (value === 'flamethrower') return 'Flamethrower';
     if (value === 'directhit') return 'Direct Hit';
     if (value === 'nearmissed') return 'Near Missed';
@@ -618,6 +732,82 @@ function buildWeaponStatChips(type) {
         chips.push(['Splash Max Damage', `${C.GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE}`]);
     }
 
+    if (type === 'lochnload') {
+        chips.push(['On Hit Only', 'No bounce / no timer']);
+        chips.push(['Splash Max Damage', `${C.LOCH_N_LOAD_SPLASH_MAX_DAMAGE}`]);
+        chips.push(['Fast Move Bonus', `+${C.LOCH_N_LOAD_FAST_MOVE_BONUS * 100}%`]);
+    }
+
+    if (type === 'hairspray') {
+        chips.push(makeRiskClassChip('ZAYIN'));
+        chips.push(['Cloud Radius', `${C.HAIRSPRAY_CLOUD_RADIUS}px`]);
+        chips.push(['Max Range', `${C.HAIRSPRAY_MAX_RANGE}px`]);
+        chips.push(['Tick Damage', `${C.HAIRSPRAY_TICK_DAMAGE_MIN}–${C.HAIRSPRAY_TICK_DAMAGE_MAX}`]);
+        chips.push(['Near / Mid / Far', `${C.HAIRSPRAY_NEAR_MAX_TICKS} / ${C.HAIRSPRAY_MID_MAX_TICKS} / ${C.HAIRSPRAY_FAR_MAX_TICKS} ticks`]);
+    }
+
+    if (type === 'hypocrisy') {
+        chips.push(makeRiskClassChip('WAW'));
+        chips.push(['Fire Rate', `${C.HYPOCRISY_FIRE_RATE_BASE}ms → ${C.HYPOCRISY_FIRE_RATE_MIN}ms`]);
+        chips.push(['Ramp Speed', `${C.HYPOCRISY_RAMP_RATE_MS_PER_SEC}ms/s reduction`]);
+        chips.push(['Idle Reset', `After ${C.HYPOCRISY_IDLE_RESET_MS}ms`]);
+        chips.push(['Dmg Multiplier', `x${C.HYPOCRISY_DAMAGE_MULTIPLIER_MAX} at base → x1 at min rate`]);
+        chips.push(['Damage Refund', `${Math.round(C.HYPOCRISY_AMMO_REFUND_RATIO * 100)}% max ammo on damage taken`]);
+        chips.push(['Refund Amount', `${Math.floor(C.HYPOCRISY_AMMO * C.HYPOCRISY_AMMO_REFUND_RATIO)} arrows`]);
+    }
+
+    if (type === 'crimsonscar') {
+        chips.push(makeRiskClassChip('WAW'));
+        chips.push(['Range Switch', `${C.CRIMSON_SCAR_RANGE_SWITCH_DISTANCE}px`]);
+        chips.push(['Gun Burst', `${C.CRIMSON_SCAR_BURST_COUNT}x ${C.CRIMSON_SCAR_GUN_DAMAGE_MIN}–${C.CRIMSON_SCAR_GUN_DAMAGE_MAX} dmg`]);
+        chips.push(['Burst Interval', `${C.CRIMSON_SCAR_BURST_INTERVAL_MS}ms / ${C.CRIMSON_SCAR_FIRE_RATE}ms between`]);
+        chips.push(['Blade Damage', `${C.CRIMSON_SCAR_BLADE_DAMAGE_MIN}–${C.CRIMSON_SCAR_BLADE_DAMAGE_MAX}`]);
+        chips.push(['Bleed', `${C.CRIMSON_SCAR_BLEED_DAMAGE_MIN}–${C.CRIMSON_SCAR_BLEED_DAMAGE_MAX} / ${C.CRIMSON_SCAR_BLEED_INTERVAL_MS}ms for ${C.CRIMSON_SCAR_BLEED_DURATION_MS / 1000}s`]);
+        chips.push(['Mark Duration', `${C.CRIMSON_SCAR_MARK_DURATION_MS / 1000}s`]);
+        chips.push(['Mark Bonus', `+${Math.round(C.CRIMSON_SCAR_MARK_DAMAGE_BONUS * 100)}% dmg to marked`]);
+        chips.push(['Speed Bonus', `+${Math.round(C.CRIMSON_SCAR_SPEED_BONUS * 100)}%`]);
+        chips.push(['Dmg Penalty', `+${Math.round(C.CRIMSON_SCAR_DAMAGE_TAKEN_PENALTY * 100)}% taken`]);
+    }
+
+    if (type === 'egopinks') {
+        chips.push(makeRiskClassChip('ALEPH'));
+        chips.push(['Piercing', 'Passes through all targets']);
+        chips.push(['Tracer', 'Fixed hot-pink (not team color)']);
+    }
+
+    if (type === 'egosoda') {
+        chips.push(makeRiskClassChip('ZAYIN'));
+        chips.push(['Red', `Heals ${C.EGOSODA_RED_HEAL_MIN}–${C.EGOSODA_RED_HEAL_MAX} HP on hit`]);
+        chips.push(['Blue', `HoT ${C.EGOSODA_BLUE_HEAL_MIN}–${C.EGOSODA_BLUE_HEAL_MAX} HP / ${C.EGOSODA_BLUE_HEAL_INTERVAL_MS / 1000}s for ${C.EGOSODA_BLUE_HEAL_DURATION_MS / 1000}s`]);
+        chips.push(['Purple (10%)', `+${C.EGOSODA_PURPLE_DAMAGE_MIN}–${C.EGOSODA_PURPLE_DAMAGE_MAX} + 0.5–1% maxHP dmg`]);
+    }
+
+    if (type === 'laetitia') {
+        chips.push(makeRiskClassChip('HE'));
+        chips.push(['Mark Duration', `${C.LAETITIA_MARK_DURATION_MS / 1000}s`]);
+        chips.push(['Vulnerability', `x${C.LAETITIA_MARK_VULN_MULTIPLIER}`]);
+        chips.push(['Blast Trigger', `≥${Math.round(C.LAETITIA_MARK_TRIGGER_THRESHOLD_RATIO * 100)}% max HP hit`]);
+        chips.push(['Blast Radius', `${C.LAETITIA_BLAST_RADIUS}px`]);
+        chips.push(['Blast Damage', `${Math.round(C.LAETITIA_BLAST_DAMAGE_MIN_RATIO * 100)}–${Math.round(C.LAETITIA_BLAST_DAMAGE_MAX_RATIO * 100)}% max HP`]);
+    }
+
+    if (type === 'adoration') {
+        chips.push(makeRiskClassChip('ALEPH'));
+        chips.push(['Pierce', `${C.ADORATION_PIERCE_COUNT} enemies`]);
+        chips.push(['Slow on Hit', `${Math.round((1 - C.ADORATION_SLOW_MULTIPLIER) * 100)}% for ${C.ADORATION_SLOW_DURATION_MS / 1000}s`]);
+        chips.push(['Afterburn on Slowed', `x${C.ADORATION_AFTERBURN_MULTIPLIER} multiplier`]);
+        chips.push(['Damage vs Slow', 'Scales with target slow (any source)']);
+        chips.push(['Wielder Speed', `-${Math.round((1 - C.ADORATION_WIELDER_SPEED_MULTIPLIER) * 100)}% move speed`]);
+    }
+
+    if (type === 'faintaroma') {
+        chips.push(makeRiskClassChip('WAW'));
+        chips.push(['Pierce', `${C.FAINT_AROMA_PIERCE_COUNT} enemies`]);
+        chips.push(['DOT', `${C.FAINT_AROMA_DOT_DAMAGE_MIN}–${C.FAINT_AROMA_DOT_DAMAGE_MAX} / ${C.FAINT_AROMA_DOT_INTERVAL_MS}ms`]);
+        chips.push(['Heal Reduction', `-${C.FAINT_AROMA_HEAL_REDUCTION * 100}%`]);
+        chips.push(['AOE Radius', `${C.FAINT_AROMA_AOE_RADIUS}px`]);
+    }
+
     if (type === 'rocketlauncher') {
         chips.push(['Self-Damage', 'Yes (splash falloff)']);
     }
@@ -696,6 +886,34 @@ function buildWeaponStatChips(type) {
         chips.push(['Bee Damage', `${C.HORNET_BEE_DAMAGE_MIN}-${C.HORNET_BEE_DAMAGE_MAX}`]);
         chips.push(['Max Bees', `${C.HORNET_BEE_MAX_ACTIVE} per wielder`]);
         chips.push(makeRiskClassChip('WAW'));
+    }
+
+    if (type === 'egolovehate') {
+        chips.push(['Pierce', 'Infinite — passes through all targets']);
+        chips.push(['Damage Type', 'Random per shot (25% each)']);
+        chips.push(['Red Damage', `${C.EGO_LOVE_HATE_RED_DAMAGE_MIN}-${C.EGO_LOVE_HATE_RED_DAMAGE_MAX} (slashing)`]);
+        chips.push(['Black Damage', `${C.EGO_LOVE_HATE_BLACK_DAMAGE_MIN}-${C.EGO_LOVE_HATE_BLACK_DAMAGE_MAX} + burn (blunt)`]);
+        chips.push(['Black Burn/Tick', `${C.EGO_LOVE_HATE_BLACK_BURN_MIN}-${C.EGO_LOVE_HATE_BLACK_BURN_MAX}`]);
+        chips.push(['Black Burn Duration', `${(C.EGO_LOVE_HATE_BLACK_BURN_DURATION_MS / 1000).toFixed(1)}s every ${(C.EGO_LOVE_HATE_BLACK_BURN_INTERVAL_MS / 1000).toFixed(1)}s`]);
+        chips.push(['White Damage', `${C.EGO_LOVE_HATE_WHITE_DAMAGE_MIN}-${C.EGO_LOVE_HATE_WHITE_DAMAGE_MAX} + burn (divine)`]);
+        chips.push(['White Burn/Tick', `${C.EGO_LOVE_HATE_WHITE_BURN_MIN}-${C.EGO_LOVE_HATE_WHITE_BURN_MAX}`]);
+        chips.push(['White Burn Duration', `${(C.EGO_LOVE_HATE_WHITE_BURN_DURATION_MS / 1000).toFixed(1)}s every ${(C.EGO_LOVE_HATE_WHITE_BURN_INTERVAL_MS / 1000).toFixed(1)}s`]);
+        chips.push(['Pale Damage', `${(C.EGO_LOVE_HATE_PALE_MIN_RATIO * 100).toFixed(0)}%-${(C.EGO_LOVE_HATE_PALE_MAX_RATIO * 100).toFixed(0)}% target max HP (spiritual)`]);
+        chips.push(['Ally Hit', 'Heals for 50% of equivalent damage']);
+        chips.push(makeRiskClassChip('WAW'));
+    }
+
+    if (type === 'soundofstar') {
+        chips.push(['Charge Speed', `1 star per ${C.SOUND_OF_STAR_CHARGE_MS}ms`]);
+        chips.push(['Charge Lock', `${C.SOUND_OF_STAR_MAX_AMMO}/${C.SOUND_OF_STAR_MAX_AMMO} required to fire`]);
+        chips.push(['Burst Fire', `1 star per 100ms → recharge from 0`]);
+        chips.push(['Aim', 'Toward cursor / nearest enemy']);
+        chips.push(['Shot Damage', `${C.SOUND_OF_STAR_DAMAGE_MIN}–${C.SOUND_OF_STAR_DAMAGE_MAX}`]);
+        chips.push(['Orbital Contact', `${Math.round(C.SOUND_OF_STAR_DAMAGE_MIN * C.SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER)}–${Math.round(C.SOUND_OF_STAR_DAMAGE_MAX * C.SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER)} (${C.SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER * 100}% shot dmg, 0.5s cd)`]);
+        chips.push(['Burn / Tick', `${C.SOUND_OF_STAR_BURN_DAMAGE_MIN}–${C.SOUND_OF_STAR_BURN_DAMAGE_MAX} every ${(C.SOUND_OF_STAR_BURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(C.SOUND_OF_STAR_BURN_DURATION_MS / 1000).toFixed(1)}s`]);
+        chips.push(['Wielder Slow', `${C.SOUND_OF_STAR_WIELDER_SLOW_PER_STAR * 100}% per star held (max ${C.SOUND_OF_STAR_MAX_AMMO * C.SOUND_OF_STAR_WIELDER_SLOW_PER_STAR * 100}%)`]);
+        chips.push(['Homing', 'Slight — spiraling wobble path']);
+        chips.push(makeRiskClassChip('ALEPH'));
     }
 
     if (type === 'swordsharpened') {
@@ -814,6 +1032,15 @@ function renderDetail(entry) {
         const noteEl = document.createElement('li');
         noteEl.textContent = note;
         notesEl.appendChild(noteEl);
+    }
+
+    const riskChip = (entry.chips || []).find(
+        c => c && typeof c === 'object' && !Array.isArray(c) && c.label === 'Risk Class'
+    );
+    if (riskChip) {
+        detailPanelEl.dataset.risk = riskChip.value;
+    } else {
+        delete detailPanelEl.dataset.risk;
     }
 
     renderDealerTable(entry.type);

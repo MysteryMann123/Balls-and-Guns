@@ -1,20 +1,13 @@
-export const ARENA_WIDTH = 800;
-export const ARENA_HEIGHT = 600;
-
-export const BALL_MAX_HP = 1600;
-export const BALL_BASE_SPEED = 4;
-export const BALL_MIN_SPEED = 1;
-
-export const PISTOL_DAMAGE = 12;
-export const REVOLVER_DAMAGE = 30;
+export const PISTOL_DAMAGE = 20;
+export const REVOLVER_DAMAGE = 55;
 export const EGO_LONELINESS_DAMAGE = Math.round(REVOLVER_DAMAGE * 0.8);
-export const EGO_LONELINESS_SPEED = 13;
-export const EGO_LONELINESS_FIRE_RATE = 600;
-export const EGO_LONELINESS_RELOAD_MS = 1500;
+export const EGO_LONELINESS_SPEED = 18;
+export const EGO_LONELINESS_FIRE_RATE = 500;
+export const EGO_LONELINESS_RELOAD_MS = 1350;
 export const EGO_LONELINESS_AMMO = 6;
-export const EGO_LONELINESS_SLOW_DURATION_MS = 1100;
-export const EGO_LONELINESS_SLOW_MULTIPLIER = 0.23;
-export const EGO_LONELINESS_AMMO_REFUND_CHANCE = 0.5;
+export const EGO_LONELINESS_SLOW_DURATION_MS = 2000;
+export const EGO_LONELINESS_SLOW_MULTIPLIER = 0.30;
+export const EGO_LONELINESS_AMMO_REFUND_CHANCE = 0.77;
 export const PENITENCE_DAMAGE_MIN = 80;
 export const PENITENCE_DAMAGE_MAX = 110;
 export const PENITENCE_SWING_ARC_DEGREES = 120;
@@ -70,15 +63,15 @@ export const SOLEMN_VOW_FUNERAL_COOLDOWN_MS = 900;
 export const SOLEMN_VOW_MUZZLE_FLASH_MS = 360;
 export const HARMONY_AMMO = 1;
 export const HARMONY_RELOAD_MS = 3000;
-export const HARMONY_DAMAGE_MIN = 30;
-export const HARMONY_DAMAGE_MAX = 70;
-export const HARMONY_PELLETS_PER_SHOT = 10;
-export const HARMONY_SPREAD_ANGLE = 0.08;
-export const HARMONY_PROJECTILE_SPEED = 13;
-export const HARMONY_PROJECTILE_SIZE = 5;
+export const HARMONY_DAMAGE_MIN = 60;
+export const HARMONY_DAMAGE_MAX = 120;
+export const HARMONY_PELLETS_PER_SHOT = 5;
+export const HARMONY_SPREAD_ANGLE = 0.1;
+export const HARMONY_PROJECTILE_SPEED = 11.5;
+export const HARMONY_PROJECTILE_SIZE = 6;
 export const HARMONY_SELF_HP_COST_RATIO = 0.1;
-export const HARMONY_HASTE_MAX_BONUS = 0.25;
-export const HARMONY_HASTE_DURATION_MS = 5000;
+export const HARMONY_HASTE_MAX_BONUS = 0.4;
+export const HARMONY_HASTE_DURATION_MS = 5500;
 export const HORNET_RELOAD_MS = 2200;
 export const HORNET_FIRE_RATE = 800;
 export const HORNET_RANGE_SWITCH_DISTANCE = 320;
@@ -97,8 +90,8 @@ export const HORNET_RIFLE_AFTERBURN_DAMAGE_MIN = 5;
 export const HORNET_RIFLE_AFTERBURN_DAMAGE_MAX = 8;
 export const HORNET_RIFLE_AFTERBURN_INTERVAL_MS = 500;
 export const HORNET_RIFLE_AFTERBURN_DURATION_MS = 3000;
-export const HORNET_BEE_DAMAGE_MIN = 1;
-export const HORNET_BEE_DAMAGE_MAX = 3;
+export const HORNET_BEE_DAMAGE_MIN = 4;
+export const HORNET_BEE_DAMAGE_MAX = 6;
 export const HORNET_BEE_SPEED = 8.8;
 export const HORNET_BEE_SIZE = 4;
 export const HORNET_BEE_HOMING_STRENGTH = 0.11;
@@ -123,6 +116,81 @@ export const SWORD_SHARPENED_SHARPEN_RELOAD_BONUS = 0.25;
 export const SWORD_SHARPENED_SHARPEN_MAX_STACKS = 3;
 export const SWORD_SHARPENED_SHARPEN_DURATION_MS = 120000;
 export const SWORD_SHARPENED_RESISTANCE_IGNORE = 0.5;
+export const EGO_LOVE_HATE_AMMO = 1;
+export const EGO_LOVE_HATE_FIRE_RATE = 300;
+export const EGO_LOVE_HATE_RELOAD_MS = 700;
+export const EGO_LOVE_HATE_SPEED = 5;
+export const EGO_LOVE_HATE_PROJECTILE_SIZE = 7;
+export const EGO_LOVE_HATE_RED_DAMAGE_MIN = 70;
+export const EGO_LOVE_HATE_RED_DAMAGE_MAX = 100;
+export const EGO_LOVE_HATE_BLACK_DAMAGE_MIN = 20;
+export const EGO_LOVE_HATE_BLACK_DAMAGE_MAX = 60;
+export const EGO_LOVE_HATE_BLACK_BURN_MIN = 10;
+export const EGO_LOVE_HATE_BLACK_BURN_MAX = 20;
+export const EGO_LOVE_HATE_BLACK_BURN_INTERVAL_MS = 500;
+export const EGO_LOVE_HATE_BLACK_BURN_DURATION_MS = 2000;
+export const EGO_LOVE_HATE_WHITE_DAMAGE_MIN = 10;
+export const EGO_LOVE_HATE_WHITE_DAMAGE_MAX = 20;
+export const EGO_LOVE_HATE_WHITE_BURN_MIN = 30;
+export const EGO_LOVE_HATE_WHITE_BURN_MAX = 60;
+export const EGO_LOVE_HATE_WHITE_BURN_INTERVAL_MS = 500;
+export const EGO_LOVE_HATE_WHITE_BURN_DURATION_MS = 1000;
+export const EGO_LOVE_HATE_PALE_MIN_RATIO = 0.04;
+export const EGO_LOVE_HATE_PALE_MAX_RATIO = 0.06;
+export const SOUND_OF_STAR_MAX_AMMO = 6;
+export const SOUND_OF_STAR_CHARGE_MS = 400;
+export const SOUND_OF_STAR_BURST_INTERVAL_MS = 200;
+export const SOUND_OF_STAR_DAMAGE_MIN = 50;
+export const SOUND_OF_STAR_DAMAGE_MAX = 75;
+export const SOUND_OF_STAR_BURN_DAMAGE_MIN = 15;
+export const SOUND_OF_STAR_BURN_DAMAGE_MAX = 20;
+export const SOUND_OF_STAR_BURN_INTERVAL_MS = 500;
+export const SOUND_OF_STAR_BURN_DURATION_MS = 2500;
+export const SOUND_OF_STAR_SPEED = 8;
+export const SOUND_OF_STAR_PROJECTILE_SIZE = 9;
+export const SOUND_OF_STAR_SPREAD_ANGLE = 0.20;
+export const SOUND_OF_STAR_HOMING_STRENGTH = 0.01;
+export const SOUND_OF_STAR_HOMING_RANGE = 380;
+export const SOUND_OF_STAR_ORBIT_RATE = 0.18;
+export const SOUND_OF_STAR_ORBIT_RADIUS = 55;
+export const SOUND_OF_STAR_WIELDER_SLOW_PER_STAR = 0.03;
+export const SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER = 0.5;
+export const HYPOCRISY_AMMO = 50;
+export const HYPOCRISY_RELOAD_MS = 2500;
+export const HYPOCRISY_FIRE_RATE_BASE = 1150;
+export const HYPOCRISY_FIRE_RATE_MIN = 50;
+export const HYPOCRISY_RAMP_RATE_MS_PER_SEC = 100;
+export const HYPOCRISY_IDLE_RESET_MS = 4000;
+export const HYPOCRISY_DAMAGE_MIN = 23;
+export const HYPOCRISY_DAMAGE_MAX = 30;
+export const HYPOCRISY_SPEED = 16;
+export const HYPOCRISY_PROJECTILE_SIZE = 8;
+export const HYPOCRISY_AMMO_REFUND_RATIO = 0.08;
+export const HYPOCRISY_DAMAGE_MULTIPLIER_MAX = 2;
+export const CRIMSON_SCAR_RANGE_SWITCH_DISTANCE = 100;
+export const CRIMSON_SCAR_GUN_AMMO = 6;
+export const CRIMSON_SCAR_RELOAD_MS = 1800;
+export const CRIMSON_SCAR_FIRE_RATE = 1000;
+export const CRIMSON_SCAR_BURST_INTERVAL_MS = 80;
+export const CRIMSON_SCAR_BURST_COUNT = 3;
+export const CRIMSON_SCAR_GUN_DAMAGE_MIN = 50;
+export const CRIMSON_SCAR_GUN_DAMAGE_MAX = 60;
+export const CRIMSON_SCAR_GUN_SPEED = 18.5;
+export const CRIMSON_SCAR_GUN_PROJECTILE_SIZE = 6;
+export const CRIMSON_SCAR_BLADE_DAMAGE_MIN = 70;
+export const CRIMSON_SCAR_BLADE_DAMAGE_MAX = 100;
+export const CRIMSON_SCAR_BLADE_FIRE_RATE = 700;
+export const CRIMSON_SCAR_BLADE_RANGE = 45;
+export const CRIMSON_SCAR_BLADE_SWING_ARC_DEGREES = 120;
+export const CRIMSON_SCAR_BLADE_SWING_ANIMATION_MS = 300;
+export const CRIMSON_SCAR_BLEED_DAMAGE_MIN = 20;
+export const CRIMSON_SCAR_BLEED_DAMAGE_MAX = 25;
+export const CRIMSON_SCAR_BLEED_INTERVAL_MS = 500;
+export const CRIMSON_SCAR_BLEED_DURATION_MS = 3000;
+export const CRIMSON_SCAR_MARK_DURATION_MS = 20000;
+export const CRIMSON_SCAR_MARK_DAMAGE_BONUS = 0.5;
+export const CRIMSON_SCAR_SPEED_BONUS = 0.4;
+export const CRIMSON_SCAR_DAMAGE_TAKEN_PENALTY = 0.45;
 export const SHOTGUN_PELLET_DAMAGE = 25;
 export const SHOTGUN_DAMAGE_MIN = 4;
 export const SHOTGUN_DAMAGE_MAX = 25;
@@ -138,7 +206,7 @@ export const FAMILY_BUSINESS_FIRE_RATE = 780;
 export const FAMILY_BUSINESS_SPREAD_ANGLE = 0.11;
 export const SMG_AMMO = 25;
 export const SMG_RELOAD_MS = 1850;
-export const SMG_DAMAGE = 16;
+export const SMG_DAMAGE = 20;
 export const SMG_SPEED = 11;
 export const SMG_FIRE_RATE = 95;
 export const SMG_SPREAD_ANGLE = 0.03;
@@ -232,6 +300,36 @@ export const MACHINA_DAMAGE_MIN = 150;
 export const MACHINA_DAMAGE_MAX = 275;
 export const MACHINA_TRACER_RANGE = 950;
 export const MACHINA_TRACER_DURATION_MS = 90;
+export const PINKS_DAMAGE_MIN = 175;
+export const PINKS_DAMAGE_MAX = 250;
+export const PINKS_TRACER_RANGE = 1000;
+export const PINKS_TRACER_DURATION_MS = 90;
+export const PINKS_TRACER_COLOR = '#ff85c2';
+export const EGOSODA_RED_HEAL_MIN = 4;
+export const EGOSODA_RED_HEAL_MAX = 8;
+export const EGOSODA_BLUE_HEAL_MIN = 1;
+export const EGOSODA_BLUE_HEAL_MAX = 3;
+export const EGOSODA_BLUE_HEAL_INTERVAL_MS = 500;
+export const EGOSODA_BLUE_HEAL_DURATION_MS = 1500;
+export const EGOSODA_PURPLE_CHANCE = 0.10;
+export const EGOSODA_PURPLE_SELF_DAMAGE_PCT = 0.005;
+export const EGOSODA_PURPLE_DAMAGE_MIN = 10;
+export const EGOSODA_PURPLE_DAMAGE_MAX = 12;
+export const EGOSODA_PURPLE_MAX_HP_PCT_MIN = 0.008;
+export const EGOSODA_PURPLE_MAX_HP_PCT_MAX = 0.012;
+export const EGOSODA_RED_COLOR = '#ff4444';
+export const EGOSODA_BLUE_COLOR = '#4488ff';
+export const EGOSODA_PURPLE_COLOR = '#cc44ff';
+export const LAETITIA_DAMAGE_MIN = 40;
+export const LAETITIA_DAMAGE_MAX = 50;
+export const LAETITIA_RELOAD_MS = 1500;
+export const LAETITIA_MARK_DURATION_MS = 5000;
+export const LAETITIA_MARK_VULN_MULTIPLIER = 1.2;
+export const LAETITIA_MARK_TRIGGER_THRESHOLD_RATIO = 0.10;
+export const LAETITIA_BLAST_RADIUS = 90;
+export const LAETITIA_BLAST_DAMAGE_MIN_RATIO = 0.03;
+export const LAETITIA_BLAST_DAMAGE_MAX_RATIO = 0.06;
+export const LAETITIA_MARK_COLOR = '#ff88ff';
 export const HUNTSMAN_DAMAGE_MIN = 100;
 export const HUNTSMAN_DAMAGE_MAX = 180;
 export const HUNTSMAN_STICK_DURATION_MS = 1400;
@@ -242,8 +340,8 @@ export const CRUSADERS_CROSSBOW_DAMAGE_MAX = 150;
 export const CRUSADERS_CROSSBOW_HEAL_MIN = 75;
 export const CRUSADERS_CROSSBOW_HEAL_MAX = 100;
 export const BLUTSAUGER_DAMAGE = 15;
-export const BLUTSAUGER_HEAL_MIN = 5;
-export const BLUTSAUGER_HEAL_MAX = 10;
+export const BLUTSAUGER_HEAL_MIN = 6.5;
+export const BLUTSAUGER_HEAL_MAX = 11;
 export const SHORT_CIRCUIT_AMMO = 5;
 export const SHORT_CIRCUIT_SPEED = 2.4;
 export const SHORT_CIRCUIT_RADIUS = 76;
@@ -283,9 +381,9 @@ export const DIRECT_HIT_SPEED = ROCKET_LAUNCHER_SPEED * 1.8;
 export const DIRECT_HIT_SPLASH_RADIUS = ROCKET_LAUNCHER_SPLASH_RADIUS * 0.25;
 export const DIRECT_HIT_VS_FASTER_MULTIPLIER = 1.5;
 export const NEAR_MISSED_AMMO = DIRECT_HIT_AMMO;
-export const NEAR_MISSED_DAMAGE = Math.round(ROCKET_LAUNCHER_DIRECT_DAMAGE * 0.7);
+export const NEAR_MISSED_DAMAGE = Math.round(ROCKET_LAUNCHER_DIRECT_DAMAGE * 0.72);
 export const NEAR_MISSED_SPEED = ROCKET_LAUNCHER_SPEED * 0.25;
-export const NEAR_MISSED_SPLASH_RADIUS = ROCKET_LAUNCHER_SPLASH_RADIUS * 1.55;
+export const NEAR_MISSED_SPLASH_RADIUS = ROCKET_LAUNCHER_SPLASH_RADIUS * 1.88;
 export const NEAR_MISSED_VS_SLOWER_MULTIPLIER = 1.3;
 export const ROCKET_JUMPER_AMMO = 4;
 export const ROCKET_JUMPER_SPEED = ROCKET_LAUNCHER_SPEED;
@@ -308,23 +406,69 @@ export const YELLOW_TARGE_DAMAGE_REDUCTION_ALL = 0.2;
 export const YELLOW_TARGE_DAMAGE_REDUCTION_EXPLOSIVE = 0.3;
 export const MEDIGUN_AMMO = 1;
 export const MEDIGUN_RELOAD_MS = 1000;
-export const MEDIGUN_BEAM_RANGE = 600;
+export const MEDIGUN_BEAM_RANGE = 550;
 export const MEDIGUN_ALLY_HEAL_PER_SEC = 30;
-export const MEDIGUN_ENEMY_DAMAGE_PER_SEC = 25;
+export const MEDIGUN_ENEMY_DAMAGE_PER_SEC = 20;
 export const MEDIGUN_ENEMY_LIFESTEAL_PER_SEC = 8;
 export const MEDIGUN_SELF_REGEN_PER_SEC = 4;
 export const MEDIGUN_SELF_REGEN_DELAY_MS = 4000;
 export const MEDIGUN_SELF_REGEN_CAP = 14;
 export const MEDIGUN_OVERHEAL_MULTIPLIER = 1.25;
 export const MEDIGUN_UBER_HEAL_THRESHOLD = 800;
-export const MEDIGUN_UBER_DAMAGE_THRESHOLD = 600;
+export const MEDIGUN_UBER_DAMAGE_THRESHOLD = 700;
 export const MEDIGUN_UBER_DURATION_MS = 6000;
 export const GRENADE_LAUNCHER_AMMO = 6;
-export const GRENADE_LAUNCHER_DIRECT_DAMAGE = 100;
-export const GRENADE_LAUNCHER_SPEED = 8.5;
-export const GRENADE_LAUNCHER_SPLASH_RADIUS = 72;
-export const GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE = 90;
-export const GRENADE_LAUNCHER_EXPLODE_DELAY_MS = 1200;
+export const GRENADE_LAUNCHER_DIRECT_DAMAGE = 125;
+export const GRENADE_LAUNCHER_SPEED = 10;
+export const GRENADE_LAUNCHER_SPLASH_RADIUS = 88;
+export const GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE = 100;
+export const GRENADE_LAUNCHER_EXPLODE_DELAY_MS = 1250;
+export const LOCH_N_LOAD_AMMO = 4;
+export const LOCH_N_LOAD_DIRECT_DAMAGE = GRENADE_LAUNCHER_DIRECT_DAMAGE;
+export const LOCH_N_LOAD_SPEED = Math.round(GRENADE_LAUNCHER_SPEED * 1.4);
+export const LOCH_N_LOAD_SPLASH_RADIUS = Math.round(GRENADE_LAUNCHER_SPLASH_RADIUS * 0.75);
+export const LOCH_N_LOAD_SPLASH_MAX_DAMAGE = GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE;
+export const LOCH_N_LOAD_FAST_MOVE_BONUS = 0.25;
+export const LOCH_N_LOAD_FAST_SPEED_RATIO = 0.5;
+export const FAINT_AROMA_DAMAGE_MIN = 60;
+export const FAINT_AROMA_DAMAGE_MAX = 85;
+export const FAINT_AROMA_DOT_DAMAGE_MIN = 13;
+export const FAINT_AROMA_DOT_DAMAGE_MAX = 15;
+export const FAINT_AROMA_DOT_INTERVAL_MS = 400;
+export const FAINT_AROMA_DOT_DURATION_MS = 2800;
+export const FAINT_AROMA_HEAL_REDUCTION = 0.30;
+export const FAINT_AROMA_AOE_RADIUS = 50;
+export const FAINT_AROMA_SPEED = 12;
+export const FAINT_AROMA_PROJECTILE_SIZE = 8;
+export const FAINT_AROMA_PIERCE_COUNT = 3;
+export const FAINT_AROMA_AOE_HIT_COOLDOWN_MS = 800;
+export const HAIRSPRAY_AMMO = 3;
+export const HAIRSPRAY_FIRE_RATE = 800;
+export const HAIRSPRAY_RELOAD_MS = 2800;
+export const HAIRSPRAY_SPEED = 6;
+export const HAIRSPRAY_MAX_RANGE = 280;
+export const HAIRSPRAY_CLOUD_RADIUS = 50;
+export const HAIRSPRAY_TICK_DAMAGE_MIN = 60;
+export const HAIRSPRAY_TICK_DAMAGE_MAX = 100;
+export const HAIRSPRAY_TICK_INTERVAL_MS = 300;
+export const HAIRSPRAY_NEAR_ZONE_END = Math.round(HAIRSPRAY_MAX_RANGE * 0.33);
+export const HAIRSPRAY_MID_ZONE_END = Math.round(HAIRSPRAY_MAX_RANGE * 0.66);
+export const HAIRSPRAY_NEAR_MAX_TICKS = 1;
+export const HAIRSPRAY_MID_MAX_TICKS = 3;
+export const HAIRSPRAY_FAR_MAX_TICKS = 2;
+export const HAIRSPRAY_LINGER_MS = HAIRSPRAY_TICK_INTERVAL_MS * HAIRSPRAY_FAR_MAX_TICKS;
+export const ADORATION_AMMO = 1;
+export const ADORATION_FIRE_RATE = 800;
+export const ADORATION_RELOAD_MS = 1250;
+export const ADORATION_DAMAGE_MIN = 60;
+export const ADORATION_DAMAGE_MAX = 90;
+export const ADORATION_SPEED = 12;
+export const ADORATION_PROJECTILE_SIZE = 11;
+export const ADORATION_PIERCE_COUNT = 3;
+export const ADORATION_SLOW_DURATION_MS = 2200;
+export const ADORATION_SLOW_MULTIPLIER = 0.35;
+export const ADORATION_AFTERBURN_MULTIPLIER = 2;
+export const ADORATION_WIELDER_SPEED_MULTIPLIER = 0.90;
 export const FLAMETHROWER_AMMO = 200;
 export const FLAMETHROWER_DAMAGE_MIN = 2;
 export const FLAMETHROWER_DAMAGE_MAX = 5;
@@ -342,37 +486,6 @@ export const FLAMETHROWER_AFTERBURN_DURATION_MS = 3500;
 export const PYRO_AIRBLAST_COOLDOWN_MS = 3500;
 export const PYRO_AIRBLAST_AMMO_COST = 20;
 
-export const PICKUP_SPAWN_RATE_MS = 4000;
-export const PICKUP_DELAY_MS = 500;
-export const REACTION_DELAY_MS = 140;
-export const HEALTHICO_HEAL = 150;
-export const UBERCHARGE_DURATION_MS = 5000;
-export const UBERCHARGE_HEAL_PER_SEC = 20;
-export const CRITICAL_DURATION_MS = 8000;
-export const CRITICAL_HEAL_PER_SEC = 6;
-export const CRITICAL_DAMAGE_MULTIPLIER = 2;
-export const SPEED_BOOST_PERMANENT = 0.8;
-export const SCRUMPY_BOTTLE_THROW_DAMAGE_MIN = 100;
-export const SCRUMPY_BOTTLE_THROW_DAMAGE_MAX = 150;
-export const SCRUMPY_PUDDLE_DAMAGE_MIN = 10;
-export const SCRUMPY_PUDDLE_DAMAGE_MAX = 20;
-export const SCRUMPY_PUDDLE_DURATION_MS = 6000;
-export const SCRUMPY_PUDDLE_INITIAL_RADIUS = 38;
-export const SCRUMPY_PUDDLE_FINAL_RADIUS = 132;
-export const SCRUMPY_PUDDLE_TICK_INTERVAL_MS = 1000;
-export const SCRUMPY_THROW_SPEED = 9;
-export const SCRUMPY_DAMAGE_REDUCTION = 0.1;
-export const BOMBANOMICRON_PROJECTILE_MIN = 6;
-export const BOMBANOMICRON_PROJECTILE_MAX = 10;
-export const BOMBANOMICRON_TARGET_SPREAD = 140;
-export const DEAD_RINGER_PICKUP_COOLDOWN_MS = 120000;
-export const DEAD_RINGER_DURATION_MS = 4000;
-export const DEAD_RINGER_DAMAGE_REDUCTION = 0.9;
-export const DEAD_RINGER_HEAL_MAX_HP_RATIO = 0.1;
-export const DEAD_RINGER_SPEED_BOOST = 1.8;
-export const DEAD_RINGER_DECOY_DURATION_MS = 950;
-export const DEAD_RINGER_DECOY_SPEED = 16;
-
 export const DEALER_DRAW_INTERVAL_MS = 500;
 
 export const HAND_DAMAGE_TABLE = {
@@ -387,94 +500,3 @@ export const HAND_DAMAGE_TABLE = {
     'High Card': { value: 10, multiplier: 1 }
 };
 
-export const START_WEAPON_OPTIONS = [
-    'pistol',
-    'revolver',
-    'shotgun',
-    'familybusiness',
-    'sodapopper',
-    'forceanature',
-    'musket',
-    'magicianhat',
-    'widowmaker',
-    'sniper',
-    'machina',
-    'huntsman',
-    'crusaderscrossbow',
-    'smg',
-    'tommygun',
-    'egomagicbullet',
-    'egoloneliness',
-    'penitence',
-    'paradiselost',
-    'solemnvow',
-    'harmony',
-    'hornet',
-    'swordsharpened',
-    'minigun',
-    'blutsauger',
-    'shortcircuit',
-    'rocketlauncher',
-    'piplauncher',
-    'beggersbazooka',
-    'directhit',
-    'nearmissed',
-    'rocketjumper',
-    'medigun',
-    'yellowtarge',
-    'grenadelauncher',
-    'flamethrower',
-    'dealer'
-];
-
-export const DROP_WEAPON_TYPES = [
-    'pistol',
-    'revolver',
-    'shotgun',
-    'familybusiness',
-    'sodapopper',
-    'forceanature',
-    'musket',
-    'magicianhat',
-    'widowmaker',
-    'dealer',
-    'sniper',
-    'machina',
-    'huntsman',
-    'crusaderscrossbow',
-    'smg',
-    'tommygun',
-    'egomagicbullet',
-    'egoloneliness',
-    'penitence',
-    'paradiselost',
-    'solemnvow',
-    'harmony',
-    'hornet',
-    'swordsharpened',
-    'minigun',
-    'blutsauger',
-    'shortcircuit',
-    'rocketlauncher',
-    'piplauncher',
-    'beggersbazooka',
-    'directhit',
-    'nearmissed',
-    'rocketjumper',
-    'medigun',
-    'yellowtarge',
-    'grenadelauncher',
-    'flamethrower'
-];
-
-export const DROP_UTILITY_TYPES = [
-    'ammoico',
-    'healthico',
-    'ubercharge',
-    'critical',
-    'speed',
-    'explosiveflask',
-    'scrumpybottle',
-    'bombanomicron',
-    'deadringer'
-];

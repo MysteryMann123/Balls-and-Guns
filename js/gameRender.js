@@ -1,18 +1,34 @@
 import {
     DEAD_RINGER_DECOY_DURATION_MS,
+    SCRUMPY_PUDDLE_DURATION_MS,
+} from './pickupConstants.js';
+import {
     MAGICIAN_HAT_TELEPORT_SMOKE_DURATION_MS,
-    SCRUMPY_PUDDLE_DURATION_MS
+    SOUND_OF_STAR_ORBIT_RADIUS,
+    SOUND_OF_STAR_PROJECTILE_SIZE,
 } from './constants.js';
+
+const _arenaImage = new Image();
+_arenaImage.src = 'assets/Arena.jpg';
+
+const _soundOfStarOrbitalImage = new Image();
+_soundOfStarOrbitalImage.src = 'assets/EGOWeaponSoundofaStar.webp';
 
 export function draw(game) {
     const ctx = game.ctx;
+    const W = game.canvas.width;
+    const H = game.canvas.height;
 
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, game.canvas.width, game.canvas.height);
+    if (_arenaImage.complete && _arenaImage.naturalWidth > 0) {
+        ctx.drawImage(_arenaImage, 0, 0, W, H);
+    } else {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, W, H);
+    }
 
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
-    ctx.strokeRect(0, 0, game.canvas.width, game.canvas.height);
+    ctx.strokeRect(0, 0, W, H);
 
     for (const pickup of game.pickups) pickup.draw(ctx, game.pickupIcons);
     for (const effect of game.explosionEffects) {
@@ -117,6 +133,34 @@ export function draw(game) {
         projectile.draw(ctx, game.pistolProjectileImage, game.syringeAmmoImage, game.rocketAmmoImage, game.grenadeAmmoImage, game.arrowProjectileImage, game.crusadersCrossbowProjectileImage, game.explosiveFlaskImage, game.scrumpyBottleImage, game.bunnyProjectileImage, game.magicBulletProjectileImage, game.appleProjectileImage, game.funeralDeadButterfliesPortraitImage, game.sporeImage, game.sporeRoundImage, game.swordSharpenedImage);
     }
 
+    // Aim indicator lines — rendered before balls so ball circle sits on top
+    for (const ball of game.balls) {
+        if (!ball.isAlive() || ball.controller === 'frozen') continue;
+        const angle = ball.aimAngle !== undefined
+            ? ball.aimAngle
+            : Math.atan2(ball.vel.y, ball.vel.x);
+        const len = 80;
+        const ex = ball.pos.x + Math.cos(angle) * len;
+        const ey = ball.pos.y + Math.sin(angle) * len;
+
+        ctx.save();
+        ctx.strokeStyle = ball.color || '#ffffff';
+        ctx.globalAlpha = 0.55;
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(ball.pos.x, ball.pos.y);
+        ctx.lineTo(ex, ey);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 0.9;
+        ctx.fillStyle = ball.color || '#ffffff';
+        ctx.beginPath();
+        ctx.arc(ex, ey, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+
     for (const ball of game.balls) {
         if (!ball.isAlive()) continue;
         const now = Date.now();
@@ -146,6 +190,10 @@ export function draw(game) {
             game.yellowTargeImage,
             game.medigunImage,
             game.grenadeLauncherImage,
+            game.lochnLoadImage,
+            game.faintaromaWeaponImage,
+            game.hairsprayImage,
+            game.adorationWeaponImage,
             game.flamethrowerImage,
             game.deadRingerImage,
             game.truePistolWeaponImage,
@@ -162,8 +210,28 @@ export function draw(game) {
             game.egoWeaponSolemnVowBlackImage,
             game.egoWeaponSolemnVowWhiteImage,
             game.kaleidoscopeMuzzleImage,
-            game.swordSharpenedImage
+            game.swordSharpenedImage,
+            game.hypocrisyWeaponImage,
+            game.crimsonScarGunImage,
+            game.crimsonScarBladeImage,
+            game.pinksWeaponImage,
+            game.sodaWeaponImage,
+            game.laetitiaWeaponImage
         );
+
+        // Draw Laetitia Gift Mark pulsing ring
+        if (now < ball.laetitiaGiftMark.until) {
+            const pulse = 0.65 + Math.sin(now / 200) * 0.3;
+            ctx.save();
+            ctx.strokeStyle = `rgba(255, 136, 255, ${pulse})`;
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = '#ff88ff';
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.arc(ball.pos.x, ball.pos.y, ball.radius + 16, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+        }
 
         // Draw blessing shield indicator if active
         if (now < ball.blessingShield.until) {
@@ -191,6 +259,61 @@ export function draw(game) {
                 ctx.stroke();
             }
             ctx.restore();
+        }
+    }
+
+    // Draw CrimsonScar mark indicator above marked balls
+    const _csNow = Date.now();
+    for (const ball of game.balls) {
+        if (!ball.isAlive()) continue;
+        if (!ball.crimsonScarMarkUntil || _csNow >= ball.crimsonScarMarkUntil) continue;
+        const markImg = game.crimsonScarMarkImage;
+        if (markImg && markImg.complete && markImg.naturalWidth > 0) {
+            const markSize = 20;
+            ctx.drawImage(markImg, ball.pos.x - markSize / 2, ball.pos.y - ball.radius - markSize - 6, markSize, markSize);
+        } else {
+            ctx.save();
+            ctx.fillStyle = '#cc2222';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('⦿', ball.pos.x, ball.pos.y - ball.radius - 8);
+            ctx.restore();
+        }
+    }
+
+    // Draw Sound of Star orbital stars above balls
+    for (const ball of game.balls) {
+        if (!ball.isAlive() || ball.weapon.type !== 'soundofstar' || !ball.soundStarOrbitals?.length) continue;
+        for (const orb of ball.soundStarOrbitals) {
+            const ox = ball.pos.x + Math.cos(orb.angle) * SOUND_OF_STAR_ORBIT_RADIUS;
+            const oy = ball.pos.y + Math.sin(orb.angle) * SOUND_OF_STAR_ORBIT_RADIUS;
+
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            const glow = ctx.createRadialGradient(ox, oy, 1, ox, oy, 18);
+            glow.addColorStop(0, 'rgba(255, 240, 120, 0.85)');
+            glow.addColorStop(1, 'rgba(255, 200, 50, 0)');
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(ox, oy, 18, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            if (_soundOfStarOrbitalImage.complete && _soundOfStarOrbitalImage.naturalWidth > 0) {
+                const spriteSize = SOUND_OF_STAR_PROJECTILE_SIZE * 3.4;
+                ctx.save();
+                ctx.translate(ox, oy);
+                ctx.rotate(orb.angle);
+                ctx.drawImage(_soundOfStarOrbitalImage, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
+                ctx.restore();
+            } else {
+                ctx.save();
+                ctx.fillStyle = '#ffee88';
+                ctx.beginPath();
+                ctx.arc(ox, oy, SOUND_OF_STAR_PROJECTILE_SIZE, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
         }
     }
 

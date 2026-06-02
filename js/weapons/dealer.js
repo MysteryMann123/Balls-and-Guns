@@ -1,5 +1,66 @@
-import { Deck, evaluatePokerHand } from './cards.js';
-import { Projectile } from './projectile.js';
+import { Deck, evaluatePokerHand } from '../cards.js';
+import { Projectile } from '../projectile.js';
+
+// --- Timing ---
+const drawIntervalMs  = 500;
+
+// --- Hand Damage Table ---
+const handDamageTable = {
+    'Straight Flush': { value: 200, multiplier: 8 },
+    'Four of a Kind': { value: 120, multiplier: 7 },
+    'Full House':     { value: 80,  multiplier: 4 },
+    'Flush':          { value: 70,  multiplier: 4 },
+    'Straight':       { value: 60,  multiplier: 4 },
+    'Three of a Kind':{ value: 60,  multiplier: 3 },
+    'Two Pair':       { value: 40,  multiplier: 2 },
+    'Pair':           { value: 20,  multiplier: 2 },
+    'High Card':      { value: 10,  multiplier: 1 },
+};
+
+// --- Config ---
+const maxAmmo        = Infinity;
+const reloadMs       = 0;
+const damage         = 0;
+const speed          = 5.2;
+const color          = '#ffffff';
+const projectileSize = 6;
+const pelletsPerShot = 5;
+const spreadAngle    = 0.08;
+
+const dealer = {
+    // Timing
+    DRAW_INTERVAL_MS:  drawIntervalMs,
+    HAND_DAMAGE_TABLE: handDamageTable,
+
+    // Config
+    MAX_AMMO:          maxAmmo,
+    RELOAD_MS:         reloadMs,
+    DAMAGE:            damage,
+    SPEED:             speed,
+    COLOR:             color,
+    PROJECTILE_SIZE:   projectileSize,
+    PELLETS_PER_SHOT:  pelletsPerShot,
+    SPREAD_ANGLE:      spreadAngle,
+    DISPLAY_NAME:      'DEALER',
+
+    CONFIG: {
+        maxAmmo,
+        reloadTimeMs: reloadMs,
+        damage,
+        speed,
+        fireRate: 0,
+        color,
+        projectileSize,
+        pelletsPerShot,
+        spreadAngle,
+    },
+
+    getInfo() {
+        return 'DEALER';
+    },
+};
+
+export default dealer;
 
 export class DealerWeapon {
     constructor() {

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balls &amp; Guns — Sandbox</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="arena-nav">
+            <h1 class="page-title">Sandbox</h1>
+            <button class="btn-back" onclick="window.location.href='sandbox.html'">&larr; Config</button>
+            <button class="btn-back" onclick="location.reload()">Reset</button>
+            <button class="btn-quick" id="toggle-enemy-fire">Enemy Fire: ON</button>
+            <button class="btn-quick" id="toggle-inf-buffs">Inf. Buffs: OFF</button>
+        </div>
+
+        <div class="utility-tray" id="utility-tray"></div>
+
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <div class="ui" id="player-ui"></div>
+
+        <div class="dps-panel">
+            <div class="dps-stat">
+                <span class="dps-label">DPS <span style="color:var(--muted);font-size:9px;">(3s avg)</span></span>
+                <span class="dps-value" id="dps-value">0</span>
+            </div>
+            <div class="dps-divider"></div>
+            <div class="dps-stat">
+                <span class="dps-label">Total Damage</span>
+                <span class="dps-value" id="dps-total" style="font-size:18px;">0</span>
+            </div>
+            <div class="dps-divider"></div>
+            <div class="dps-stat">
+                <span class="dps-label">Peak DPS</span>
+                <span class="dps-value" id="dps-peak" style="font-size:18px;color:var(--accent);">0</span>
+            </div>
+            <div class="dps-divider"></div>
+            <div class="dps-stat">
+                <span class="dps-label">HPS <span style="color:var(--muted);font-size:9px;">(3s avg)</span></span>
+                <span class="dps-value" id="hps-value" style="color:#4ecdc4;">0</span>
+            </div>
+            <div class="dps-divider"></div>
+            <div class="dps-stat">
+                <span class="dps-label">Total Healed</span>
+                <span class="dps-value" id="hps-total" style="font-size:18px;color:#4ecdc4;">0</span>
+            </div>
+            <div class="dps-divider"></div>
+            <div class="dps-stat">
+                <span class="dps-label">MHDPS% <span style="color:var(--muted);font-size:9px;">(% max HP/s)</span></span>
+                <span class="dps-value" id="mhdps-value" style="font-size:20px;color:#ffb347;">0%</span>
+            </div>
+            <button class="btn-back" id="dps-reset" style="margin-left:auto;padding:5px 12px;font-size:11px;">Reset</button>
+        </div>
+
+        <div class="status" id="status">Loading sandbox...</div>
+
+        <div class="controls">
+            <p>Sandbox never ends &mdash; click <em>Reset</em> to restart. HP is set from config.</p>
+        </div>
+    </div>
+
+    <script type="module" src="js/sandboxArena.js"></script>
+</body>
+</html>

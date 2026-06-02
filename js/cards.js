@@ -1,4 +1,14 @@
-import { HAND_DAMAGE_TABLE } from './constants.js';
+const HAND_DAMAGE_TABLE = {
+    'Straight Flush': { value: 200, multiplier: 8 },
+    'Four of a Kind': { value: 120, multiplier: 7 },
+    'Full House':     { value: 80,  multiplier: 4 },
+    'Flush':          { value: 70,  multiplier: 4 },
+    'Straight':       { value: 60,  multiplier: 4 },
+    'Three of a Kind':{ value: 60,  multiplier: 3 },
+    'Two Pair':       { value: 40,  multiplier: 2 },
+    'Pair':           { value: 20,  multiplier: 2 },
+    'High Card':      { value: 10,  multiplier: 1 },
+};
 
 const SUITS = [
     { key: 'S', symbol: '♠', color: '#111' },

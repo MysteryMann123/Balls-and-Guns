@@ -1,10 +1,16 @@
 import {
-    DEAD_RINGER_PICKUP_COOLDOWN_MS,
     DROP_UTILITY_TYPES,
     DROP_WEAPON_TYPES,
-    HEALTHICO_HEAL
-} from './constants.js';
-import { DealerWeapon } from './dealer.js';
+} from './gameConfig.js';
+import {
+    AMMO_CRATE_DOUBLE_SHOT_MS,
+    DEAD_RINGER_PICKUP_COOLDOWN_MS,
+    HEALTHICO_HEAL,
+    HEALTHICO_REGEN_DURATION_MS,
+    HEALTHICO_REGEN_INTERVAL_MS,
+    HEALTHICO_REGEN_PER_TICK,
+} from './pickupConstants.js';
+import { DealerWeapon } from './weapons/dealer.js';
 import { Pickup } from './pickup.js';
 
 export function updatePickups(game) {
@@ -22,8 +28,10 @@ export function updatePickups(game) {
                             ball.weapon.currentFireRate = ball.weapon.fireRate;
                         }
                     }
+                    ball.ammoCrateDoubleShotUntil = Date.now() + AMMO_CRATE_DOUBLE_SHOT_MS;
                 } else if (pickup.weaponType === 'healthico') {
                     ball.heal(HEALTHICO_HEAL);
+                    ball.applyHealthRegen(Date.now(), HEALTHICO_REGEN_PER_TICK, HEALTHICO_REGEN_DURATION_MS, HEALTHICO_REGEN_INTERVAL_MS);
                 } else if (pickup.weaponType === 'ubercharge') {
                     ball.applyUbercharge(Date.now());
                 } else if (pickup.weaponType === 'critical') {

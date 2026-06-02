@@ -1,4 +1,8 @@
 import { Vector } from './vector.js';
+import { FAINT_AROMA_AOE_RADIUS } from './constants.js';
+
+const _meltingLoveHeartImage = new Image();
+_meltingLoveHeartImage.src = 'assets/MeltingLoveHeart.webp';
 
 export class Projectile {
     constructor({ x, y, targetX, targetY, speed, damage, color, size, ownerId, type = 'bullet', label = '', ...extra }) {
@@ -30,7 +34,7 @@ export class Projectile {
     }
 
     update() {
-        if (this.type === 'shotgunray' || this.type === 'machinaray') {
+        if (this.type === 'shotgunray' || this.type === 'machinaray' || this.type === 'pinksray') {
             return;
         }
 
@@ -40,7 +44,7 @@ export class Projectile {
 
         this.prevPos = this.pos.clone();
 
-        if (this.type === 'grenadelauncher') {
+        if (this.type === 'grenadelauncher' || this.type === 'lochnload') {
             this.rotation += this.angularVelocity || 0;
             this.vel.y += this.gravity || 0;
             this.vel.x *= this.drag || 1;
@@ -91,6 +95,119 @@ export class Projectile {
             ctx.rotate(this.rotation);
             ctx.fillRect(-18, -5, 36, 10);
             ctx.restore();
+            return;
+        }
+
+        if (this.type === 'adoration') {
+            ctx.save();
+            // Pink glow halo
+            const r = (this.size || 9) + 8;
+            const halo = ctx.createRadialGradient(this.pos.x, this.pos.y, 0, this.pos.x, this.pos.y, r);
+            halo.addColorStop(0, 'rgba(255, 100, 180, 0.55)');
+            halo.addColorStop(0.5, 'rgba(255, 140, 200, 0.28)');
+            halo.addColorStop(1, 'rgba(255, 100, 180, 0)');
+            ctx.fillStyle = halo;
+            ctx.beginPath();
+            ctx.arc(this.pos.x, this.pos.y, r, 0, Math.PI * 2);
+            ctx.fill();
+            // Heart sprite
+            if (_meltingLoveHeartImage.complete && _meltingLoveHeartImage.naturalWidth > 0) {
+                const s = (this.size || 9) * 3;
+                ctx.translate(this.pos.x, this.pos.y);
+                ctx.rotate(this.rotation);
+                ctx.drawImage(_meltingLoveHeartImage, -s / 2, -s / 2, s, s);
+            } else {
+                ctx.fillStyle = '#ff69b4';
+                ctx.beginPath();
+                ctx.arc(this.pos.x, this.pos.y, this.size || 9, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'hairspray') {
+            const r = this.size || 50;
+            // Outer glow
+            const glow = ctx.createRadialGradient(this.pos.x, this.pos.y, r * 0.2, this.pos.x, this.pos.y, r);
+            glow.addColorStop(0,   'rgba(160, 255, 170, 0.55)');
+            glow.addColorStop(0.45,'rgba(180, 210, 255, 0.38)');
+            glow.addColorStop(0.75,'rgba(200, 140, 255, 0.25)');
+            glow.addColorStop(1,   'rgba(160, 100, 220, 0)');
+            ctx.save();
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(this.pos.x, this.pos.y, r, 0, Math.PI * 2);
+            ctx.fill();
+            // Drifting inner wisps
+            const t = (Date.now() % 600) / 600;
+            for (let k = 0; k < 3; k++) {
+                const angle = (k / 3) * Math.PI * 2 + t * Math.PI * 2;
+                const wx = this.pos.x + Math.cos(angle) * r * 0.3;
+                const wy = this.pos.y + Math.sin(angle) * r * 0.3;
+                const wisp = ctx.createRadialGradient(wx, wy, 2, wx, wy, r * 0.45);
+                wisp.addColorStop(0, 'rgba(200, 255, 200, 0.28)');
+                wisp.addColorStop(1, 'rgba(180, 130, 255, 0)');
+                ctx.fillStyle = wisp;
+                ctx.beginPath();
+                ctx.arc(wx, wy, r * 0.45, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'faintaroma') {
+            // AOE radius indicator — faint pink/purple circle
+            const auraGradient = ctx.createRadialGradient(this.pos.x, this.pos.y, FAINT_AROMA_AOE_RADIUS * 0.5, this.pos.x, this.pos.y, FAINT_AROMA_AOE_RADIUS);
+            auraGradient.addColorStop(0, 'rgba(200, 80, 255, 0.08)');
+            auraGradient.addColorStop(0.75, 'rgba(220, 100, 255, 0.12)');
+            auraGradient.addColorStop(1, 'rgba(180, 60, 220, 0.22)');
+            ctx.save();
+            ctx.fillStyle = auraGradient;
+            ctx.beginPath();
+            ctx.arc(this.pos.x, this.pos.y, FAINT_AROMA_AOE_RADIUS, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(210, 100, 255, 0.35)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.arc(this.pos.x, this.pos.y, FAINT_AROMA_AOE_RADIUS, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+
+            // Pink flower trail particles
+            if (this.trailPositions && this.trailPositions.length > 1) {
+                for (let t = 0; t < this.trailPositions.length; t++) {
+                    const tp = this.trailPositions[t];
+                    const alpha = 0.5 * (t / this.trailPositions.length);
+                    const size = 4 + 8 * (t / this.trailPositions.length);
+                    ctx.save();
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = '#ff88cc';
+                    ctx.beginPath();
+                    ctx.arc(tp.x, tp.y, size * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+            if (arrowImage && arrowImage.complete && arrowImage.naturalWidth > 0) {
+                const spriteWidth = 30;
+                const spriteHeight = 8;
+                ctx.save();
+                ctx.translate(this.pos.x, this.pos.y);
+                ctx.rotate(this.rotation);
+                ctx.drawImage(arrowImage, -spriteWidth / 2, -spriteHeight / 2, spriteWidth, spriteHeight);
+                ctx.restore();
+            } else {
+                ctx.save();
+                ctx.fillStyle = '#ff88cc';
+                ctx.beginPath();
+                ctx.arc(this.pos.x, this.pos.y, this.size || 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
             return;
         }
 
@@ -284,6 +401,30 @@ export class Projectile {
             return;
         }
 
+        if (this.type === 'pinksray') {
+            ctx.save();
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = this.tracerWidth || 4.2;
+            ctx.globalAlpha = 0.94;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.moveTo(this.pos.x, this.pos.y);
+            ctx.lineTo(this.endX, this.endY);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = Math.max(1.4, (this.tracerWidth || 4.2) * 0.38);
+            ctx.globalAlpha = 0.65;
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.moveTo(this.pos.x, this.pos.y);
+            ctx.lineTo(this.endX, this.endY);
+            ctx.stroke();
+            ctx.restore();
+            return;
+        }
+
         if (this.type === 'egoloneliness') {
             const velX = this.vel ? this.vel.x : Math.cos(this.rotation);
             const velY = this.vel ? this.vel.y : Math.sin(this.rotation);
@@ -451,7 +592,7 @@ export class Projectile {
             return;
         }
 
-        if (this.type === 'grenadelauncher' && grenadeImage && grenadeImage.complete && grenadeImage.naturalWidth > 0) {
+        if ((this.type === 'grenadelauncher' || this.type === 'lochnload') && grenadeImage && grenadeImage.complete && grenadeImage.naturalWidth > 0) {
             const spriteSize = 18;
             ctx.save();
             ctx.translate(this.pos.x, this.pos.y);
@@ -489,7 +630,7 @@ export class Projectile {
             }
         }
 
-        if ((this.type === 'pistol' || this.type === 'revolver' || this.type === 'egoloneliness' || this.type === 'sniper' || this.type === 'smg' || this.type === 'tommygun' || this.type === 'minigun' || this.type === 'machina') && pistolImage && pistolImage.complete && pistolImage.naturalWidth > 0) {
+        if ((this.type === 'pistol' || this.type === 'revolver' || this.type === 'egoloneliness' || this.type === 'sniper' || this.type === 'smg' || this.type === 'tommygun' || this.type === 'minigun' || this.type === 'machina' || this.type === 'egopinks') && pistolImage && pistolImage.complete && pistolImage.naturalWidth > 0) {
             const spriteWidth = 24;
             const spriteHeight = 12;
             ctx.save();
@@ -508,6 +649,117 @@ export class Projectile {
             ctx.rotate(this.rotation);
             ctx.drawImage(magicBulletImage, -spriteWidth / 2, -spriteHeight / 2, spriteWidth, spriteHeight);
             ctx.restore();
+            return;
+        }
+
+        if (this.type === 'egolovehate') {
+            const velX = this.vel ? this.vel.x : Math.cos(this.rotation);
+            const velY = this.vel ? this.vel.y : Math.sin(this.rotation);
+            const speed = Math.hypot(velX, velY) || 1;
+            const dirX = velX / speed;
+            const dirY = velY / speed;
+            const tailLength = 32;
+
+            ctx.save();
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 5;
+            ctx.globalAlpha = 0.7;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(this.pos.x - dirX * tailLength, this.pos.y - dirY * tailLength);
+            ctx.lineTo(this.pos.x, this.pos.y);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.4;
+            ctx.beginPath();
+            ctx.moveTo(this.pos.x - dirX * (tailLength * 0.6), this.pos.y - dirY * (tailLength * 0.6));
+            ctx.lineTo(this.pos.x, this.pos.y);
+            ctx.stroke();
+            ctx.restore();
+
+            const img = this.loveHateImage;
+            if (img && img.complete && img.naturalWidth > 0) {
+                const spriteSize = 22;
+                ctx.save();
+                ctx.translate(this.pos.x, this.pos.y);
+                ctx.rotate(this.rotation);
+                ctx.drawImage(img, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
+                ctx.restore();
+            } else {
+                ctx.save();
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.pos.x, this.pos.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+            return;
+        }
+
+        if (this.type === 'laetitia') {
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            const glow = ctx.createRadialGradient(this.pos.x, this.pos.y, 1, this.pos.x, this.pos.y, 20);
+            glow.addColorStop(0, 'rgba(255, 160, 255, 0.7)');
+            glow.addColorStop(0.5, 'rgba(255, 100, 255, 0.3)');
+            glow.addColorStop(1, 'rgba(255, 60, 255, 0)');
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(this.pos.x, this.pos.y, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            const img = this.laetitiaImage;
+            if (img && img.complete && img.naturalWidth > 0) {
+                const spriteSize = this.size * 2.5;
+                ctx.save();
+                ctx.translate(this.pos.x, this.pos.y);
+                ctx.rotate(this.rotation);
+                ctx.drawImage(img, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
+                ctx.restore();
+            } else {
+                ctx.save();
+                ctx.fillStyle = '#ffaaff';
+                ctx.beginPath();
+                ctx.arc(this.pos.x, this.pos.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+            return;
+        }
+
+        if (this.type === 'soundofstar') {
+            const spinAngle = this.soundStarOrbitAngle || 0;
+
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            const glow = ctx.createRadialGradient(this.pos.x, this.pos.y, 1, this.pos.x, this.pos.y, 24);
+            glow.addColorStop(0, 'rgba(255, 240, 120, 0.75)');
+            glow.addColorStop(0.45, 'rgba(255, 170, 30, 0.30)');
+            glow.addColorStop(1, 'rgba(255, 80, 0, 0)');
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(this.pos.x, this.pos.y, 24, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            const img = this.soundStarImage;
+            if (img && img.complete && img.naturalWidth > 0) {
+                const spriteSize = this.size * 3.4;
+                ctx.save();
+                ctx.translate(this.pos.x, this.pos.y);
+                ctx.rotate(spinAngle);
+                ctx.drawImage(img, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
+                ctx.restore();
+            } else {
+                ctx.save();
+                ctx.fillStyle = '#ffee44';
+                ctx.beginPath();
+                ctx.arc(this.pos.x, this.pos.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
             return;
         }
 

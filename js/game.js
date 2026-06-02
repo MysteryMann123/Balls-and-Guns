@@ -1,13 +1,21 @@
 import {
     ARENA_HEIGHT,
     ARENA_WIDTH,
+    START_WEAPON_OPTIONS,
+} from './gameConfig.js';
+import {
     DEAD_RINGER_DECOY_DURATION_MS,
     DEAD_RINGER_DECOY_SPEED,
     PICKUP_SPAWN_RATE_MS,
-    START_WEAPON_OPTIONS
+} from './pickupConstants.js';
+import {
+    LAETITIA_BLAST_RADIUS,
+    LAETITIA_BLAST_DAMAGE_MIN_RATIO,
+    LAETITIA_BLAST_DAMAGE_MAX_RATIO,
+    LAETITIA_MARK_DURATION_MS,
 } from './constants.js';
 import { Ball } from './ball.js';
-import { DealerWeapon } from './dealer.js';
+import { DealerWeapon } from './weapons/dealer.js';
 import {
     applyEgoMagicBulletHoming as applyEgoMagicBulletHomingImpl,
     fireEgoLonelinessTracer as fireEgoLonelinessTracerImpl,
@@ -18,6 +26,7 @@ import {
     fireHornetShotgunRay as fireHornetShotgunRayImpl,
     fireForceANatureRay as fireForceANatureRayImpl,
     fireMachinaTracer as fireMachinaTracerImpl,
+    firePinksTracer as firePinksTracerImpl,
     fireShotgunRay as fireShotgunRayImpl,
     fireSodaPopperRay as fireSodaPopperRayImpl,
     fireWidowmakerRay as fireWidowmakerRayImpl,
@@ -57,7 +66,7 @@ import { ballShooting as ballShootingImpl } from './gameShooting.js';
 import { draw as drawImpl } from './gameRender.js';
 
 export class Game {
-    constructor(canvas, pistolProjectileImage, syringeAmmoImage, rocketAmmoImage, grenadeAmmoImage, arrowProjectileImage, crusadersCrossbowProjectileImage, explosiveFlaskImage, bunnyProjectileImage, magicBulletProjectileImage, appleProjectileImage, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, tommyGunImage, egoWeaponMagicBulletImage, egoWeaponLonelinessImage, egoWeaponPenitenceImage, egoWeaponParadiseLostImage, egoWeaponHarmonyImage, egoWeaponSolemnVowBlackImage, egoWeaponSolemnVowWhiteImage, kaleidoscopeMuzzleImage, funeralDeadButterfliesPortraitImage, portalImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, familyBusinessWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, musketWeaponImage, widowmakerWeaponImage, scrumpyBottleImage, smokeImage, hornetRifleImage, hornetShotgunImage, sporeImage, sporeRoundImage, swordSharpenedImage, blessingShieldImage, pickupIcons, settings = {}) {
+    constructor(canvas, pistolProjectileImage, syringeAmmoImage, rocketAmmoImage, grenadeAmmoImage, arrowProjectileImage, crusadersCrossbowProjectileImage, explosiveFlaskImage, bunnyProjectileImage, magicBulletProjectileImage, appleProjectileImage, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, tommyGunImage, egoWeaponMagicBulletImage, egoWeaponLonelinessImage, egoWeaponPenitenceImage, egoWeaponParadiseLostImage, egoWeaponHarmonyImage, egoWeaponSolemnVowBlackImage, egoWeaponSolemnVowWhiteImage, kaleidoscopeMuzzleImage, funeralDeadButterfliesPortraitImage, portalImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, lochnLoadImage, faintaromaWeaponImage, hairsprayImage, adorationWeaponImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, familyBusinessWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, musketWeaponImage, widowmakerWeaponImage, scrumpyBottleImage, smokeImage, hornetRifleImage, hornetShotgunImage, sporeImage, sporeRoundImage, swordSharpenedImage, blessingShieldImage, hypocrisyWeaponImage, crimsonScarGunImage, crimsonScarBladeImage, crimsonScarMarkImage, pinksWeaponImage, sodaWeaponImage, laetitiaWeaponImage, pickupIcons, settings = {}) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.pistolProjectileImage = pistolProjectileImage;
@@ -97,6 +106,10 @@ export class Game {
         this.yellowTargeImage = yellowTargeImage;
         this.medigunImage = medigunImage;
         this.grenadeLauncherImage = grenadeLauncherImage;
+        this.lochnLoadImage = lochnLoadImage;
+        this.faintaromaWeaponImage = faintaromaWeaponImage;
+        this.hairsprayImage = hairsprayImage;
+        this.adorationWeaponImage = adorationWeaponImage;
         this.flamethrowerImage = flamethrowerImage;
         this.deadRingerImage = deadRingerImage;
         this.truePistolWeaponImage = truePistolWeaponImage;
@@ -116,6 +129,13 @@ export class Game {
         this.sporeRoundImage = sporeRoundImage;
         this.swordSharpenedImage = swordSharpenedImage;
         this.blessingShieldImage = blessingShieldImage;
+        this.hypocrisyWeaponImage = hypocrisyWeaponImage;
+        this.crimsonScarGunImage = crimsonScarGunImage;
+        this.crimsonScarBladeImage = crimsonScarBladeImage;
+        this.crimsonScarMarkImage = crimsonScarMarkImage;
+        this.pinksWeaponImage = pinksWeaponImage;
+        this.sodaWeaponImage = sodaWeaponImage;
+        this.laetitiaWeaponImage = laetitiaWeaponImage;
         this.pickupIcons = pickupIcons || {};
 
         this.settings = buildGameSettings(settings, this.normalizeStartWeapons.bind(this));
@@ -311,6 +331,22 @@ export class Game {
         return triggerExplosiveFlaskImpl(this, x, y, ownerId, now, fromPickup);
     }
 
+    triggerLaetitiaBlast(victim, now) {
+        this.explosionEffects.push({ x: victim.pos.x, y: victim.pos.y, radius: LAETITIA_BLAST_RADIUS, expiresAt: now + 350 });
+        for (const ball of this.balls) {
+            if (!ball.isAlive() || ball.id === victim.id) continue;
+            if (!this.areEnemies(victim, ball)) continue;
+            if (ball.isUntargetable(now)) continue;
+            const dist = Math.hypot(ball.pos.x - victim.pos.x, ball.pos.y - victim.pos.y);
+            if (dist > LAETITIA_BLAST_RADIUS + ball.radius) continue;
+            if (!ball.isUberActive(now)) {
+                const dmgRatio = LAETITIA_BLAST_DAMAGE_MIN_RATIO + Math.random() * (LAETITIA_BLAST_DAMAGE_MAX_RATIO - LAETITIA_BLAST_DAMAGE_MIN_RATIO);
+                ball.takeDamage(ball.maxHP * dmgRatio, 'generic', 'laetitia_blast');
+                ball.applyLaetitiaGiftMark(now, LAETITIA_MARK_DURATION_MS);
+            }
+        }
+    }
+
     updateExplosionEffects(now) {
         return updateExplosionEffectsImpl(this, now);
     }
@@ -409,6 +445,10 @@ export class Game {
 
     fireMachinaTracer(shooter, angle, now) {
         return fireMachinaTracerImpl(this, shooter, angle, now);
+    }
+
+    firePinksTracer(shooter, angle, now) {
+        return firePinksTracerImpl(this, shooter, angle, now);
     }
 
     fireEgoMagicTracer(shooter, angle, now) {

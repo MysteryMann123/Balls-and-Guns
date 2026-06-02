@@ -1,4 +1,126 @@
-import { PICKUP_SPAWN_RATE_MS } from './constants.js';
+import { PICKUP_SPAWN_RATE_MS } from './pickupConstants.js';
+
+// --- Arena ---
+export const ARENA_WIDTH  = 800;
+export const ARENA_HEIGHT = 600;
+
+// --- Ball ---
+export const BALL_MAX_HP     = 1600;
+export const BALL_BASE_SPEED = 4;
+export const BALL_MIN_SPEED  = 1;
+
+// --- Timing ---
+export const REACTION_DELAY_MS = 140;
+
+// --- Weapon / Utility Pools ---
+export const START_WEAPON_OPTIONS = [
+    'pistol',
+    'revolver',
+    'shotgun',
+    'familybusiness',
+    'sodapopper',
+    'forceanature',
+    'musket',
+    'magicianhat',
+    'widowmaker',
+    'sniper',
+    'machina',
+    'huntsman',
+    'crusaderscrossbow',
+    'smg',
+    'tommygun',
+    'egomagicbullet',
+    'egoloneliness',
+    'penitence',
+    'paradiselost',
+    'solemnvow',
+    'harmony',
+    'hornet',
+    'swordsharpened',
+    'egolovehate',
+    'soundofstar',
+    'minigun',
+    'blutsauger',
+    'shortcircuit',
+    'rocketlauncher',
+    'piplauncher',
+    'beggersbazooka',
+    'directhit',
+    'nearmissed',
+    'rocketjumper',
+    'medigun',
+    'yellowtarge',
+    'grenadelauncher',
+    'lochnload',
+    'faintaroma',
+    'hairspray',
+    'adoration',
+    'flamethrower',
+    'hypocrisy',
+    'crimsonscar',
+    'egopinks',
+    'egosoda',
+    'laetitia',
+    'dealer'
+];
+
+export const DROP_WEAPON_TYPES = [
+    'pistol',
+    'revolver',
+    'shotgun',
+    'familybusiness',
+    'sodapopper',
+    'forceanature',
+    'musket',
+    'magicianhat',
+    'widowmaker',
+    'dealer',
+    'sniper',
+    'machina',
+    'huntsman',
+    'crusaderscrossbow',
+    'smg',
+    'tommygun',
+    'egomagicbullet',
+    'egoloneliness',
+    'penitence',
+    'paradiselost',
+    'solemnvow',
+    'harmony',
+    'hornet',
+    'swordsharpened',
+    'egolovehate',
+    'soundofstar',
+    'minigun',
+    'blutsauger',
+    'shortcircuit',
+    'rocketlauncher',
+    'piplauncher',
+    'beggersbazooka',
+    'directhit',
+    'nearmissed',
+    'rocketjumper',
+    'medigun',
+    'yellowtarge',
+    'grenadelauncher',
+    'lochnload',
+    'faintaroma',
+    'hairspray',
+    'adoration',
+    'flamethrower'
+];
+
+export const DROP_UTILITY_TYPES = [
+    'ammoico',
+    'healthico',
+    'ubercharge',
+    'critical',
+    'speed',
+    'explosiveflask',
+    'scrumpybottle',
+    'bombanomicron',
+    'deadringer'
+];
 
 export function buildGameSettings(settings, normalizeStartWeapons) {
     const resolved = {

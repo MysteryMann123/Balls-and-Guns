@@ -82,6 +82,22 @@ const swordSharpenedImage = new Image();
 swordSharpenedImage.src = 'assets/EGOWeaponSwordSharpenedbyTears.webp';
 const blessingShieldImage = new Image();
 blessingShieldImage.src = 'assets/KnightOfDespairBlessingShield.png';
+const hypocrisyWeaponImage = new Image();
+hypocrisyWeaponImage.src = 'assets/EGOWeaponHypocrisy.webp';
+const crimsonScarGunImage = new Image();
+crimsonScarGunImage.src = 'assets/EGOCrimsonGun.png';
+const crimsonScarBladeImage = new Image();
+crimsonScarBladeImage.src = 'assets/EGOCrimsonBlade.png';
+const crimsonScarMarkImage = new Image();
+crimsonScarMarkImage.src = 'assets/LittleRedTarget.webp';
+const crimsonScarPickupImage = new Image();
+crimsonScarPickupImage.src = 'assets/EGOWeaponCrimsonScar.webp';
+const pinksWeaponImage = new Image();
+pinksWeaponImage.src = 'assets/EGOWeaponPinks.webp';
+const sodaWeaponImage = new Image();
+sodaWeaponImage.src = 'assets/EGOWeaponSoda.webp';
+const laetitiaWeaponImage = new Image();
+laetitiaWeaponImage.src = 'assets/EGOWeaponLaetitia.webp';
 const egoWeaponSolemnVowBlackImage = new Image();
 egoWeaponSolemnVowBlackImage.src = 'assets/EGOWeaponSolemnVow_Black.jpg';
 const egoWeaponSolemnVowWhiteImage = new Image();
@@ -120,6 +136,14 @@ const medigunImage = new Image();
 medigunImage.src = 'assets/RED_Medigun.png';
 const grenadeLauncherImage = new Image();
 grenadeLauncherImage.src = 'assets/Grenade_Launcher.png';
+const lochnLoadImage = new Image();
+lochnLoadImage.src = 'assets/LochnLoad.png';
+const faintaromaWeaponImage = new Image();
+faintaromaWeaponImage.src = 'assets/EGOWeaponReverberation.webp';
+const hairsprayImage = new Image();
+hairsprayImage.src = 'assets/Emz_hairspray.jpg';
+const adorationWeaponImage = new Image();
+adorationWeaponImage.src = 'assets/EGOWeaponAdoration.webp';
 const flamethrowerImage = new Image();
 flamethrowerImage.src = 'assets/RedFlamethrowerpng.png';
 const deadRingerImage = new Image();
@@ -203,6 +227,10 @@ const game = new Game(
     yellowTargeImage,
     medigunImage,
     grenadeLauncherImage,
+    lochnLoadImage,
+    faintaromaWeaponImage,
+    hairsprayImage,
+    adorationWeaponImage,
     flamethrowerImage,
     deadRingerImage,
     truePistolImage,
@@ -222,6 +250,13 @@ const game = new Game(
     sporeRoundImage,
     swordSharpenedImage,
     blessingShieldImage,
+    hypocrisyWeaponImage,
+    crimsonScarGunImage,
+    crimsonScarBladeImage,
+    crimsonScarMarkImage,
+    pinksWeaponImage,
+    sodaWeaponImage,
+    laetitiaWeaponImage,
     {
     pistol: truePistolImage,
     revolver: revolverImage,
@@ -246,6 +281,7 @@ const game = new Game(
     harmony: egoWeaponHarmonyImage,
     hornet: egoWeaponHornetImage,
     solemnvow: egoWeaponSolemnVowBlackImage,
+    soundofstar: (() => { const img = new Image(); img.src = 'assets/EGOWeaponSoundofaStar.webp'; return img; })(),
     minigun: minigunImage,
     blutsauger: blutsaugerImage,
         shortcircuit: shortCircuitImage,
@@ -258,6 +294,10 @@ const game = new Game(
     yellowtarge: yellowTargeImage,
     medigun: medigunImage,
     grenadelauncher: grenadeLauncherImage,
+    lochnload: lochnLoadImage,
+    faintaroma: faintaromaWeaponImage,
+    hairspray: hairsprayImage,
+    adoration: adorationWeaponImage,
     flamethrower: flamethrowerImage,
     ammoico: pickupAmmoicoIcon,
         healthico: pickupHealthicoIcon,
@@ -267,7 +307,12 @@ const game = new Game(
         explosiveflask: explosiveFlaskImage,
         scrumpybottle: scrumpyBottleImage,
         bombanomicron: pickupBombanomicronIcon,
-        deadringer: deadRingerImage
+        deadringer: deadRingerImage,
+        hypocrisy: hypocrisyWeaponImage,
+        crimsonscar: crimsonScarPickupImage,
+        egopinks: pinksWeaponImage,
+        egosoda: sodaWeaponImage,
+        laetitia: laetitiaWeaponImage,
     },
     gameSettings
 );

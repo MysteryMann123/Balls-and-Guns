@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balls &amp; Guns — Sandbox</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sandbox-menu">
+        <div>
+            <h1>Sandbox</h1>
+            <p class="sandbox-sub">Configure entities before entering.</p>
+        </div>
+
+        <hr>
+
+        <!-- HP Config -->
+        <div class="entity-section">
+            <div class="entity-title">HP Config</div>
+            <p class="entity-desc">Starting HP for all entities in this session.</p>
+            <div class="hp-preset-row" id="hp-presets">
+                <button type="button" class="hp-preset-btn" id="hp-max-btn">MAX</button>
+                <button type="button" class="hp-preset-btn" data-hp="10000">10K</button>
+                <button type="button" class="hp-preset-btn" data-hp="100000">100K</button>
+                <button type="button" class="hp-preset-btn" data-hp="500000">500K</button>
+                <button type="button" class="hp-preset-btn" data-hp="1000000">1M</button>
+                <button type="button" class="hp-preset-btn" data-hp="5000000">5M</button>
+                <button type="button" class="hp-preset-btn" data-hp="10000000">10M</button>
+            </div>
+            <div class="row">
+                <label for="start-hp">Custom value</label>
+                <input type="number" id="start-hp" value="1000000" min="1000" max="100000000" step="1000">
+            </div>
+        </div>
+
+        <!-- Player entity -->
+        <div class="entity-section">
+            <div class="entity-title">
+                <div class="dot" style="background:#4ecdc4;"></div>
+                Player
+            </div>
+            <p class="entity-desc">Controlled by you. WASD / Arrows to move &middot; Mouse to aim &middot; Click &amp; hold to fire.</p>
+            <div class="ball-slot" id="slot-player">
+                <div class="ball-slot-header" id="slot-header-player">
+                    <div class="ball-slot-weapon">
+                        <img class="ball-slot-thumb" id="slot-thumb-player" src="" alt="">
+                        <span class="ball-slot-name" id="slot-name-player">Pistol</span>
+                    </div>
+                    <span class="ball-slot-arrow">&#9662;</span>
+                </div>
+                <input type="hidden" id="player-weapon" value="pistol">
+                <div class="weapon-picker" id="picker-player" hidden></div>
+            </div>
+        </div>
+
+        <!-- Static entity -->
+        <div class="entity-section">
+            <div class="entity-title">
+                <div class="dot" style="background:#c8c8c8;"></div>
+                Static
+            </div>
+            <p class="entity-desc">Fixed target dummy. Never moves. Always holds Pistol.</p>
+        </div>
+
+        <!-- Mover entity -->
+        <div class="entity-section" id="mover-section">
+            <div class="entity-title">
+                <div class="dot" style="background:#ff6b6b;"></div>
+                Mover
+            </div>
+            <p class="entity-desc">Full AI — bounces around the arena and auto-fires at the nearest entity.</p>
+            <div class="ball-slot" id="slot-mover">
+                <div class="ball-slot-header" id="slot-header-mover">
+                    <div class="ball-slot-weapon">
+                        <img class="ball-slot-thumb" id="slot-thumb-mover" src="" alt="">
+                        <span class="ball-slot-name" id="slot-name-mover">Pistol</span>
+                    </div>
+                    <span class="ball-slot-arrow">&#9662;</span>
+                </div>
+                <input type="hidden" id="mover-weapon" value="pistol">
+                <div class="weapon-picker" id="picker-mover" hidden></div>
+            </div>
+        </div>
+
+        <!-- Enemy Config -->
+        <div class="entity-section">
+            <div class="entity-title">Enemy Config</div>
+            <p class="entity-desc">Behavior settings for enemies at session start.</p>
+            <div class="toggle-row">
+                <label for="mover-enabled">Mover Ball</label>
+                <input type="checkbox" id="mover-enabled">
+            </div>
+            <div class="toggle-row">
+                <label for="enemy-fire">Auto Fire</label>
+                <input type="checkbox" id="enemy-fire">
+            </div>
+        </div>
+
+        <div class="sandbox-actions">
+            <button class="btn-back" onclick="window.location.href='index.html'">&larr; Back</button>
+            <button class="btn-start" id="start-btn">Start Sandbox</button>
+        </div>
+
+        <p class="sandbox-note">Weapon list is pulled live from the game's source — any newly added weapon appears here automatically.</p>
+    </div>
+
+    <script type="module">
+        import { START_WEAPON_OPTIONS, BALL_MAX_HP } from './js/gameConfig.js';
+
+        // ---- Weapon metadata (mirrors index.html) ----
+        const WEAPON_LABELS = {
+            pistol:           'Pistol',
+            revolver:         'Revolver',
+            shotgun:          'Shotgun',
+            familybusiness:   'Family Business',
+            sodapopper:       'Soda Popper',
+            forceanature:     'Force-A-Nature',
+            musket:           'Musket',
+            magicianhat:      'Magician Hat',
+            widowmaker:       'Widowmaker',
+            sniper:           'Sniper Rifle',
+            machina:          'Machina',
+            huntsman:         'Huntsman',
+            crusaderscrossbow:"Crusader's Crossbow",
+            flamethrower:     'Flamethrower',
+            smg:              'SMG',
+            tommygun:         'Tommy Gun',
+            blutsauger:       'Blutsauger',
+            minigun:          'Minigun',
+            medigun:          'Medi Gun',
+            shortcircuit:     'Short Circuit',
+            rocketlauncher:   'Rocket Launcher',
+            piplauncher:      'Pip Launcher',
+            beggersbazooka:   "Begger's Bazooka",
+            directhit:        'Direct Hit',
+            nearmissed:       'Near Missed',
+            rocketjumper:     'Rocket Jumper',
+            grenadelauncher:  'Grenade Launcher',
+            lochnload:        'Loch-n-Load',
+            faintaroma:       'Faint Aroma',
+            hairspray:        'Hairspray',
+            yellowtarge:      "Chargin' Targe",
+            dealer:           'Dealer',
+            egomagicbullet:   'Magic Bullet',
+            egoloneliness:    'Loneliness',
+            penitence:        'Penitence',
+            paradiselost:     'Paradise Lost',
+            solemnvow:        'Solemn Vow',
+            harmony:          'Harmony',
+            hornet:           'Hornet',
+            swordsharpened:   'Sword Sharpened',
+            egolovehate:      'Love & Hate',
+            soundofstar:      'Sound of a Star',
+            adoration:        'Adoration',
+            hypocrisy:        'Hypocrisy',
+            crimsonscar:      'CrimsonScar',
+            egopinks:         'EGO: Pinks',
+            egosoda:          'EGO: Soda',
+            laetitia:         'EGO: Laetitia',
+        };
+
+        const WEAPON_IMAGES = {
+            pistol:           'assets/Pistol_True.png',
+            revolver:         'assets/Pistol.png',
+            shotgun:          'assets/Shotgun_IMG.png',
+            familybusiness:   'assets/Familybusiness.PNG',
+            sodapopper:       'assets/250px-Soda_Popper.PNG',
+            forceanature:     'assets/Force-A-Nature.png',
+            musket:           'assets/rifle-on-a-transparent-free-png-864369422.png',
+            magicianhat:      'assets/Magic-Hat-PNG-Image-File-3052888691.png',
+            widowmaker:       'assets/Widowmaker.png',
+            sniper:           'assets/Sniper_rifle.png',
+            machina:          'assets/Machina.png',
+            huntsman:         'assets/Huntsman.png',
+            crusaderscrossbow:"assets/RED_Crusader's_Crossbow.png",
+            flamethrower:     'assets/RedFlamethrowerpng.png',
+            smg:              'assets/SMG.png',
+            tommygun:         'assets/TOMMY_GUN.png',
+            blutsauger:       'assets/Blutsauger.png',
+            minigun:          'assets/Minigun_IMG.png',
+            medigun:          'assets/RED_Medigun.png',
+            shortcircuit:     'assets/Short_circuit.png',
+            rocketlauncher:   'assets/Rocket_launcher.png',
+            piplauncher:      'assets/Pip_launcher.png',
+            beggersbazooka:   "assets/Beggar's_Bazooka.png",
+            directhit:        'assets/Directhittransparent.png',
+            nearmissed:       'assets/Directhittransparent.png',
+            rocketjumper:     'assets/Rocket_Jumper.png',
+            grenadelauncher:  'assets/Grenade_Launcher.png',
+            lochnload:        'assets/LochnLoad.png',
+            faintaroma:       'assets/EGOWeaponReverberation.webp',
+            hairspray:        'assets/Emz_hairspray.jpg',
+            yellowtarge:      'assets/YellowTarge.png',
+            dealer:           'assets/Poker.jpg',
+            egomagicbullet:   'assets/EGOWeaponMagicBullet.webp',
+            egoloneliness:    'assets/EGOWeaponLoneliness.webp',
+            penitence:        'assets/EGOWeaponPenitence.webp',
+            paradiselost:     'assets/EGOWeaponParadiseLost.webp',
+            harmony:          'assets/EGOWeaponHarmony.webp',
+            hornet:           'assets/EGOWeaponHornet.png',
+            egolovehate:      'assets/EGOWeaponIntheNameofLoveandHate.webp',
+            soundofstar:      'assets/EGOWeaponSoundofaStar.webp',
+            swordsharpened:   'assets/EGOWeaponSwordSharpenedbyTears.webp',
+            solemnvow:        'assets/EGOWeaponSolemnVow.webp',
+            adoration:        'assets/EGOWeaponAdoration.webp',
+            hypocrisy:        'assets/EGOWeaponHypocrisy.webp',
+            crimsonscar:      'assets/EGOWeaponCrimsonScar.webp',
+            egopinks:         'assets/EGOWeaponPinks.webp',
+            egosoda:          'assets/EGOWeaponSoda.webp',
+            laetitia:         'assets/EGOWeaponLaetitia.webp',
+        };
+
+        const EGO_WEAPONS = new Set([
+            'egomagicbullet', 'egoloneliness', 'penitence', 'paradiselost',
+            'solemnvow', 'harmony', 'hornet', 'swordsharpened', 'egolovehate', 'soundofstar', 'faintaroma', 'adoration', 'hypocrisy', 'crimsonscar', 'egopinks', 'egosoda', 'laetitia'
+        ]);
+
+        const standardWeapons = START_WEAPON_OPTIONS.filter(w => !EGO_WEAPONS.has(w));
+        const egoWeapons      = START_WEAPON_OPTIONS.filter(w =>  EGO_WEAPONS.has(w));
+
+        // ---- HP preset logic ----
+        const hpInput = document.getElementById('start-hp');
+
+        // Set MAX button to actual BALL_MAX_HP constant and default to it
+        const maxBtn = document.getElementById('hp-max-btn');
+        maxBtn.dataset.hp = BALL_MAX_HP;
+        maxBtn.textContent = `MAX (${BALL_MAX_HP.toLocaleString()})`;
+        hpInput.value = BALL_MAX_HP;
+
+        // Query after MAX button data-hp is set
+        const presetBtns = document.querySelectorAll('.hp-preset-btn');
+
+        function syncPresetHighlight() {
+            const cur = Number(hpInput.value);
+            presetBtns.forEach(b => b.classList.toggle('hp-preset-active', Number(b.dataset.hp) === cur));
+        }
+
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                hpInput.value = Number(btn.dataset.hp);
+                syncPresetHighlight();
+                saveSettings();
+            });
+        });
+
+        hpInput.addEventListener('input', () => { syncPresetHighlight(); saveSettings(); });
+        syncPresetHighlight(); // set MAX active on load
+
+        const SANDBOX_KEY = 'ballsAndGuns_sandbox_settings';
+
+        function saveSettings() {
+            localStorage.setItem(SANDBOX_KEY, JSON.stringify({
+                hp:           hpInput.value,
+                playerWeapon: document.getElementById('player-weapon').value,
+                moverWeapon:  document.getElementById('mover-weapon').value,
+                moverEnabled: document.getElementById('mover-enabled').checked,
+                enemyFire:    document.getElementById('enemy-fire').checked
+            }));
+        }
+
+        function loadSavedSettings() {
+            try {
+                const raw = localStorage.getItem(SANDBOX_KEY);
+                if (!raw) return null;
+                return JSON.parse(raw);
+            } catch { return null; }
+        }
+
+        // ---- Card picker logic ----
+        let openPickerId = null;
+
+        function selectWeapon(slotId, weaponType) {
+            const hidden = document.getElementById(`${slotId}-weapon`);
+            if (hidden) hidden.value = weaponType;
+
+            const thumb = document.getElementById(`slot-thumb-${slotId}`);
+            const name  = document.getElementById(`slot-name-${slotId}`);
+            if (thumb) thumb.src = WEAPON_IMAGES[weaponType] || '';
+            if (name)  name.textContent = WEAPON_LABELS[weaponType] || weaponType;
+
+            const picker = document.getElementById(`picker-${slotId}`);
+            if (picker) {
+                picker.querySelectorAll('.picker-card').forEach(card => {
+                    card.classList.toggle('selected', card.dataset.weapon === weaponType);
+                });
+            }
+            closePicker(slotId);
+            saveSettings();
+        }
+
+        function closePicker(slotId) {
+            const picker = document.getElementById(`picker-${slotId}`);
+            const header = document.getElementById(`slot-header-${slotId}`);
+            if (picker) picker.hidden = true;
+            if (header) header.classList.remove('open');
+            if (openPickerId === slotId) openPickerId = null;
+        }
+
+        function togglePicker(slotId) {
+            if (openPickerId !== null && openPickerId !== slotId) closePicker(openPickerId);
+            const picker = document.getElementById(`picker-${slotId}`);
+            const header = document.getElementById(`slot-header-${slotId}`);
+            if (!picker) return;
+            if (picker.hidden) {
+                picker.hidden = false;
+                header.classList.add('open');
+                openPickerId = slotId;
+            } else {
+                closePicker(slotId);
+            }
+        }
+
+        function makePickerCard(weaponType, slotId, isSelected) {
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'picker-card' +
+                (EGO_WEAPONS.has(weaponType) ? ' ego-card' : '') +
+                (isSelected ? ' selected' : '');
+            card.dataset.weapon = weaponType;
+
+            const thumbWrap = document.createElement('div');
+            thumbWrap.className = 'picker-thumb-wrap';
+            const img = document.createElement('img');
+            img.className = 'picker-thumb';
+            img.src = WEAPON_IMAGES[weaponType] || '';
+            img.alt = '';
+            thumbWrap.appendChild(img);
+
+            const nameEl = document.createElement('span');
+            nameEl.className = 'picker-card-name';
+            nameEl.textContent = WEAPON_LABELS[weaponType] || weaponType;
+
+            card.appendChild(thumbWrap);
+            card.appendChild(nameEl);
+            card.addEventListener('click', () => selectWeapon(slotId, weaponType));
+            return card;
+        }
+
+        function buildPicker(pickerId, slotId, currentWeapon) {
+            const picker = document.getElementById(pickerId);
+            picker.innerHTML = '';
+
+            if (standardWeapons.length) {
+                const t = document.createElement('div');
+                t.className = 'picker-section-title';
+                t.textContent = 'Standard';
+                picker.appendChild(t);
+                const g = document.createElement('div');
+                g.className = 'picker-grid';
+                for (const w of standardWeapons) g.appendChild(makePickerCard(w, slotId, w === currentWeapon));
+                picker.appendChild(g);
+            }
+
+            if (egoWeapons.length) {
+                const t = document.createElement('div');
+                t.className = 'picker-section-title ego-section-title';
+                t.textContent = 'E.G.O';
+                picker.appendChild(t);
+                const g = document.createElement('div');
+                g.className = 'picker-grid';
+                for (const w of egoWeapons) g.appendChild(makePickerCard(w, slotId, w === currentWeapon));
+                picker.appendChild(g);
+            }
+        }
+
+        // ---- Init pickers ----
+        const DEFAULT = 'pistol';
+
+        document.getElementById('slot-header-player').addEventListener('click', () => togglePicker('player'));
+        document.getElementById('slot-header-mover').addEventListener('click',  () => togglePicker('mover'));
+
+        buildPicker('picker-player', 'player', DEFAULT);
+        buildPicker('picker-mover',  'mover',  DEFAULT);
+
+        // Set initial thumbs
+        document.getElementById('slot-thumb-player').src = WEAPON_IMAGES[DEFAULT] || '';
+        document.getElementById('slot-thumb-mover').src  = WEAPON_IMAGES[DEFAULT] || '';
+
+        // ---- Mover toggle: show/hide mover section ----
+        const moverEnabledEl  = document.getElementById('mover-enabled');
+        const moverSectionEl  = document.getElementById('mover-section');
+
+        function syncMoverSection() {
+            moverSectionEl.style.display = moverEnabledEl.checked ? '' : 'none';
+        }
+
+        moverEnabledEl.addEventListener('change', () => { syncMoverSection(); saveSettings(); });
+        document.getElementById('enemy-fire').addEventListener('change', saveSettings);
+        syncMoverSection(); // hidden by default (checkbox unchecked)
+
+        document.addEventListener('keydown', (e) => {
+            if (e.shiftKey && e.ctrlKey && (e.key === 'R' || e.key === 'r')) {
+                e.preventDefault();
+                localStorage.removeItem(SANDBOX_KEY);
+                location.reload();
+            }
+        });
+
+        const saved = loadSavedSettings();
+        if (saved) {
+            if (saved.hp           != null) { hpInput.value = saved.hp; syncPresetHighlight(); }
+            if (saved.moverEnabled != null) moverEnabledEl.checked = saved.moverEnabled;
+            if (saved.enemyFire    != null) document.getElementById('enemy-fire').checked = saved.enemyFire;
+            syncMoverSection();
+            if (saved.playerWeapon) selectWeapon('player', saved.playerWeapon);
+            if (saved.moverWeapon)  selectWeapon('mover',  saved.moverWeapon);
+        }
+
+        // ---- Start button ----
+        document.getElementById('start-btn').addEventListener('click', () => {
+            const pw = document.getElementById('player-weapon').value;
+            const mw = document.getElementById('mover-weapon').value;
+            const hp = Math.max(1000, Math.min(100_000_000, Number(hpInput.value) || BALL_MAX_HP));
+            const ef = document.getElementById('enemy-fire').checked ? '1' : '0';
+            const mb = moverEnabledEl.checked ? '1' : '0';
+            window.location.href = `sandbox-arena.html?playerWeapon=${pw}&moverWeapon=${mw}&startHp=${hp}&enemyFire=${ef}&moverBall=${mb}`;
+        });
+    </script>
+</body>
+</html>

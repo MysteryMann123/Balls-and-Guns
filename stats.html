@@ -3,320 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balls & Guns - Arsenal Viewer</title>
-    <style>
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: radial-gradient(circle at top, #2b1b3f 0%, #131018 45%, #0c0b11 100%);
-            color: #fff;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .page {
-            width: min(1100px, 96vw);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(18, 15, 25, 0.9);
-            border: 2px solid #7a63ff;
-            border-radius: 14px;
-            padding: 14px 16px;
-        }
-        .title {
-            margin: 0;
-            font-size: 30px;
-            letter-spacing: 1px;
-            color: #ffe36a;
-            text-shadow: 0 0 14px rgba(255, 227, 106, 0.45);
-        }
-        .subtitle {
-            margin: 2px 0 0;
-            color: #a8e7ff;
-            font-size: 14px;
-        }
-        .header-actions {
-            display: flex;
-            gap: 10px;
-        }
-        .link-btn {
-            text-decoration: none;
-            padding: 10px 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            border: 1px solid transparent;
-            color: #fff;
-        }
-        .menu-btn { background: #3b82f6; }
-        .play-btn { background: #16a34a; }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-        }
-        .tab-btn {
-            border: none;
-            border-radius: 999px;
-            padding: 10px 14px;
-            font-weight: bold;
-            cursor: pointer;
-            background: #2a2540;
-            color: #d8d8ff;
-        }
-        .tab-btn.active {
-            background: linear-gradient(135deg, #ff5c8a, #7a63ff);
-            color: #fff;
-            box-shadow: 0 0 14px rgba(122, 99, 255, 0.4);
-        }
-
-        .content {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 14px;
-            min-height: 560px;
-        }
-        .panel {
-            background: rgba(15, 12, 22, 0.95);
-            border: 1px solid #44376a;
-            border-radius: 14px;
-            padding: 12px;
-        }
-        .list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 520px;
-            overflow: auto;
-        }
-        .list-item {
-            background: #1c1730;
-            color: #d9d4ff;
-            border: 1px solid #3b315f;
-            border-radius: 10px;
-            text-align: left;
-            padding: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            letter-spacing: 0.2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .list-thumb-wrap {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            border: 1px solid #47386f;
-            background: #161128;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        .list-thumb {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 3px;
-        }
-        .list-thumb-wrap.hidden {
-            display: none;
-        }
-        .list-label {
-            min-width: 0;
-        }
-        .list-item.active {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: #fff;
-            border-color: #8b7dff;
-        }
-
-        .detail-title {
-            margin: 2px 0 0;
-            font-size: 30px;
-            color: #7de4ff;
-            text-shadow: 0 0 10px rgba(125, 228, 255, 0.4);
-        }
-        .detail-header {
-            display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 14px;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .detail-img-wrap {
-            width: 120px;
-            height: 120px;
-            border-radius: 14px;
-            border: 1px solid #47386f;
-            background: #1a1430;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .detail-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 10px;
-        }
-        .detail-img-wrap.hidden {
-            display: none;
-        }
-        .detail-text {
-            min-width: 0;
-        }
-        .detail-subtitle {
-            margin: 6px 0 14px;
-            color: #ffd870;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-        .chips {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .stat-chip {
-            background: #1a1430;
-            border: 1px solid #47386f;
-            border-radius: 12px;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            align-items: baseline;
-        }
-        .chip-label {
-            color: #bcb1ff;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-        .chip-value {
-            color: #8cf1a8;
-            font-weight: bold;
-            text-align: right;
-        }
-        .notes-title {
-            margin: 0 0 8px;
-            color: #ff92c5;
-        }
-        .notes {
-            margin: 0;
-            padding-left: 18px;
-            color: #f2eefe;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            line-height: 1.35;
-        }
-        .dealer-table-wrap {
-            margin-top: 14px;
-            border: 1px solid #47386f;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #17112a;
-        }
-        .dealer-table-wrap.hidden {
-            display: none;
-        }
-        .dealer-table {
-            width: 100%;
-            border-collapse: collapse;
-            color: #efeaff;
-            font-size: 13px;
-        }
-        .dealer-table thead th {
-            background: #241a3f;
-            color: #ffd870;
-            text-align: left;
-            padding: 8px 10px;
-            letter-spacing: 0.3px;
-            border-bottom: 1px solid #47386f;
-        }
-        .dealer-table tbody td {
-            padding: 7px 10px;
-            border-bottom: 1px solid rgba(71, 56, 111, 0.5);
-        }
-        .dealer-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-        .dealer-table tbody td:nth-child(2),
-        .dealer-table tbody td:nth-child(3) {
-            color: #8cf1a8;
-            font-weight: bold;
-            text-align: right;
-        }
-
-        @media (max-width: 900px) {
-            .content { grid-template-columns: 1fr; }
-            .detail-header { grid-template-columns: 1fr; }
-            .detail-img-wrap { width: 96px; height: 96px; }
-        }
-    </style>
+    <title>Balls &amp; Guns — Arsenal</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="stats-body">
     <div class="page">
+
+        <!-- Page header -->
         <div class="header">
             <div>
-                <h1 class="title">Arsenal & Utility Stats</h1>
+                <h1 class="title">Arsenal &amp; Utility</h1>
                 <p class="subtitle">Live values sourced from weapon and constants modules.</p>
             </div>
             <div class="header-actions">
-                <a class="link-btn menu-btn" href="index.html">Back To Menu</a>
+                <a class="link-btn menu-btn" href="index.html">Main Menu</a>
                 <a class="link-btn play-btn" href="game.html">Quick Play</a>
             </div>
         </div>
 
+        <!-- Tab buttons -->
         <div class="tabs">
             <button id="tab-weapons" class="tab-btn active" type="button">Weapons</button>
             <button id="tab-utilities" class="tab-btn" type="button">Utility Drops</button>
         </div>
 
-        <div class="content">
-            <aside class="panel">
-                <div id="stats-list" class="list"></div>
-            </aside>
-
-            <section class="panel">
-                <div class="detail-header">
-                    <div id="detail-img-wrap" class="detail-img-wrap hidden">
-                        <img id="detail-img" class="detail-img" alt="Selected item image">
-                    </div>
-                    <div class="detail-text">
-                        <h2 id="detail-title" class="detail-title">-</h2>
-                        <p id="detail-subtitle" class="detail-subtitle">-</p>
-                    </div>
+        <!-- Detail panel (full width, top) -->
+        <section class="panel detail-full-panel">
+            <div class="detail-header">
+                <div id="detail-img-wrap" class="detail-img-wrap hidden">
+                    <img id="detail-img" class="detail-img" alt="Selected item image">
                 </div>
-                <div id="detail-chips" class="chips"></div>
+                <div class="detail-text">
+                    <h2 id="detail-title" class="detail-title">Select a weapon</h2>
+                    <p id="detail-subtitle" class="detail-subtitle">Click any card below to inspect</p>
+                </div>
+            </div>
+            <div id="detail-chips" class="chips"></div>
+            <div class="notes-card">
                 <h3 class="notes-title">Notes</h3>
                 <ul id="detail-notes" class="notes"></ul>
-                <div id="dealer-table-wrap" class="dealer-table-wrap hidden">
-                    <table class="dealer-table">
-                        <thead>
-                            <tr>
-                                <th>Hand</th>
-                                <th>Base</th>
-                                <th>Multiplier</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dealer-table-body"></tbody>
-                    </table>
-                </div>
-            </section>
+            </div>
+            <div id="dealer-table-wrap" class="dealer-table-wrap hidden">
+                <table class="dealer-table">
+                    <thead>
+                        <tr>
+                            <th>Hand</th>
+                            <th>Base</th>
+                            <th>Multiplier</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dealer-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Weapon card grid (bottom) -->
+        <div class="panel card-grid-panel">
+            <div id="stats-list" class="list"></div>
         </div>
+
     </div>
 
     <script type="module" src="./js/stats.js"></script>

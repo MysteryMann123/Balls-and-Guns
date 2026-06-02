@@ -50,7 +50,53 @@ import {
     SWORD_SHARPENED_BLESSING_SHIELD_DURATION_MS,
     SWORD_SHARPENED_BLESSING_SHIELD_DAMAGE_BLOCK,
     SWORD_SHARPENED_RESISTANCE_IGNORE,
-    SOLEMN_VOW_FUNERAL_SHOOT_LOCK_MS
+    SOLEMN_VOW_FUNERAL_SHOOT_LOCK_MS,
+    SOUND_OF_STAR_SPEED,
+    SOUND_OF_STAR_HOMING_STRENGTH,
+    SOUND_OF_STAR_HOMING_RANGE,
+    SOUND_OF_STAR_ORBIT_RATE,
+    LOCH_N_LOAD_SPLASH_RADIUS,
+    LOCH_N_LOAD_SPLASH_MAX_DAMAGE,
+    LOCH_N_LOAD_FAST_MOVE_BONUS,
+    LOCH_N_LOAD_FAST_SPEED_RATIO,
+    FAINT_AROMA_DAMAGE_MIN,
+    FAINT_AROMA_DAMAGE_MAX,
+    FAINT_AROMA_DOT_DAMAGE_MIN,
+    FAINT_AROMA_DOT_DAMAGE_MAX,
+    FAINT_AROMA_DOT_INTERVAL_MS,
+    FAINT_AROMA_DOT_DURATION_MS,
+    FAINT_AROMA_HEAL_REDUCTION,
+    FAINT_AROMA_AOE_RADIUS,
+    FAINT_AROMA_PIERCE_COUNT,
+    FAINT_AROMA_AOE_HIT_COOLDOWN_MS,
+    HAIRSPRAY_MAX_RANGE,
+    HAIRSPRAY_CLOUD_RADIUS,
+    HAIRSPRAY_TICK_DAMAGE_MIN,
+    HAIRSPRAY_TICK_DAMAGE_MAX,
+    HAIRSPRAY_TICK_INTERVAL_MS,
+    HAIRSPRAY_NEAR_ZONE_END,
+    HAIRSPRAY_MID_ZONE_END,
+    HAIRSPRAY_NEAR_MAX_TICKS,
+    HAIRSPRAY_MID_MAX_TICKS,
+    HAIRSPRAY_FAR_MAX_TICKS,
+    HAIRSPRAY_LINGER_MS,
+    ADORATION_DAMAGE_MIN,
+    ADORATION_DAMAGE_MAX,
+    ADORATION_PIERCE_COUNT,
+    ADORATION_SLOW_DURATION_MS,
+    ADORATION_SLOW_MULTIPLIER,
+    EGOSODA_RED_HEAL_MIN,
+    EGOSODA_RED_HEAL_MAX,
+    EGOSODA_BLUE_HEAL_MIN,
+    EGOSODA_BLUE_HEAL_MAX,
+    EGOSODA_BLUE_HEAL_INTERVAL_MS,
+    EGOSODA_BLUE_HEAL_DURATION_MS,
+    EGOSODA_PURPLE_SELF_DAMAGE_PCT,
+    EGOSODA_PURPLE_DAMAGE_MIN,
+    EGOSODA_PURPLE_DAMAGE_MAX,
+    EGOSODA_PURPLE_MAX_HP_PCT_MIN,
+    EGOSODA_PURPLE_MAX_HP_PCT_MAX,
+    LAETITIA_MARK_DURATION_MS,
 } from './constants.js';
 import { Projectile } from './projectile.js';
 import { Vector } from './vector.js';
@@ -95,7 +141,7 @@ export function updateProjectiles(game, now) {
     for (let i = game.projectiles.length - 1; i >= 0; i--) {
         const projectile = game.projectiles[i];
 
-        if (projectile.type === 'shotgunray' || projectile.type === 'hornetshotgunray' || projectile.type === 'machinaray') {
+        if (projectile.type === 'shotgunray' || projectile.type === 'hornetshotgunray' || projectile.type === 'machinaray' || projectile.type === 'pinksray') {
             if (now >= (projectile.expiresAt || 0)) {
                 game.projectiles.splice(i, 1);
             }
@@ -149,6 +195,40 @@ export function updateProjectiles(game, now) {
 
         if (projectile.type === 'paradiselost') {
             game.applyParadiseLostHoming(projectile, now);
+        }
+
+        if (projectile.type === 'soundofstar') {
+            projectile.soundStarOrbitAngle = ((projectile.soundStarOrbitAngle || 0) + SOUND_OF_STAR_ORBIT_RATE) % (Math.PI * 2);
+
+            const owner = game.balls.find(b => b.id === projectile.ownerId && b.isAlive());
+            if (owner && projectile.vel.magnitude() > 0.001) {
+                let closestEnemy = null;
+                let closestDist = projectile.soundStarHomingRange ?? SOUND_OF_STAR_HOMING_RANGE;
+                for (const ball of game.balls) {
+                    if (!ball.isAlive() || !game.areEnemies(owner, ball) || ball.isUntargetable(now)) continue;
+                    const d = Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y);
+                    if (d < closestDist) { closestDist = d; closestEnemy = ball; }
+                }
+
+                const homingStrength = projectile.soundStarHomingStrength ?? SOUND_OF_STAR_HOMING_STRENGTH;
+                const wobble = Math.sin(projectile.soundStarOrbitAngle) * 0.28;
+
+                let targetAngle;
+                if (closestEnemy) {
+                    targetAngle = Math.atan2(closestEnemy.pos.y - projectile.pos.y, closestEnemy.pos.x - projectile.pos.x) + wobble;
+                } else {
+                    targetAngle = Math.atan2(projectile.vel.y, projectile.vel.x) + wobble * 0.12;
+                }
+
+                const desired = new Vector(Math.cos(targetAngle), Math.sin(targetAngle));
+                const currentDir = projectile.vel.clone().normalize();
+                const newDir = currentDir.multiply(1 - homingStrength).add(desired.multiply(homingStrength));
+                const mag = newDir.magnitude();
+                if (mag > 0.001) {
+                    projectile.vel = newDir.multiply(SOUND_OF_STAR_SPEED / mag);
+                }
+                projectile.rotation = Math.atan2(projectile.vel.y, projectile.vel.x);
+            }
         }
 
         if (projectile.type === 'hornetbee') {
@@ -219,6 +299,87 @@ export function updateProjectiles(game, now) {
             game.triggerExplosion(projectile.pos.x, projectile.pos.y, projectile.splashRadius || GRENADE_LAUNCHER_SPLASH_RADIUS, projectile.splashMaxDamage || GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE, projectile.ownerId, now);
             game.projectiles.splice(i, 1);
             continue;
+        }
+
+        // Loch-n-Load: no bounce, destroyed on wall contact
+        if (projectile.type === 'lochnload') {
+            const r = projectile.size;
+            if (projectile.pos.x - r < 0 || projectile.pos.x + r > game.canvas.width ||
+                projectile.pos.y - r < 0 || projectile.pos.y + r > game.canvas.height) {
+                game.projectiles.splice(i, 1);
+                continue;
+            }
+        }
+
+        // Faint Aroma: AOE trail DOT
+        if (projectile.type === 'faintaroma') {
+            if (!projectile.trailPositions) projectile.trailPositions = [];
+            projectile.trailPositions.push({ x: projectile.pos.x, y: projectile.pos.y, t: now });
+            if (projectile.trailPositions.length > 30) projectile.trailPositions.shift();
+            if (!projectile.aoeHitCooldowns) projectile.aoeHitCooldowns = {};
+            const aoeOwner = game.balls.find(b => b.id === projectile.ownerId);
+            for (const ball of game.balls) {
+                if (!ball.isAlive() || ball.isUntargetable(now)) continue;
+                if (aoeOwner && !game.areEnemies(aoeOwner, ball)) continue;
+                if (Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y) > FAINT_AROMA_AOE_RADIUS + ball.radius) continue;
+                if ((projectile.aoeHitCooldowns[ball.id] || 0) + FAINT_AROMA_AOE_HIT_COOLDOWN_MS > now) continue;
+                if (ball.isUberActive(now)) continue;
+                projectile.aoeHitCooldowns[ball.id] = now;
+                ball.applyAfterburn(now, FAINT_AROMA_DOT_DURATION_MS, FAINT_AROMA_DOT_DAMAGE_MIN, FAINT_AROMA_DOT_DAMAGE_MAX, FAINT_AROMA_DOT_INTERVAL_MS);
+                ball.applyFaintAromaDebuff(now, FAINT_AROMA_DOT_DURATION_MS, FAINT_AROMA_HEAL_REDUCTION);
+            }
+        }
+
+        // Hairspray: slow cloud that stops at max range and deals zone-based tick damage
+        if (projectile.type === 'hairspray') {
+            if (projectile.originX === undefined) {
+                projectile.originX = projectile.pos.x;
+                projectile.originY = projectile.pos.y;
+            }
+            const distFromOrigin = Math.hypot(
+                projectile.pos.x - projectile.originX,
+                projectile.pos.y - projectile.originY
+            );
+            if (distFromOrigin >= HAIRSPRAY_MAX_RANGE) {
+                if (!projectile.lingerUntil) {
+                    projectile.lingerUntil = now + HAIRSPRAY_LINGER_MS;
+                }
+                projectile.vel.x = 0;
+                projectile.vel.y = 0;
+                if (now >= projectile.lingerUntil) {
+                    game.projectiles.splice(i, 1);
+                    continue;
+                }
+            }
+            if (!projectile.cloudTickCounts) projectile.cloudTickCounts = {};
+            if (!projectile.cloudLastTickAt) projectile.cloudLastTickAt = {};
+            const cloudOwner = game.balls.find(b => b.id === projectile.ownerId);
+            for (const ball of game.balls) {
+                if (!ball.isAlive() || ball.isUntargetable(now)) continue;
+                if (cloudOwner && !game.areEnemies(cloudOwner, ball)) continue;
+                if (ball.isUberActive(now)) continue;
+                if (Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y) > HAIRSPRAY_CLOUD_RADIUS + ball.radius) continue;
+                const distToBall = Math.hypot(ball.pos.x - projectile.originX, ball.pos.y - projectile.originY);
+                let maxTicks;
+                if (distToBall < HAIRSPRAY_NEAR_ZONE_END) {
+                    maxTicks = HAIRSPRAY_NEAR_MAX_TICKS;
+                } else if (distToBall < HAIRSPRAY_MID_ZONE_END) {
+                    maxTicks = HAIRSPRAY_MID_MAX_TICKS;
+                } else {
+                    maxTicks = HAIRSPRAY_FAR_MAX_TICKS;
+                }
+                const tickCount = projectile.cloudTickCounts[ball.id] || 0;
+                if (tickCount >= maxTicks) continue;
+                const lastTick = projectile.cloudLastTickAt[ball.id] || 0;
+                if (now - lastTick < HAIRSPRAY_TICK_INTERVAL_MS) continue;
+                projectile.cloudLastTickAt[ball.id] = now;
+                projectile.cloudTickCounts[ball.id] = tickCount + 1;
+                const dmg = Math.round(
+                    (HAIRSPRAY_TICK_DAMAGE_MIN + Math.random() * (HAIRSPRAY_TICK_DAMAGE_MAX - HAIRSPRAY_TICK_DAMAGE_MIN))
+                    * (cloudOwner ? cloudOwner.getDamageMultiplier(now) : 1)
+                );
+                ball.takeDamage(dmg, 'chemical');
+            }
         }
 
         if (projectile.expiresAt && now >= projectile.expiresAt) {
@@ -298,7 +459,7 @@ export function updateProjectiles(game, now) {
             if (ball.isUntargetable(now)) continue;
 
             const shooter = game.balls.find(candidate => candidate.id === projectile.ownerId);
-            if (projectile.type !== 'crusaderscrossbow' && projectile.type !== 'egomagicbullet' && shooter && !game.areEnemies(shooter, ball)) {
+            if (projectile.type !== 'crusaderscrossbow' && projectile.type !== 'egomagicbullet' && projectile.type !== 'egolovehate' && shooter && !game.areEnemies(shooter, ball)) {
                 continue;
             }
 
@@ -316,7 +477,7 @@ export function updateProjectiles(game, now) {
                     break;
                 }
 
-                if (projectile.type === 'machina') {
+                if (projectile.type === 'machina' || projectile.type === 'egopinks') {
                     if (!projectile.piercedBallIds) {
                         projectile.piercedBallIds = new Set();
                     }
@@ -347,6 +508,40 @@ export function updateProjectiles(game, now) {
                         EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MAX,
                         EGO_MAGIC_BULLET_AFTERBURN_INTERVAL_MS
                     );
+                    projectile.piercedBallIds.add(ball.id);
+                    continue;
+                }
+
+                if (projectile.type === 'egolovehate') {
+                    if (!projectile.piercedBallIds) projectile.piercedBallIds = new Set();
+                    if (projectile.piercedBallIds.has(ball.id)) continue;
+
+                    const isAlly = shooter && !game.areEnemies(shooter, ball);
+                    const dt = projectile.loveHateDamageType;
+
+                    if (isAlly) {
+                        if (ball.hp < ball.maxHP) {
+                            let healAmount = 0;
+                            if (dt === 'pale') {
+                                const ratio = (projectile.maxHpRatioMin || 0) + Math.random() * Math.max(0, (projectile.maxHpRatioMax || 0) - (projectile.maxHpRatioMin || 0));
+                                healAmount = ball.maxHP * ratio * 0.5;
+                            } else {
+                                healAmount = projectile.damage * 0.5;
+                            }
+                            if (healAmount > 0) ball.heal(healAmount);
+                        }
+                    } else if (!ball.isUberActive(now)) {
+                        if (dt === 'pale') {
+                            const ratio = (projectile.maxHpRatioMin || 0) + Math.random() * Math.max(0, (projectile.maxHpRatioMax || 0) - (projectile.maxHpRatioMin || 0));
+                            ball.takeDamage(ball.maxHP * ratio, 'spiritual', 'egolovehate');
+                        } else {
+                            ball.takeDamage(projectile.damage, 'generic', 'egolovehate');
+                            if ((dt === 'black' || dt === 'white') && projectile.burnMin != null) {
+                                ball.applyAfterburn(now, projectile.burnDuration, projectile.burnMin, projectile.burnMax, projectile.burnInterval);
+                            }
+                        }
+                    }
+
                     projectile.piercedBallIds.add(ball.id);
                     continue;
                 }
@@ -654,6 +849,61 @@ export function updateProjectiles(game, now) {
                     break;
                 }
 
+                if (projectile.type === 'lochnload') {
+                    const isFast = ball.currentSpeed > ball.maxSpeed * LOCH_N_LOAD_FAST_SPEED_RATIO;
+                    const bonus  = isFast ? (1 + LOCH_N_LOAD_FAST_MOVE_BONUS) : 1;
+                    if (!ball.isUberActive(now)) {
+                        ball.takeDamage(projectile.damage * bonus, 'explosive');
+                    }
+                    game.triggerExplosion(
+                        projectile.pos.x,
+                        projectile.pos.y,
+                        projectile.splashRadius || LOCH_N_LOAD_SPLASH_RADIUS,
+                        (projectile.splashMaxDamage || LOCH_N_LOAD_SPLASH_MAX_DAMAGE) * bonus,
+                        projectile.ownerId,
+                        now,
+                        ball.id
+                    );
+                    game.projectiles.splice(i, 1);
+                    collided = true;
+                    break;
+                }
+
+                if (projectile.type === 'faintaroma') {
+                    if (!projectile.piercedBallIds) projectile.piercedBallIds = new Set();
+                    if (projectile.piercedBallIds.has(ball.id)) continue;
+                    projectile.piercedBallIds.add(ball.id);
+                    if (!ball.isUberActive(now)) {
+                        const dmg = Math.round((FAINT_AROMA_DAMAGE_MIN + Math.floor(Math.random() * (FAINT_AROMA_DAMAGE_MAX - FAINT_AROMA_DAMAGE_MIN + 1))) * (shooter ? shooter.getDamageMultiplier(now) : 1));
+                        ball.takeDamage(dmg, 'piercing');
+                    }
+                    if (projectile.piercedBallIds.size >= FAINT_AROMA_PIERCE_COUNT) {
+                        game.projectiles.splice(i, 1);
+                        collided = true;
+                        break;
+                    }
+                    continue;
+                }
+
+                if (projectile.type === 'adoration') {
+                    if (!projectile.piercedBallIds) projectile.piercedBallIds = new Set();
+                    if (projectile.piercedBallIds.has(ball.id)) continue;
+                    projectile.piercedBallIds.add(ball.id);
+                    if (!ball.isUberActive(now)) {
+                        const baseDmg = ADORATION_DAMAGE_MIN + Math.floor(Math.random() * (ADORATION_DAMAGE_MAX - ADORATION_DAMAGE_MIN + 1));
+                        const slowBonus = 1 + (1 - ball.getEffectiveSlowMultiplier(now));
+                        const dmg = Math.round(baseDmg * slowBonus * (shooter ? shooter.getDamageMultiplier(now) : 1));
+                        ball.takeDamage(dmg, 'piercing');
+                        ball.applyAdorationSlow(now, ADORATION_SLOW_DURATION_MS, ADORATION_SLOW_MULTIPLIER);
+                    }
+                    if (projectile.piercedBallIds.size >= ADORATION_PIERCE_COUNT) {
+                        game.projectiles.splice(i, 1);
+                        collided = true;
+                        break;
+                    }
+                    continue;
+                }
+
                 if (projectile.type === 'solemnvowblack') {
                     if (!ball.isUberActive(now)) {
                         const ratioMin = projectile.maxHpRatioMin ?? 0;
@@ -693,9 +943,21 @@ export function updateProjectiles(game, now) {
                     break;
                 }
 
+                if (projectile.type === 'hairspray') continue;
+
                 const bypassUber = projectile.sourceWeaponType === 'paradiselost';
                 if (bypassUber || !ball.isUberActive(now)) {
                     ball.takeDamage(projectile.damage, 'generic', projectile.sourceWeaponType);
+
+                    if (projectile.afterburnMin != null) {
+                        ball.applyAfterburn(
+                            now,
+                            projectile.afterburnDuration ?? 2500,
+                            projectile.afterburnMin,
+                            projectile.afterburnMax ?? projectile.afterburnMin,
+                            projectile.afterburnInterval ?? 500
+                        );
+                    }
 
                     if (projectile.sourceWeaponType === 'egoloneliness') {
                         ball.applyLonelinessSlow(now, EGO_LONELINESS_SLOW_DURATION_MS, EGO_LONELINESS_SLOW_MULTIPLIER);
@@ -707,6 +969,36 @@ export function updateProjectiles(game, now) {
                     if (healedShooter) {
                         const healAmount = Math.floor(Math.random() * (BLUTSAUGER_HEAL_MAX - BLUTSAUGER_HEAL_MIN + 1)) + BLUTSAUGER_HEAL_MIN;
                         healedShooter.heal(healAmount);
+                    }
+                }
+
+                if (projectile.type === 'egosoda') {
+                    const sodaShooter = game.balls.find(b => b.id === projectile.ownerId && b.isAlive());
+                    if (projectile.sodaType === 'red') {
+                        if (sodaShooter) {
+                            const healAmt = Math.floor(Math.random() * (EGOSODA_RED_HEAL_MAX - EGOSODA_RED_HEAL_MIN + 1)) + EGOSODA_RED_HEAL_MIN;
+                            sodaShooter.heal(healAmt);
+                        }
+                    } else if (projectile.sodaType === 'blue') {
+                        if (sodaShooter) {
+                            const tickHeal = Math.floor(Math.random() * (EGOSODA_BLUE_HEAL_MAX - EGOSODA_BLUE_HEAL_MIN + 1)) + EGOSODA_BLUE_HEAL_MIN;
+                            sodaShooter.applySodaBlueHoT(now, tickHeal, EGOSODA_BLUE_HEAL_DURATION_MS, EGOSODA_BLUE_HEAL_INTERVAL_MS);
+                        }
+                    } else if (projectile.sodaType === 'purple') {
+                        if (sodaShooter) {
+                            sodaShooter.hp = Math.max(1, sodaShooter.hp - sodaShooter.maxHP * EGOSODA_PURPLE_SELF_DAMAGE_PCT);
+                        }
+                        if (!ball.isUberActive(now)) {
+                            const extraFlat = Math.floor(Math.random() * (EGOSODA_PURPLE_DAMAGE_MAX - EGOSODA_PURPLE_DAMAGE_MIN + 1)) + EGOSODA_PURPLE_DAMAGE_MIN;
+                            const hpPct = EGOSODA_PURPLE_MAX_HP_PCT_MIN + Math.random() * (EGOSODA_PURPLE_MAX_HP_PCT_MAX - EGOSODA_PURPLE_MAX_HP_PCT_MIN);
+                            ball.takeDamage(Math.floor(extraFlat + ball.maxHP * hpPct), 'generic');
+                        }
+                    }
+                }
+
+                if (projectile.type === 'laetitia') {
+                    if (!ball.isUberActive(now)) {
+                        ball.applyLaetitiaGiftMark(now, LAETITIA_MARK_DURATION_MS);
                     }
                 }
 

@@ -1,0 +1,1113 @@
+[
+  {
+    "weaponFile": "sodaPopper.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "spreadAngle": "SPREAD_ANGLE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "HITSCAN_RANGE",
+      "CHARGE_DAMAGE_REQUIRED",
+      "HYPE_DAMAGE_MULTIPLIER",
+      "HYPE_SPEED_BOOST",
+      "HYPE_DURATION_MS"
+    ]
+  },
+  {
+    "weaponFile": "magicianHat.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "HOMING_STRENGTH",
+      "HOMING_RANGE",
+      "TELEPORT_DISTANCE",
+      "TELEPORT_SMOKE_DURATION_MS"
+    ]
+  },
+  {
+    "weaponFile": "musket.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "BAYONET_DAMAGE_MIN",
+      "BAYONET_DAMAGE_MAX",
+      "BAYONET_RANGE",
+      "BAYONET_COOLDOWN_MS",
+      "BAYONET_BLEED_DAMAGE_MIN",
+      "BAYONET_BLEED_DAMAGE_MAX",
+      "BAYONET_BLEED_INTERVAL_MS",
+      "BAYONET_BLEED_DURATION_MS",
+      "BAYONET_HEAL_MULTIPLIER"
+    ]
+  },
+  {
+    "weaponFile": "sniper.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": []
+  },
+  {
+    "weaponFile": "blutsauger.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "HEAL_MIN",
+      "HEAL_MAX"
+    ]
+  },
+  {
+    "weaponFile": "shortCircuit.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "RADIUS",
+      "DURATION_MS",
+      "DOT_DAMAGE",
+      "DOT_INTERVAL_MS"
+    ]
+  },
+  {
+    "weaponFile": "pipLauncher.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "SPLASH_RADIUS",
+      "TRACER_DURATION_MS",
+      "ALLY_HEAL_MIN",
+      "ALLY_HEAL_MAX"
+    ]
+  },
+  {
+    "weaponFile": "beggersBasooka.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "DEVIATION",
+      "SPLASH_RADIUS"
+    ]
+  },
+  {
+    "weaponFile": "directHit.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "SPLASH_RADIUS",
+      "VS_FASTER_MULTIPLIER"
+    ]
+  },
+  {
+    "weaponFile": "nearMissed.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "SPLASH_RADIUS",
+      "VS_SLOWER_MULTIPLIER"
+    ]
+  },
+  {
+    "weaponFile": "rocketJumper.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "SPLASH_RADIUS",
+      "KNOCKBACK",
+      "SELF_BLAST_IMPULSE",
+      "MELEE_DAMAGE_PER_SPEED",
+      "MELEE_MIN_DAMAGE",
+      "MELEE_MAX_DAMAGE",
+      "MELEE_COOLDOWN_MS"
+    ]
+  },
+  {
+    "weaponFile": "medigun.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "BEAM_RANGE",
+      "ALLY_HEAL_PER_SEC",
+      "ENEMY_DAMAGE_PER_SEC",
+      "ENEMY_LIFESTEAL_PER_SEC",
+      "SELF_REGEN_PER_SEC",
+      "SELF_REGEN_DELAY_MS",
+      "SELF_REGEN_CAP",
+      "OVERHEAL_MULTIPLIER",
+      "UBER_HEAL_THRESHOLD",
+      "UBER_DAMAGE_THRESHOLD",
+      "UBER_DURATION_MS"
+    ]
+  },
+  {
+    "weaponFile": "yellowTarge.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "CHARGE_RELOAD_MS",
+      "CHARGE_TRIGGER_RANGE",
+      "CHARGE_IMPULSE",
+      "CHARGE_MAX_DURATION_MS",
+      "CHARGE_DAMAGE_MIN",
+      "CHARGE_DAMAGE_MAX",
+      "DAMAGE_PER_DISTANCE",
+      "KNOCKBACK",
+      "DAMAGE_REDUCTION_ALL",
+      "DAMAGE_REDUCTION_EXPLOSIVE"
+    ]
+  },
+  {
+    "weaponFile": "grenadelauncher.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "DIRECT_DAMAGE",
+      "SPLASH_RADIUS",
+      "SPLASH_MAX_DAMAGE",
+      "EXPLODE_DELAY_MS"
+    ]
+  },
+  {
+    "weaponFile": "lochNLoad.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "DIRECT_DAMAGE",
+      "SPLASH_RADIUS",
+      "SPLASH_MAX_DAMAGE",
+      "FAST_MOVE_BONUS",
+      "FAST_SPEED_RATIO"
+    ]
+  },
+  {
+    "weaponFile": "faintAroma.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "PIERCE_COUNT",
+      "DOT_DAMAGE_MIN",
+      "DOT_DAMAGE_MAX",
+      "DOT_INTERVAL_MS",
+      "DOT_DURATION_MS",
+      "HEAL_REDUCTION",
+      "AOE_RADIUS",
+      "AOE_HIT_COOLDOWN_MS"
+    ]
+  },
+  {
+    "weaponFile": "hairspray.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "speed": "SPEED",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "MAX_RANGE",
+      "CLOUD_RADIUS",
+      "TICK_DAMAGE_MIN",
+      "TICK_DAMAGE_MAX",
+      "TICK_INTERVAL_MS",
+      "NEAR_MAX_TICKS",
+      "MID_MAX_TICKS",
+      "FAR_MAX_TICKS",
+      "NEAR_ZONE_END",
+      "MID_ZONE_END",
+      "LINGER_MS"
+    ]
+  },
+  {
+    "weaponFile": "adoration.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "PIERCE_COUNT",
+      "SLOW_DURATION_MS",
+      "SLOW_MULTIPLIER",
+      "AFTERBURN_MULTIPLIER",
+      "WIELDER_SPEED_MULTIPLIER"
+    ]
+  },
+  {
+    "weaponFile": "egoLoveHate.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "RED_DAMAGE_MIN",
+      "RED_DAMAGE_MAX",
+      "BLACK_DAMAGE_MIN",
+      "BLACK_DAMAGE_MAX",
+      "BLACK_BURN_MIN",
+      "BLACK_BURN_MAX",
+      "BLACK_BURN_INTERVAL_MS",
+      "BLACK_BURN_DURATION_MS",
+      "WHITE_DAMAGE_MIN",
+      "WHITE_DAMAGE_MAX",
+      "WHITE_BURN_MIN",
+      "WHITE_BURN_MAX",
+      "WHITE_BURN_INTERVAL_MS",
+      "WHITE_BURN_DURATION_MS",
+      "PALE_MIN_RATIO",
+      "PALE_MAX_RATIO"
+    ]
+  },
+  {
+    "weaponFile": "swordSharpened.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "UNLOAD_MS",
+      "BLESSING_SHIELD_DURATION_MS",
+      "BLESSING_SHIELD_DAMAGE_BLOCK",
+      "BLESSING_SHIELD_RADIUS",
+      "PIERCE_DAMAGE_HP_RATIO",
+      "PIERCE_STICK_DURATION_MS",
+      "SHARPEN_DAMAGE_BONUS",
+      "SHARPEN_SPEED_BONUS",
+      "SHARPEN_RELOAD_BONUS",
+      "SHARPEN_MAX_STACKS",
+      "SHARPEN_DURATION_MS",
+      "RESISTANCE_IGNORE"
+    ]
+  },
+  {
+    "weaponFile": "egoMagicBullet.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "HOMING_STRENGTH",
+      "HOMING_RANGE",
+      "AFTERBURN_DAMAGE_MIN",
+      "AFTERBURN_DAMAGE_MAX",
+      "AFTERBURN_INTERVAL_MS",
+      "AFTERBURN_DURATION_MS",
+      "CURSE_CYCLE",
+      "SELF_HIT_MULTIPLIER",
+      "CURSE_SPAWN_BEHIND_DISTANCE",
+      "TRACER_RANGE",
+      "TRACER_DURATION_MS"
+    ]
+  },
+  {
+    "weaponFile": "flamethrower.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "PARTICLES_PER_SHOT",
+      "PARTICLE_LIFETIME_MS",
+      "HITSCAN_RANGE",
+      "PIERCE_COUNT",
+      "AFTERBURN_DAMAGE_MIN",
+      "AFTERBURN_DAMAGE_MAX",
+      "AFTERBURN_INTERVAL_MS",
+      "AFTERBURN_DURATION_MS",
+      "AIRBLAST_COOLDOWN_MS",
+      "AIRBLAST_AMMO_COST"
+    ]
+  },
+  {
+    "weaponFile": "smg.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": []
+  },
+  {
+    "weaponFile": "tommyGun.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": []
+  },
+  {
+    "weaponFile": "machina.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "TRACER_RANGE",
+      "TRACER_DURATION_MS"
+    ]
+  },
+  {
+    "weaponFile": "egoPinks.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "TRACER_RANGE",
+      "TRACER_DURATION_MS",
+      "TRACER_COLOR"
+    ]
+  },
+  {
+    "weaponFile": "egoSoda.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "RED_HEAL_MIN",
+      "RED_HEAL_MAX",
+      "RED_COLOR",
+      "BLUE_HEAL_MIN",
+      "BLUE_HEAL_MAX",
+      "BLUE_HEAL_INTERVAL_MS",
+      "BLUE_HEAL_DURATION_MS",
+      "BLUE_COLOR",
+      "PURPLE_CHANCE",
+      "PURPLE_SELF_DAMAGE_PCT",
+      "PURPLE_DAMAGE_MIN",
+      "PURPLE_DAMAGE_MAX",
+      "PURPLE_MAX_HP_PCT_MIN",
+      "PURPLE_MAX_HP_PCT_MAX",
+      "PURPLE_COLOR"
+    ]
+  },
+  {
+    "weaponFile": "laetitia.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "MARK_DURATION_MS",
+      "MARK_VULN_MULTIPLIER",
+      "MARK_TRIGGER_THRESHOLD_RATIO",
+      "MARK_COLOR",
+      "BLAST_RADIUS",
+      "BLAST_DAMAGE_MIN_RATIO",
+      "BLAST_DAMAGE_MAX_RATIO"
+    ]
+  },
+  {
+    "weaponFile": "huntsman.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "STICK_DURATION_MS"
+    ]
+  },
+  {
+    "weaponFile": "crusadersCrossbow.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "HEAL_MIN",
+      "HEAL_MAX"
+    ]
+  },
+  {
+    "weaponFile": "dealer.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR"
+    },
+    "specialProperties": [
+      "DRAW_INTERVAL_MS",
+      "HAND_DAMAGE_TABLE"
+    ],
+    "hasMethods": ["getInfo()"]
+  },
+  {
+    "weaponFile": "soundOfStar.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "CHARGE_MS",
+      "BURST_INTERVAL_MS",
+      "BURST_FIRE_RATE",
+      "HOMING_STRENGTH",
+      "HOMING_RANGE",
+      "BURN_DAMAGE_MIN",
+      "BURN_DAMAGE_MAX",
+      "BURN_INTERVAL_MS",
+      "BURN_DURATION_MS",
+      "ORBIT_RATE",
+      "ORBIT_RADIUS",
+      "WIELDER_SLOW_PER_STAR",
+      "ORBITAL_CONTACT_MULTIPLIER"
+    ],
+    "hasMethods": ["getInfo()"]
+  },
+  {
+    "weaponFile": "hypocrisy.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "FIRE_RATE_BASE",
+      "FIRE_RATE_MIN",
+      "RAMP_RATE_MS_PER_SEC",
+      "IDLE_RESET_MS",
+      "AMMO_REFUND_RATIO",
+      "DAMAGE_MULTIPLIER_MAX"
+    ],
+    "hasMethods": ["getInfo()"]
+  },
+  {
+    "weaponFile": "crimsonScar.js",
+    "configMapping": {
+      "fireRate": "FIRE_RATE",
+      "reloadMs": "RELOAD_MS",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "RANGE_SWITCH_DISTANCE",
+      "SPEED_BONUS",
+      "DAMAGE_TAKEN_PENALTY",
+      "GUN_AMMO",
+      "BURST_INTERVAL_MS",
+      "BURST_COUNT",
+      "GUN_DAMAGE_MIN",
+      "GUN_DAMAGE_MAX",
+      "GUN_SPEED",
+      "GUN_PROJECTILE_SIZE",
+      "BLADE_DAMAGE_MIN",
+      "BLADE_DAMAGE_MAX",
+      "BLADE_FIRE_RATE",
+      "BLADE_RANGE",
+      "BLADE_SWING_ARC_DEGREES",
+      "BLADE_SWING_ANIMATION_MS",
+      "BLEED_DAMAGE_MIN",
+      "BLEED_DAMAGE_MAX",
+      "BLEED_INTERVAL_MS",
+      "BLEED_DURATION_MS",
+      "MARK_DURATION_MS",
+      "MARK_DAMAGE_BONUS"
+    ],
+    "hasMethods": ["getInfo()"]
+  },
+  {
+    "weaponFile": "hornet.js",
+    "configMapping": {
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "RANGE_SWITCH_DISTANCE",
+      "SHOTGUN_AMMO",
+      "SHOTGUN_PELLETS_PER_SHOT",
+      "SHOTGUN_DAMAGE_MIN",
+      "SHOTGUN_DAMAGE_MAX",
+      "SHOTGUN_SPREAD_ANGLE",
+      "SHOTGUN_HITSCAN_RANGE",
+      "RIFLE_AMMO",
+      "RIFLE_DAMAGE_MIN",
+      "RIFLE_DAMAGE_MAX",
+      "RIFLE_SPEED",
+      "RIFLE_PROJECTILE_SIZE",
+      "RIFLE_AFTERBURN_DAMAGE_MIN",
+      "RIFLE_AFTERBURN_DAMAGE_MAX",
+      "RIFLE_AFTERBURN_INTERVAL_MS",
+      "RIFLE_AFTERBURN_DURATION_MS",
+      "BEE_DAMAGE_MIN",
+      "BEE_DAMAGE_MAX",
+      "BEE_SPEED",
+      "BEE_SIZE",
+      "BEE_HOMING_STRENGTH",
+      "BEE_HOMING_RANGE",
+      "BEE_MAX_ACTIVE",
+      "INITIAL_FORM"
+    ],
+    "hasMethods": ["getInfo()"]
+  },
+  {
+    "weaponFile": "rocketLauncher.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "DIRECT_DAMAGE",
+      "SPLASH_RADIUS"
+    ]
+  },
+  {
+    "weaponFile": "widowmaker.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "AMMO_PER_SHOT",
+      "LOW_AMMO_RELOAD_MS",
+      "HITSCAN_RANGE"
+    ]
+  },
+  {
+    "weaponFile": "egoLoneliness.js",
+    "configMapping": {
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME",
+      "ammo": "AMMO"
+    },
+    "specialProperties": [
+      "SLOW_DURATION_MS",
+      "SLOW_MULTIPLIER",
+      "AMMO_REFUND_CHANCE"
+    ]
+  },
+  {
+    "weaponFile": "explosiveFlask.js",
+    "configMapping": {},
+    "specialProperties": [
+      "COOLDOWN_MS",
+      "SPEED",
+      "SPLASH_RADIUS",
+      "EFFECT_DURATION_MS",
+      "SLOW_MULTIPLIER",
+      "PIP_DAMAGE_MULTIPLIER",
+      "PICKUP_DAMAGE_MULTIPLIER"
+    ],
+    "note": "This appears to be a pickup/effect item rather than a weapon"
+  },
+  {
+    "weaponFile": "pistol.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": []
+  },
+  {
+    "weaponFile": "revolver.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damage": "DAMAGE",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": []
+  },
+  {
+    "weaponFile": "shotgun.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "PELLET_DAMAGE",
+      "HITSCAN_RANGE",
+      "TRACER_DURATION_MS"
+    ]
+  },
+  {
+    "weaponFile": "penitence.js",
+    "configMapping": {
+      "maxAmmo": "MAX_AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "SWING_ARC_DEGREES",
+      "MELEE_RANGE",
+      "SWING_ANIMATION_MS",
+      "MAX_HP_BONUS_RATIO",
+      "SPEED_BONUS_RATIO",
+      "KNOCKBACK_RESISTANCE",
+      "PICKUP_HEAL_RATIO",
+      "ALLY_HEAL_FROM_DAMAGE",
+      "ALLY_HELP_HP_RATIO"
+    ]
+  },
+  {
+    "weaponFile": "paradiseLost.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "MAX_HP_DAMAGE_MIN_RATIO",
+      "MAX_HP_DAMAGE_MAX_RATIO",
+      "HOMING_STRENGTH",
+      "HOMING_RANGE",
+      "LIFESTEAL_RATIO",
+      "ALLY_HEAL_RATIO",
+      "ALLY_HEAL_RADIUS",
+      "ADAPTIVE_RESISTANCE",
+      "ADAPTIVE_INTERVAL_MS",
+      "SELF_DOT_INTERVAL_MS",
+      "SELF_DOT_MIN_RATIO",
+      "SELF_DOT_MAX_RATIO"
+    ]
+  },
+  {
+    "weaponFile": "solemnVow.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "MUZZLE_FLASH_MS",
+      "BLACK_PELLETS_PER_SHOT",
+      "BLACK_SPREAD_ANGLE",
+      "BLACK_PROJECTILE_SPEED",
+      "BLACK_PROJECTILE_SIZE",
+      "BLACK_MAX_HP_DAMAGE_MIN_RATIO",
+      "BLACK_MAX_HP_DAMAGE_MAX_RATIO",
+      "WHITE_PELLETS_PER_SHOT",
+      "WHITE_SPREAD_ANGLE",
+      "WHITE_PROJECTILE_SPEED",
+      "WHITE_PROJECTILE_SIZE",
+      "WHITE_AFTERBURN_DAMAGE_MIN",
+      "WHITE_AFTERBURN_DAMAGE_MAX",
+      "WHITE_AFTERBURN_INTERVAL_MS",
+      "WHITE_AFTERBURN_DURATION_MS",
+      "FUNERAL_PELLETS_REQUIRED",
+      "FUNERAL_SHOOT_LOCK_MS",
+      "FUNERAL_PROJECTILE_SPEED",
+      "FUNERAL_PROJECTILE_SIZE",
+      "FUNERAL_COOLDOWN_MS"
+    ]
+  },
+  {
+    "weaponFile": "familyBusiness.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "HITSCAN_RANGE"
+    ]
+  },
+  {
+    "weaponFile": "forceANature.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "speed": "SPEED",
+      "projectileSize": "PROJECTILE_SIZE",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "HITSCAN_RANGE",
+      "SELF_KNOCKBACK",
+      "ENEMY_KNOCKBACK"
+    ]
+  },
+  {
+    "weaponFile": "harmony.js",
+    "configMapping": {
+      "ammo": "AMMO",
+      "reloadMs": "RELOAD_MS",
+      "fireRate": "FIRE_RATE",
+      "damageMin": "DAMAGE_MIN",
+      "damageMax": "DAMAGE_MAX",
+      "pelletsPerShot": "PELLETS_PER_SHOT",
+      "spreadAngle": "SPREAD_ANGLE",
+      "projectileSize": "PROJECTILE_SIZE",
+      "color": "COLOR",
+      "displayName": "DISPLAY_NAME"
+    },
+    "specialProperties": [
+      "PROJECTILE_SPEED",
+      "SELF_HP_COST_RATIO",
+      "HASTE_MAX_BONUS",
+      "HASTE_DURATION_MS"
+    ]
+  }
+]

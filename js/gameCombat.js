@@ -8,6 +8,9 @@ import {
     FORCE_A_NATURE_HITSCAN_RANGE,
     MACHINA_TRACER_RANGE,
     MACHINA_TRACER_DURATION_MS,
+    PINKS_TRACER_RANGE,
+    PINKS_TRACER_DURATION_MS,
+    PINKS_TRACER_COLOR,
     MAGICIAN_HAT_HOMING_RANGE,
     MAGICIAN_HAT_HOMING_STRENGTH,
     MAGICIAN_HAT_TELEPORT_DISTANCE,
@@ -504,6 +507,32 @@ export function fireMachinaTracer(game, shooter, angle, now) {
             endY,
             tracerWidth: 4.4,
             expiresAt: now + MACHINA_TRACER_DURATION_MS
+        })
+    );
+}
+
+export function firePinksTracer(game, shooter, angle, now) {
+    const originX = shooter.pos.x;
+    const originY = shooter.pos.y;
+    const endX = originX + Math.cos(angle) * PINKS_TRACER_RANGE;
+    const endY = originY + Math.sin(angle) * PINKS_TRACER_RANGE;
+
+    game.projectiles.push(
+        new Projectile({
+            x: originX,
+            y: originY,
+            targetX: endX,
+            targetY: endY,
+            speed: 0,
+            damage: 0,
+            color: PINKS_TRACER_COLOR,
+            size: 0,
+            ownerId: shooter.id,
+            type: 'pinksray',
+            endX,
+            endY,
+            tracerWidth: 4.4,
+            expiresAt: now + PINKS_TRACER_DURATION_MS
         })
     );
 }

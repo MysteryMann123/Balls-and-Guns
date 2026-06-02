@@ -3,90 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balls & Guns - Main Menu</title>
-    <style>
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #1a1a1a;
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
-        .menu {
-            width: min(520px, 92vw);
-            background: #101010;
-            border: 2px solid #fff;
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            box-shadow: 0 0 24px rgba(255, 255, 255, 0.18);
-        }
-        h1 { margin: 0 0 4px; font-size: 28px; }
-        p { margin: 0; color: #cfcfcf; }
-        .row {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 0;
-        }
-        label { font-weight: bold; }
-        input[type="number"], input[type="range"] {
-            width: 180px;
-        }
-        .hint { color: #9fd3ff; font-size: 13px; }
-        .weapon-rows {
-            border-top: 1px solid #2e2e2e;
-            margin-top: 4px;
-            padding-top: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 260px;
-            overflow: auto;
-        }
-        .weapon-row {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-            gap: 12px;
-        }
-        .weapon-row select {
-            width: 180px;
-        }
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 6px 0;
-        }
-        .toggle-row label {
-            font-weight: bold;
-        }
-        .actions { display: flex; gap: 10px; margin-top: 6px; }
-        button {
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-weight: bold;
-        }
-        .start { background: #39d98a; color: #111; }
-        .quick { background: #4e7cff; color: #fff; }
-        .stats { background: #a855f7; color: #fff; }
-    </style>
+    <title>Balls &amp; Guns</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <form class="menu" id="menu-form">
-        <h1>Balls & Guns</h1>
-        <p>Configure simulation settings before starting.</p>
+        <div>
+            <h1 class="menu-title">Balls &amp; Guns</h1>
+            <p class="menu-sub">Configure simulation settings before starting.</p>
+        </div>
+
+        <hr>
 
         <div class="row">
             <label for="balls">Ball Count</label>
@@ -114,135 +41,430 @@
             <input id="utility-drops" type="checkbox" checked>
         </div>
 
-        <div class="weapon-rows" id="weapon-rows"></div>
+        <div class="ball-slots-section">
+            <p class="slots-label">Players</p>
+            <div class="ball-slots" id="ball-slots"></div>
+        </div>
 
         <div class="actions">
-            <button class="start" type="submit">Start Game</button>
-            <button class="quick" type="button" id="quick-start">Quick Start</button>
-            <button class="stats" type="button" id="view-stats">View Stats</button>
+            <button class="btn-start" type="submit">Start Game</button>
+            <button class="btn-quick" type="button" id="quick-start">Quick Start</button>
+            <button class="btn-stats" type="button" id="view-stats">Arsenal</button>
+            <button class="btn-sandbox" type="button" id="open-sandbox">Sandbox</button>
         </div>
     </form>
 
     <script type="module">
-        import { START_WEAPON_OPTIONS } from './js/constants.js';
+        import { START_WEAPON_OPTIONS } from './js/gameConfig.js';
 
-        const form = document.getElementById('menu-form');
-        const ballsInput = document.getElementById('balls');
-        const teamsInput = document.getElementById('teams');
-        const dropInput = document.getElementById('dropMs');
-        const dropLabel = document.getElementById('drop-label');
-        const quickStart = document.getElementById('quick-start');
-        const viewStats = document.getElementById('view-stats');
-        const weaponRows = document.getElementById('weapon-rows');
-        const weaponDropsInput = document.getElementById('weapon-drops');
+        const form          = document.getElementById('menu-form');
+        const ballsInput    = document.getElementById('balls');
+        const teamsInput    = document.getElementById('teams');
+        const dropInput     = document.getElementById('dropMs');
+        const dropLabel     = document.getElementById('drop-label');
+        const ballSlotsEl   = document.getElementById('ball-slots');
+        const weaponDropsInput  = document.getElementById('weapon-drops');
         const utilityDropsInput = document.getElementById('utility-drops');
 
-        const weaponOptions = START_WEAPON_OPTIONS;
+        const TEAM_COLORS = ['#d07030', '#3a70d0', '#50a040', '#a040a0'];
 
-        function weaponLabel(type) {
-            if (type === 'shortcircuit') return 'short circuit';
-            if (type === 'rocketlauncher') return 'rocket launcher';
-            if (type === 'piplauncher') return 'pip launcher';
-            if (type === 'beggersbazooka') return "begger's bazooka";
-            if (type === 'widowmaker') return 'widowmaker';
-            if (type === 'sodapopper') return 'soda popper';
-            if (type === 'forceanature') return 'force-a-nature';
-            if (type === 'nearmissed') return 'near missed';
-            if (type === 'musket') return 'musket';
-            if (type === 'magicianhat') return 'magician hat';
-            if (type === 'crusaderscrossbow') return "crusader's crossbow";
-            if (type === 'directhit') return 'direct hit';
-            if (type === 'rocketjumper') return 'rocket jumper';
-            if (type === 'yellowtarge') return "chargin' targe";
-            if (type === 'grenadelauncher') return 'grenade launcher';
-            if (type === 'flamethrower') return 'flamethrower';
-            return type;
+        const WEAPON_LABELS = {
+            pistol:           'Pistol',
+            revolver:         'Revolver',
+            shotgun:          'Shotgun',
+            familybusiness:   'Family Business',
+            sodapopper:       'Soda Popper',
+            forceanature:     'Force-A-Nature',
+            musket:           'Musket',
+            magicianhat:      'Magician Hat',
+            widowmaker:       'Widowmaker',
+            sniper:           'Sniper Rifle',
+            machina:          'Machina',
+            huntsman:         'Huntsman',
+            crusaderscrossbow:"Crusader's Crossbow",
+            flamethrower:     'Flamethrower',
+            smg:              'SMG',
+            tommygun:         'Tommy Gun',
+            blutsauger:       'Blutsauger',
+            minigun:          'Minigun',
+            medigun:          'Medi Gun',
+            shortcircuit:     'Short Circuit',
+            rocketlauncher:   'Rocket Launcher',
+            piplauncher:      'Pip Launcher',
+            beggersbazooka:   "Begger's Bazooka",
+            directhit:        'Direct Hit',
+            nearmissed:       'Near Missed',
+            rocketjumper:     'Rocket Jumper',
+            grenadelauncher:  'Grenade Launcher',
+            lochnload:        'Loch-n-Load',
+            faintaroma:       'Faint Aroma',
+            hairspray:        'Hairspray',
+            yellowtarge:      "Chargin' Targe",
+            dealer:           'Dealer',
+            egomagicbullet:   'Magic Bullet',
+            egoloneliness:    'Loneliness',
+            penitence:        'Penitence',
+            paradiselost:     'Paradise Lost',
+            solemnvow:        'Solemn Vow',
+            harmony:          'Harmony',
+            hornet:           'Hornet',
+            swordsharpened:   'Sword Sharpened',
+            egolovehate:      'Love & Hate',
+            soundofstar:      'Sound of a Star',
+            adoration:        'Adoration',
+            hypocrisy:        'Hypocrisy',
+            crimsonscar:      'CrimsonScar',
+            egopinks:         'EGO: Pinks',
+            egosoda:          'EGO: Soda',
+            laetitia:         'EGO: Laetitia',
+        };
+
+        const WEAPON_IMAGES = {
+            pistol:           'assets/Pistol_True.png',
+            revolver:         'assets/Pistol.png',
+            shotgun:          'assets/Shotgun_IMG.png',
+            familybusiness:   'assets/Familybusiness.PNG',
+            sodapopper:       'assets/250px-Soda_Popper.PNG',
+            forceanature:     'assets/Force-A-Nature.png',
+            musket:           'assets/rifle-on-a-transparent-free-png-864369422.png',
+            magicianhat:      'assets/Magic-Hat-PNG-Image-File-3052888691.png',
+            widowmaker:       'assets/Widowmaker.png',
+            sniper:           'assets/Sniper_rifle.png',
+            machina:          'assets/Machina.png',
+            huntsman:         'assets/Huntsman.png',
+            crusaderscrossbow:"assets/RED_Crusader's_Crossbow.png",
+            flamethrower:     'assets/RedFlamethrowerpng.png',
+            smg:              'assets/SMG.png',
+            tommygun:         'assets/TOMMY_GUN.png',
+            blutsauger:       'assets/Blutsauger.png',
+            minigun:          'assets/Minigun_IMG.png',
+            medigun:          'assets/RED_Medigun.png',
+            shortcircuit:     'assets/Short_circuit.png',
+            rocketlauncher:   'assets/Rocket_launcher.png',
+            piplauncher:      'assets/Pip_launcher.png',
+            beggersbazooka:   "assets/Beggar's_Bazooka.png",
+            directhit:        'assets/Directhittransparent.png',
+            nearmissed:       'assets/Directhittransparent.png',
+            rocketjumper:     'assets/Rocket_Jumper.png',
+            grenadelauncher:  'assets/Grenade_Launcher.png',
+            lochnload:        'assets/LochnLoad.png',
+            faintaroma:       'assets/EGOWeaponReverberation.webp',
+            hairspray:        'assets/Emz_hairspray.jpg',
+            yellowtarge:      'assets/YellowTarge.png',
+            dealer:           'assets/Poker.jpg',
+            egomagicbullet:   'assets/EGOWeaponMagicBullet.webp',
+            egoloneliness:    'assets/EGOWeaponLoneliness.webp',
+            penitence:        'assets/EGOWeaponPenitence.webp',
+            paradiselost:     'assets/EGOWeaponParadiseLost.webp',
+            harmony:          'assets/EGOWeaponHarmony.webp',
+            hornet:           'assets/EGOWeaponHornet.png',
+            egolovehate:      'assets/EGOWeaponIntheNameofLoveandHate.webp',
+            soundofstar:      'assets/EGOWeaponSoundofaStar.webp',
+            swordsharpened:   'assets/EGOWeaponSwordSharpenedbyTears.webp',
+            solemnvow:        'assets/EGOWeaponSolemnVow.webp',
+            adoration:        'assets/EGOWeaponAdoration.webp',
+            hypocrisy:        'assets/EGOWeaponHypocrisy.webp',
+            crimsonscar:      'assets/EGOWeaponCrimsonScar.webp',
+            egopinks:         'assets/EGOWeaponPinks.webp',
+            egosoda:          'assets/EGOWeaponSoda.webp',
+            laetitia:         'assets/EGOWeaponLaetitia.webp',
+        };
+
+        const EGO_WEAPONS = new Set([
+            'egomagicbullet', 'egoloneliness', 'penitence', 'paradiselost',
+            'solemnvow', 'harmony', 'hornet', 'swordsharpened', 'egolovehate', 'soundofstar', 'faintaroma', 'adoration', 'hypocrisy', 'crimsonscar', 'egopinks', 'egosoda', 'laetitia'
+        ]);
+
+        const standardWeapons = START_WEAPON_OPTIONS.filter(w => !EGO_WEAPONS.has(w));
+        const egoWeapons      = START_WEAPON_OPTIONS.filter(w =>  EGO_WEAPONS.has(w));
+
+        let openPickerIndex = null;
+
+        function getTeamColor(ballIndex, teamCount) {
+            const team = (ballIndex - 1) % Math.max(1, teamCount);
+            return TEAM_COLORS[team] || '#888';
         }
 
-        function ensureWeaponRows(ballCount) {
-            while (weaponRows.children.length < ballCount) {
-                const index = weaponRows.children.length + 1;
-                const row = document.createElement('div');
-                row.className = 'weapon-row';
-                const label = document.createElement('label');
-                label.setAttribute('for', `weapon-${index}`);
-                label.textContent = `Ball ${index} weapon`;
+        const STORAGE_KEY = 'ballsAndGuns_settings';
 
-                const select = document.createElement('select');
-                select.id = `weapon-${index}`;
-                select.name = `weapon-${index}`;
-                for (const weapon of weaponOptions) {
-                    const option = document.createElement('option');
-                    option.value = weapon;
-                    option.textContent = weaponLabel(weapon).toUpperCase();
-                    select.appendChild(option);
-                }
-                select.value = 'pistol';
+        function saveSettings() {
+            const ballCount = Number(ballsInput.value) || 4;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                balls:        ballsInput.value,
+                teams:        teamsInput.value,
+                dropMs:       dropInput.value,
+                weaponDrops:  weaponDropsInput.checked,
+                utilityDrops: utilityDropsInput.checked,
+                weapons:      readSelectedWeapons(ballCount)
+            }));
+        }
 
-                row.appendChild(label);
-                row.appendChild(select);
-                weaponRows.appendChild(row);
+        function loadSavedSettings() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return null;
+                return JSON.parse(raw);
+            } catch { return null; }
+        }
+
+        function selectWeapon(ballIndex, weaponType) {
+            const hidden = document.getElementById(`weapon-${ballIndex}`);
+            if (hidden) hidden.value = weaponType;
+
+            const thumb = document.getElementById(`slot-thumb-${ballIndex}`);
+            const name  = document.getElementById(`slot-name-${ballIndex}`);
+            if (thumb) thumb.src = WEAPON_IMAGES[weaponType] || '';
+            if (name)  name.textContent = WEAPON_LABELS[weaponType] || weaponType;
+
+            const picker = document.getElementById(`picker-${ballIndex}`);
+            if (picker) {
+                picker.querySelectorAll('.picker-card').forEach(card => {
+                    card.classList.toggle('selected', card.dataset.weapon === weaponType);
+                });
             }
 
-            while (weaponRows.children.length > ballCount) {
-                weaponRows.removeChild(weaponRows.lastElementChild);
+            closePicker(ballIndex);
+            saveSettings();
+        }
+
+        function closePicker(ballIndex) {
+            const picker = document.getElementById(`picker-${ballIndex}`);
+            const header = document.getElementById(`slot-header-${ballIndex}`);
+            if (picker) picker.hidden = true;
+            if (header) header.classList.remove('open');
+            if (openPickerIndex === ballIndex) openPickerIndex = null;
+        }
+
+        function togglePicker(ballIndex) {
+            if (openPickerIndex !== null && openPickerIndex !== ballIndex) {
+                closePicker(openPickerIndex);
+            }
+            const picker = document.getElementById(`picker-${ballIndex}`);
+            const header = document.getElementById(`slot-header-${ballIndex}`);
+            if (!picker) return;
+            if (picker.hidden) {
+                picker.hidden = false;
+                header.classList.add('open');
+                openPickerIndex = ballIndex;
+            } else {
+                closePicker(ballIndex);
+            }
+        }
+
+        function makePickerCard(weaponType, ballIndex, isSelected) {
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'picker-card' +
+                (EGO_WEAPONS.has(weaponType) ? ' ego-card' : '') +
+                (isSelected ? ' selected' : '');
+            card.dataset.weapon = weaponType;
+
+            const thumbWrap = document.createElement('div');
+            thumbWrap.className = 'picker-thumb-wrap';
+            const img = document.createElement('img');
+            img.className = 'picker-thumb';
+            img.src = WEAPON_IMAGES[weaponType] || '';
+            img.alt = '';
+            thumbWrap.appendChild(img);
+
+            const nameEl = document.createElement('span');
+            nameEl.className = 'picker-card-name';
+            nameEl.textContent = WEAPON_LABELS[weaponType] || weaponType;
+
+            card.appendChild(thumbWrap);
+            card.appendChild(nameEl);
+            card.addEventListener('click', () => selectWeapon(ballIndex, weaponType));
+            return card;
+        }
+
+        function buildPicker(picker, ballIndex, currentWeapon) {
+            picker.innerHTML = '';
+
+            if (standardWeapons.length) {
+                const t = document.createElement('div');
+                t.className = 'picker-section-title';
+                t.textContent = 'Standard';
+                picker.appendChild(t);
+                const g = document.createElement('div');
+                g.className = 'picker-grid';
+                for (const w of standardWeapons) g.appendChild(makePickerCard(w, ballIndex, w === currentWeapon));
+                picker.appendChild(g);
+            }
+
+            if (egoWeapons.length) {
+                const t = document.createElement('div');
+                t.className = 'picker-section-title ego-section-title';
+                t.textContent = 'E.G.O';
+                picker.appendChild(t);
+                const g = document.createElement('div');
+                g.className = 'picker-grid';
+                for (const w of egoWeapons) g.appendChild(makePickerCard(w, ballIndex, w === currentWeapon));
+                picker.appendChild(g);
+            }
+        }
+
+        function createBallSlot(ballIndex, teamCount) {
+            const defaultWeapon = 'pistol';
+
+            const slot = document.createElement('div');
+            slot.className = 'ball-slot';
+            slot.id = `slot-${ballIndex}`;
+
+            // Clickable header
+            const header = document.createElement('div');
+            header.className = 'ball-slot-header';
+            header.id = `slot-header-${ballIndex}`;
+            header.addEventListener('click', () => togglePicker(ballIndex));
+
+            const dot = document.createElement('div');
+            dot.className = 'ball-team-dot';
+            dot.id = `slot-dot-${ballIndex}`;
+            dot.style.background = getTeamColor(ballIndex, teamCount);
+
+            const label = document.createElement('span');
+            label.className = 'ball-slot-label';
+            label.textContent = `Ball ${ballIndex}`;
+
+            const weaponDiv = document.createElement('div');
+            weaponDiv.className = 'ball-slot-weapon';
+
+            const thumb = document.createElement('img');
+            thumb.className = 'ball-slot-thumb';
+            thumb.id = `slot-thumb-${ballIndex}`;
+            thumb.src = WEAPON_IMAGES[defaultWeapon] || '';
+            thumb.alt = '';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'ball-slot-name';
+            nameSpan.id = `slot-name-${ballIndex}`;
+            nameSpan.textContent = WEAPON_LABELS[defaultWeapon] || defaultWeapon;
+
+            weaponDiv.appendChild(thumb);
+            weaponDiv.appendChild(nameSpan);
+
+            const arrow = document.createElement('span');
+            arrow.className = 'ball-slot-arrow';
+            arrow.textContent = '▾';
+
+            header.appendChild(dot);
+            header.appendChild(label);
+            header.appendChild(weaponDiv);
+            header.appendChild(arrow);
+
+            // Hidden form input
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.id = `weapon-${ballIndex}`;
+            hidden.name = `weapon-${ballIndex}`;
+            hidden.value = defaultWeapon;
+
+            // Picker grid
+            const picker = document.createElement('div');
+            picker.className = 'weapon-picker';
+            picker.id = `picker-${ballIndex}`;
+            picker.hidden = true;
+            buildPicker(picker, ballIndex, defaultWeapon);
+
+            slot.appendChild(header);
+            slot.appendChild(hidden);
+            slot.appendChild(picker);
+            return slot;
+        }
+
+        function ensureBallSlots(ballCount, teamCount) {
+            while (ballSlotsEl.children.length < ballCount) {
+                const index = ballSlotsEl.children.length + 1;
+                ballSlotsEl.appendChild(createBallSlot(index, teamCount));
+            }
+            while (ballSlotsEl.children.length > ballCount) {
+                const last = ballSlotsEl.children.length;
+                if (openPickerIndex === last) closePicker(last);
+                ballSlotsEl.removeChild(ballSlotsEl.lastElementChild);
+            }
+            // Refresh team dot colors
+            for (let i = 1; i <= ballCount; i++) {
+                const dot = document.getElementById(`slot-dot-${i}`);
+                if (dot) dot.style.background = getTeamColor(i, teamCount);
             }
         }
 
         function readSelectedWeapons(ballCount) {
-            const selected = [];
+            const out = [];
             for (let i = 1; i <= ballCount; i++) {
-                const select = document.getElementById(`weapon-${i}`);
-                selected.push(select ? select.value : 'pistol');
+                const el = document.getElementById(`weapon-${i}`);
+                out.push(el ? el.value : 'pistol');
             }
-            return selected;
+            return out;
         }
 
         function clampSettings() {
-            const ballCount = Math.max(2, Math.min(12, Number(ballsInput.value) || 4));
-            const maxTeams = Math.min(6, ballCount);
+            const ballCount = Math.max(2, Math.min(12, Number(ballsInput.value)  || 4));
+            const maxTeams  = Math.min(6, ballCount);
             const teamCount = Math.max(2, Math.min(maxTeams, Number(teamsInput.value) || 2));
-            const dropMs = Math.max(600, Math.min(7000, Number(dropInput.value) || 4000));
+            const dropMs    = Math.max(600, Math.min(7000, Number(dropInput.value) || 4000));
 
-            ensureWeaponRows(ballCount);
+            ensureBallSlots(ballCount, teamCount);
 
-            ballsInput.value = String(ballCount);
-            teamsInput.max = String(maxTeams);
-            teamsInput.value = String(teamCount);
-            dropInput.value = String(dropMs);
+            ballsInput.value    = String(ballCount);
+            teamsInput.max      = String(maxTeams);
+            teamsInput.value    = String(teamCount);
+            dropInput.value     = String(dropMs);
             dropLabel.textContent = `${dropMs} ms`;
 
             return { ballCount, teamCount, dropMs };
         }
 
-        ballsInput.addEventListener('input', clampSettings);
-        teamsInput.addEventListener('input', clampSettings);
-        dropInput.addEventListener('input', clampSettings);
+        ballsInput.addEventListener('input', () => { clampSettings(); saveSettings(); });
+        teamsInput.addEventListener('input', () => { clampSettings(); saveSettings(); });
+        dropInput.addEventListener('input', () => { clampSettings(); saveSettings(); });
+        weaponDropsInput.addEventListener('change', saveSettings);
+        utilityDropsInput.addEventListener('change', saveSettings);
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
             const { ballCount, teamCount, dropMs } = clampSettings();
-            const selectedWeapons = readSelectedWeapons(ballCount);
+            const weapons = readSelectedWeapons(ballCount);
             const params = new URLSearchParams({
                 balls: String(ballCount),
                 teams: String(teamCount),
                 dropMs: String(dropMs),
-                weapons: selectedWeapons.join(','),
-                weaponDrops: weaponDropsInput.checked ? '1' : '0',
+                weapons: weapons.join(','),
+                weaponDrops:  weaponDropsInput.checked  ? '1' : '0',
                 utilityDrops: utilityDropsInput.checked ? '1' : '0'
             });
             window.location.href = `game.html?${params.toString()}`;
         });
 
-        quickStart.addEventListener('click', () => {
+        document.getElementById('quick-start').addEventListener('click', () => {
             window.location.href = 'game.html';
         });
-
-        viewStats.addEventListener('click', () => {
+        document.getElementById('view-stats').addEventListener('click', () => {
             window.location.href = 'stats.html';
         });
+        document.getElementById('open-sandbox').addEventListener('click', () => {
+            window.location.href = 'sandbox.html';
+        });
 
+        document.addEventListener('keydown', (e) => {
+            if (e.shiftKey && e.ctrlKey && (e.key === 'R' || e.key === 'r')) {
+                e.preventDefault();
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        });
+
+        const saved = loadSavedSettings();
+        if (saved) {
+            if (saved.balls        != null) ballsInput.value           = saved.balls;
+            if (saved.teams        != null) teamsInput.value           = saved.teams;
+            if (saved.dropMs       != null) dropInput.value             = saved.dropMs;
+            if (saved.weaponDrops  != null) weaponDropsInput.checked  = saved.weaponDrops;
+            if (saved.utilityDrops != null) utilityDropsInput.checked = saved.utilityDrops;
+        }
         clampSettings();
+        if (saved?.weapons) {
+            saved.weapons.forEach((w, i) => { if (w) selectWeapon(i + 1, w); });
+        }
     </script>
 </body>
 </html>
