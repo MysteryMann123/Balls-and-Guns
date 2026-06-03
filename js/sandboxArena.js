@@ -1,5 +1,5 @@
 import { SandboxGame } from './sandboxGame.js';
-import { loadImages } from './assetManager.js';
+import { loadImages, W } from './bootstrap.js';
 import {
     AMMO_CRATE_DOUBLE_SHOT_MS,
     DEAD_RINGER_PICKUP_COOLDOWN_MS,
@@ -8,7 +8,6 @@ import {
     HEALTHICO_REGEN_INTERVAL_MS,
     HEALTHICO_REGEN_PER_TICK,
 } from './pickupConstants.js';
-import * as W from './weapons/index.js';
 
 // --- Read URL params ---
 const query        = new URLSearchParams(window.location.search);

@@ -11,10 +11,8 @@
  * game-over logic, and ball creation.
  */
 
-import { Game } from './game.js';
-import { Ball } from './core/ball.js';
+import { Game, Ball, W } from './bootstrap.js';
 import { ARENA_WIDTH, ARENA_HEIGHT } from './gameConfig.js';
-import * as W from './weapons/index.js';
 import { DealerWeapon } from './weapons/dealer.js';
 
 const DEFAULT_SANDBOX_HP = 1_000_000;

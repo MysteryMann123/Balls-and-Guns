@@ -376,6 +376,7 @@ export function teleportMagicianHatShooter(game, shooter, target, now) {
         x: fromX,
         y: fromY,
         createdAt: now,
+        durationMs: W.magicianHat.TELEPORT_SMOKE_DURATION_MS,
         expiresAt: now + W.magicianHat.TELEPORT_SMOKE_DURATION_MS
     });
 
@@ -394,6 +395,7 @@ export function teleportMagicianHatShooter(game, shooter, target, now) {
         x: shooter.pos.x,
         y: shooter.pos.y,
         createdAt: now,
+        durationMs: W.magicianHat.TELEPORT_SMOKE_DURATION_MS,
         expiresAt: now + W.magicianHat.TELEPORT_SMOKE_DURATION_MS
     });
 }

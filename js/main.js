@@ -1,6 +1,4 @@
-import { Game } from './game.js';
-import { loadImages } from './assetManager.js';
-import * as W from './weapons/index.js';
+import { Game, loadImages, W } from './bootstrap.js';
 
 const canvas = document.getElementById('gameCanvas');
 const statusEl = document.getElementById('status');

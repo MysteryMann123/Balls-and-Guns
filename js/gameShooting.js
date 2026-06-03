@@ -213,7 +213,7 @@ export function ballShooting(game, now) {
             if (!shooter.soundStarOrbitals) shooter.soundStarOrbitals = [];
             while (shooter.soundStarOrbitals.length < targetCount) {
                 const initAngle = (shooter.soundStarOrbitals.length / W.soundOfStar.MAX_AMMO) * Math.PI * 2;
-                shooter.soundStarOrbitals.push({ angle: initAngle });
+                shooter.soundStarOrbitals.push({ angle: initAngle, orbitRadius: W.soundOfStar.ORBIT_RADIUS, size: W.soundOfStar.PROJECTILE_SIZE });
             }
             shooter.soundStarOrbitals.length = Math.min(shooter.soundStarOrbitals.length, targetCount);
             for (const orb of shooter.soundStarOrbitals) {
@@ -913,7 +913,8 @@ export function ballShooting(game, now) {
                 explodeAt: shooter.weapon.type === 'grenadelauncher' ? now + shooter.weapon.explodeDelayMs : undefined,
                 gravity: (shooter.weapon.type === 'grenadelauncher' || shooter.weapon.type === 'lochnload') ? 0.1 : 0,
                 drag: (shooter.weapon.type === 'grenadelauncher' || shooter.weapon.type === 'lochnload') ? 0.996 : 1,
-                angularVelocity: (shooter.weapon.type === 'grenadelauncher' || shooter.weapon.type === 'lochnload') ? (Math.random() * 0.3 + 0.15) * (Math.random() < 0.5 ? -1 : 1) : 0
+                angularVelocity: (shooter.weapon.type === 'grenadelauncher' || shooter.weapon.type === 'lochnload') ? (Math.random() * 0.3 + 0.15) * (Math.random() < 0.5 ? -1 : 1) : 0,
+                aoeRadius: shooter.weapon.type === 'faintaroma' ? W.faintAroma.AOE_RADIUS : undefined,
             };
             game.projectiles.push(new Projectile(_projParams));
 
