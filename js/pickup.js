@@ -1,4 +1,4 @@
-import { Vector } from './vector.js';
+import { Vector } from './core/vector.js';
 
 export class Pickup {
     constructor(x, y, weaponType) {

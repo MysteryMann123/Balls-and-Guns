@@ -1,5 +1,5 @@
 import { Deck, evaluatePokerHand } from '../cards.js';
-import { Projectile } from '../projectile.js';
+import { Projectile } from '../core/projectile.js';
 
 // --- Timing ---
 const drawIntervalMs  = 500;

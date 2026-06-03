@@ -1,4 +1,4 @@
-import { Vector } from './vector.js';
+import { Vector } from './core/vector.js';
 
 const _arenaImage = new Image();
 _arenaImage.src = 'assets/Arena.jpg';

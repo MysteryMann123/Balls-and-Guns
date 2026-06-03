@@ -8,7 +8,7 @@ import {
     DEAD_RINGER_DECOY_SPEED,
     PICKUP_SPAWN_RATE_MS,
 } from './pickupConstants.js';
-import { Ball } from './ball.js';
+import { Ball } from './core/ball.js';
 import { DealerWeapon } from './weapons/dealer.js';
 import {
     applyEgoMagicBulletHoming as applyEgoMagicBulletHomingImpl,

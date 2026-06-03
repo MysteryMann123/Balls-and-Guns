@@ -1,5 +1,5 @@
-import { Projectile } from './projectile.js';
-import { Vector } from './vector.js';
+import { Projectile } from './core/projectile.js';
+import { Vector } from './core/vector.js';
 import * as W from './weapons/index.js';
 
 function trySpawnHornetBee(game, victim, attacker, now) {

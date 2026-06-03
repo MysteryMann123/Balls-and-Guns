@@ -12,7 +12,7 @@
  */
 
 import { Game } from './game.js';
-import { Ball } from './ball.js';
+import { Ball } from './core/ball.js';
 import { ARENA_WIDTH, ARENA_HEIGHT } from './gameConfig.js';
 import * as W from './weapons/index.js';
 import { DealerWeapon } from './weapons/dealer.js';

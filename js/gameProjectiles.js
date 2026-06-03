@@ -1,105 +1,6 @@
-import {
-    BLUTSAUGER_HEAL_MAX,
-    BLUTSAUGER_HEAL_MIN,
-    DIRECT_HIT_VS_FASTER_MULTIPLIER,
-    EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MAX,
-    EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MIN,
-    EGO_MAGIC_BULLET_AFTERBURN_DURATION_MS,
-    EGO_MAGIC_BULLET_AFTERBURN_INTERVAL_MS,
-    EGO_LONELINESS_AMMO_REFUND_CHANCE,
-    EGO_LONELINESS_SLOW_DURATION_MS,
-    EGO_LONELINESS_SLOW_MULTIPLIER,
-    EXPLOSIVE_FLASK_EFFECT_DURATION_MS,
-    NEAR_MISSED_VS_SLOWER_MULTIPLIER,
-    EXPLOSIVE_FLASK_SLOW_MULTIPLIER,
-    EXPLOSIVE_FLASK_SPLASH_RADIUS,
-    FLAMETHROWER_AFTERBURN_DAMAGE_MAX,
-    FLAMETHROWER_AFTERBURN_DAMAGE_MIN,
-    FLAMETHROWER_AFTERBURN_DURATION_MS,
-    FLAMETHROWER_AFTERBURN_INTERVAL_MS,
-    GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE,
-    GRENADE_LAUNCHER_SPLASH_RADIUS,
-    PIP_LAUNCHER_ALLY_HEAL_MAX,
-    PIP_LAUNCHER_ALLY_HEAL_MIN,
-    PIP_LAUNCHER_SPLASH_RADIUS,
-    PARADISE_LOST_ALLY_HEAL_RADIUS,
-    PARADISE_LOST_ALLY_HEAL_RATIO,
-    PARADISE_LOST_LIFESTEAL_RATIO,
-    PYRO_AIRBLAST_AMMO_COST,
-    PYRO_AIRBLAST_COOLDOWN_MS,
-    ROCKET_LAUNCHER_SPLASH_RADIUS,
-    HUNTSMAN_STICK_DURATION_MS,
-    HORNET_BEE_DAMAGE_MAX,
-    HORNET_BEE_DAMAGE_MIN,
-    HORNET_BEE_HOMING_RANGE,
-    HORNET_BEE_HOMING_STRENGTH,
-    HORNET_BEE_MAX_ACTIVE,
-    HORNET_BEE_SIZE,
-    HORNET_BEE_SPEED,
-    HORNET_RIFLE_AFTERBURN_DAMAGE_MAX,
-    HORNET_RIFLE_AFTERBURN_DAMAGE_MIN,
-    HORNET_RIFLE_AFTERBURN_DURATION_MS,
-    HORNET_RIFLE_AFTERBURN_INTERVAL_MS,
-    SWORD_SHARPENED_PIERCE_DAMAGE_HP_RATIO,
-    SWORD_SHARPENED_PIERCE_STICK_DURATION_MS,
-    SWORD_SHARPENED_SHARPEN_DAMAGE_BONUS,
-    SWORD_SHARPENED_SHARPEN_SPEED_BONUS,
-    SWORD_SHARPENED_SHARPEN_RELOAD_BONUS,
-    SWORD_SHARPENED_SHARPEN_MAX_STACKS,
-    SWORD_SHARPENED_SHARPEN_DURATION_MS,
-    SWORD_SHARPENED_BLESSING_SHIELD_DURATION_MS,
-    SWORD_SHARPENED_BLESSING_SHIELD_DAMAGE_BLOCK,
-    SWORD_SHARPENED_RESISTANCE_IGNORE,
-    SOLEMN_VOW_FUNERAL_SHOOT_LOCK_MS,
-    SOUND_OF_STAR_SPEED,
-    SOUND_OF_STAR_HOMING_STRENGTH,
-    SOUND_OF_STAR_HOMING_RANGE,
-    SOUND_OF_STAR_ORBIT_RATE,
-    LOCH_N_LOAD_SPLASH_RADIUS,
-    LOCH_N_LOAD_SPLASH_MAX_DAMAGE,
-    LOCH_N_LOAD_FAST_MOVE_BONUS,
-    LOCH_N_LOAD_FAST_SPEED_RATIO,
-    FAINT_AROMA_DAMAGE_MIN,
-    FAINT_AROMA_DAMAGE_MAX,
-    FAINT_AROMA_DOT_DAMAGE_MIN,
-    FAINT_AROMA_DOT_DAMAGE_MAX,
-    FAINT_AROMA_DOT_INTERVAL_MS,
-    FAINT_AROMA_DOT_DURATION_MS,
-    FAINT_AROMA_HEAL_REDUCTION,
-    FAINT_AROMA_AOE_RADIUS,
-    FAINT_AROMA_PIERCE_COUNT,
-    FAINT_AROMA_AOE_HIT_COOLDOWN_MS,
-    HAIRSPRAY_MAX_RANGE,
-    HAIRSPRAY_CLOUD_RADIUS,
-    HAIRSPRAY_TICK_DAMAGE_MIN,
-    HAIRSPRAY_TICK_DAMAGE_MAX,
-    HAIRSPRAY_TICK_INTERVAL_MS,
-    HAIRSPRAY_NEAR_ZONE_END,
-    HAIRSPRAY_MID_ZONE_END,
-    HAIRSPRAY_NEAR_MAX_TICKS,
-    HAIRSPRAY_MID_MAX_TICKS,
-    HAIRSPRAY_FAR_MAX_TICKS,
-    HAIRSPRAY_LINGER_MS,
-    ADORATION_DAMAGE_MIN,
-    ADORATION_DAMAGE_MAX,
-    ADORATION_PIERCE_COUNT,
-    ADORATION_SLOW_DURATION_MS,
-    ADORATION_SLOW_MULTIPLIER,
-    EGOSODA_RED_HEAL_MIN,
-    EGOSODA_RED_HEAL_MAX,
-    EGOSODA_BLUE_HEAL_MIN,
-    EGOSODA_BLUE_HEAL_MAX,
-    EGOSODA_BLUE_HEAL_INTERVAL_MS,
-    EGOSODA_BLUE_HEAL_DURATION_MS,
-    EGOSODA_PURPLE_SELF_DAMAGE_PCT,
-    EGOSODA_PURPLE_DAMAGE_MIN,
-    EGOSODA_PURPLE_DAMAGE_MAX,
-    EGOSODA_PURPLE_MAX_HP_PCT_MIN,
-    EGOSODA_PURPLE_MAX_HP_PCT_MAX,
-    LAETITIA_MARK_DURATION_MS,
-} from './constants.js';
-import { Projectile } from './projectile.js';
-import { Vector } from './vector.js';
+import * as W from './weapons/index.js';
+import { Projectile } from './core/projectile.js';
+import { Vector } from './core/vector.js';
 
 function trySpawnHornetBee(game, victim, attacker, now) {
     if (!victim || !attacker) return;
@@ -108,9 +9,9 @@ function trySpawnHornetBee(game, victim, attacker, now) {
     if (!game.areEnemies(victim, attacker)) return;
 
     const activeBeeCount = game.projectiles.filter(projectile => projectile.type === 'hornetbee' && projectile.ownerId === victim.id).length;
-    if (activeBeeCount >= HORNET_BEE_MAX_ACTIVE) return;
+    if (activeBeeCount >= W.hornet.BEE_MAX_ACTIVE) return;
 
-    const damage = Math.floor(Math.random() * (HORNET_BEE_DAMAGE_MAX - HORNET_BEE_DAMAGE_MIN + 1)) + HORNET_BEE_DAMAGE_MIN;
+    const damage = Math.floor(Math.random() * (W.hornet.BEE_DAMAGE_MAX - W.hornet.BEE_DAMAGE_MIN + 1)) + W.hornet.BEE_DAMAGE_MIN;
 
     game.projectiles.push(
         new Projectile({
@@ -118,20 +19,20 @@ function trySpawnHornetBee(game, victim, attacker, now) {
             y: victim.pos.y,
             targetX: attacker.pos.x,
             targetY: attacker.pos.y,
-            speed: HORNET_BEE_SPEED,
+            speed: W.hornet.BEE_SPEED,
             damage,
             color: '#ffd84a',
-            size: HORNET_BEE_SIZE,
+            size: W.hornet.BEE_SIZE,
             ownerId: victim.id,
             type: 'hornetbee',
             sourceWeaponType: 'hornet',
             hornetTargetId: attacker.id,
-            hornetHomingStrength: HORNET_BEE_HOMING_STRENGTH,
-            hornetHomingRange: HORNET_BEE_HOMING_RANGE,
-            afterburnMin: HORNET_RIFLE_AFTERBURN_DAMAGE_MIN,
-            afterburnMax: HORNET_RIFLE_AFTERBURN_DAMAGE_MAX,
-            afterburnDuration: HORNET_RIFLE_AFTERBURN_DURATION_MS,
-            afterburnInterval: HORNET_RIFLE_AFTERBURN_INTERVAL_MS,
+            hornetHomingStrength: W.hornet.BEE_HOMING_STRENGTH,
+            hornetHomingRange: W.hornet.BEE_HOMING_RANGE,
+            afterburnMin: W.hornet.RIFLE_AFTERBURN_DAMAGE_MIN,
+            afterburnMax: W.hornet.RIFLE_AFTERBURN_DAMAGE_MAX,
+            afterburnDuration: W.hornet.RIFLE_AFTERBURN_DURATION_MS,
+            afterburnInterval: W.hornet.RIFLE_AFTERBURN_INTERVAL_MS,
             expiresAt: now + 3500
         })
     );
@@ -198,19 +99,19 @@ export function updateProjectiles(game, now) {
         }
 
         if (projectile.type === 'soundofstar') {
-            projectile.soundStarOrbitAngle = ((projectile.soundStarOrbitAngle || 0) + SOUND_OF_STAR_ORBIT_RATE) % (Math.PI * 2);
+            projectile.soundStarOrbitAngle = ((projectile.soundStarOrbitAngle || 0) + W.soundOfStar.ORBIT_RATE) % (Math.PI * 2);
 
             const owner = game.balls.find(b => b.id === projectile.ownerId && b.isAlive());
             if (owner && projectile.vel.magnitude() > 0.001) {
                 let closestEnemy = null;
-                let closestDist = projectile.soundStarHomingRange ?? SOUND_OF_STAR_HOMING_RANGE;
+                let closestDist = projectile.soundStarHomingRange ?? W.soundOfStar.HOMING_RANGE;
                 for (const ball of game.balls) {
                     if (!ball.isAlive() || !game.areEnemies(owner, ball) || ball.isUntargetable(now)) continue;
                     const d = Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y);
                     if (d < closestDist) { closestDist = d; closestEnemy = ball; }
                 }
 
-                const homingStrength = projectile.soundStarHomingStrength ?? SOUND_OF_STAR_HOMING_STRENGTH;
+                const homingStrength = projectile.soundStarHomingStrength ?? W.soundOfStar.HOMING_STRENGTH;
                 const wobble = Math.sin(projectile.soundStarOrbitAngle) * 0.28;
 
                 let targetAngle;
@@ -225,7 +126,7 @@ export function updateProjectiles(game, now) {
                 const newDir = currentDir.multiply(1 - homingStrength).add(desired.multiply(homingStrength));
                 const mag = newDir.magnitude();
                 if (mag > 0.001) {
-                    projectile.vel = newDir.multiply(SOUND_OF_STAR_SPEED / mag);
+                    projectile.vel = newDir.multiply(W.soundOfStar.SPEED / mag);
                 }
                 projectile.rotation = Math.atan2(projectile.vel.y, projectile.vel.x);
             }
@@ -241,7 +142,7 @@ export function updateProjectiles(game, now) {
             let target = game.balls.find(candidate => candidate.id === projectile.hornetTargetId && candidate.isAlive());
             if (!target || !game.areEnemies(owner, target) || target.isUntargetable(now)) {
                 target = null;
-                let bestDistance = projectile.hornetHomingRange || HORNET_BEE_HOMING_RANGE;
+                let bestDistance = projectile.hornetHomingRange || W.hornet.BEE_HOMING_RANGE;
                 for (const candidate of game.balls) {
                     if (!candidate.isAlive()) continue;
                     if (!game.areEnemies(owner, candidate)) continue;
@@ -264,13 +165,13 @@ export function updateProjectiles(game, now) {
                     const currentDir = projectile.vel.magnitude() > 0.001
                         ? projectile.vel.clone().normalize()
                         : steering.clone();
-                    const blend = Math.max(0, Math.min(1, projectile.hornetHomingStrength || HORNET_BEE_HOMING_STRENGTH));
+                    const blend = Math.max(0, Math.min(1, projectile.hornetHomingStrength || W.hornet.BEE_HOMING_STRENGTH));
                     const newDir = currentDir.multiply(1 - blend).add(steering.multiply(blend));
-                    projectile.vel = newDir.normalize().multiply(HORNET_BEE_SPEED);
+                    projectile.vel = newDir.normalize().multiply(W.hornet.BEE_SPEED);
                     projectile.rotation = Math.atan2(projectile.vel.y, projectile.vel.x);
                 }
             } else if (projectile.vel.magnitude() < 0.001) {
-                projectile.vel = new Vector(Math.cos(owner.aimAngle), Math.sin(owner.aimAngle)).multiply(HORNET_BEE_SPEED);
+                projectile.vel = new Vector(Math.cos(owner.aimAngle), Math.sin(owner.aimAngle)).multiply(W.hornet.BEE_SPEED);
             }
         }
 
@@ -296,7 +197,7 @@ export function updateProjectiles(game, now) {
         }
 
         if (projectile.type === 'grenadelauncher' && now >= (projectile.explodeAt || 0)) {
-            game.triggerExplosion(projectile.pos.x, projectile.pos.y, projectile.splashRadius || GRENADE_LAUNCHER_SPLASH_RADIUS, projectile.splashMaxDamage || GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE, projectile.ownerId, now);
+            game.triggerExplosion(projectile.pos.x, projectile.pos.y, projectile.splashRadius || W.grenadeLauncher.SPLASH_RADIUS, projectile.splashMaxDamage || W.grenadeLauncher.SPLASH_MAX_DAMAGE, projectile.ownerId, now);
             game.projectiles.splice(i, 1);
             continue;
         }
@@ -321,12 +222,12 @@ export function updateProjectiles(game, now) {
             for (const ball of game.balls) {
                 if (!ball.isAlive() || ball.isUntargetable(now)) continue;
                 if (aoeOwner && !game.areEnemies(aoeOwner, ball)) continue;
-                if (Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y) > FAINT_AROMA_AOE_RADIUS + ball.radius) continue;
-                if ((projectile.aoeHitCooldowns[ball.id] || 0) + FAINT_AROMA_AOE_HIT_COOLDOWN_MS > now) continue;
+                if (Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y) > W.faintAroma.AOE_RADIUS + ball.radius) continue;
+                if ((projectile.aoeHitCooldowns[ball.id] || 0) + W.faintAroma.AOE_HIT_COOLDOWN_MS > now) continue;
                 if (ball.isUberActive(now)) continue;
                 projectile.aoeHitCooldowns[ball.id] = now;
-                ball.applyAfterburn(now, FAINT_AROMA_DOT_DURATION_MS, FAINT_AROMA_DOT_DAMAGE_MIN, FAINT_AROMA_DOT_DAMAGE_MAX, FAINT_AROMA_DOT_INTERVAL_MS);
-                ball.applyFaintAromaDebuff(now, FAINT_AROMA_DOT_DURATION_MS, FAINT_AROMA_HEAL_REDUCTION);
+                ball.applyAfterburn(now, W.faintAroma.DOT_DURATION_MS, W.faintAroma.DOT_DAMAGE_MIN, W.faintAroma.DOT_DAMAGE_MAX, W.faintAroma.DOT_INTERVAL_MS);
+                ball.applyFaintAromaDebuff(now, W.faintAroma.DOT_DURATION_MS, W.faintAroma.HEAL_REDUCTION);
             }
         }
 
@@ -340,9 +241,9 @@ export function updateProjectiles(game, now) {
                 projectile.pos.x - projectile.originX,
                 projectile.pos.y - projectile.originY
             );
-            if (distFromOrigin >= HAIRSPRAY_MAX_RANGE) {
+            if (distFromOrigin >= W.hairspray.MAX_RANGE) {
                 if (!projectile.lingerUntil) {
-                    projectile.lingerUntil = now + HAIRSPRAY_LINGER_MS;
+                    projectile.lingerUntil = now + W.hairspray.LINGER_MS;
                 }
                 projectile.vel.x = 0;
                 projectile.vel.y = 0;
@@ -358,24 +259,24 @@ export function updateProjectiles(game, now) {
                 if (!ball.isAlive() || ball.isUntargetable(now)) continue;
                 if (cloudOwner && !game.areEnemies(cloudOwner, ball)) continue;
                 if (ball.isUberActive(now)) continue;
-                if (Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y) > HAIRSPRAY_CLOUD_RADIUS + ball.radius) continue;
+                if (Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y) > W.hairspray.CLOUD_RADIUS + ball.radius) continue;
                 const distToBall = Math.hypot(ball.pos.x - projectile.originX, ball.pos.y - projectile.originY);
                 let maxTicks;
-                if (distToBall < HAIRSPRAY_NEAR_ZONE_END) {
-                    maxTicks = HAIRSPRAY_NEAR_MAX_TICKS;
-                } else if (distToBall < HAIRSPRAY_MID_ZONE_END) {
-                    maxTicks = HAIRSPRAY_MID_MAX_TICKS;
+                if (distToBall < W.hairspray.NEAR_ZONE_END) {
+                    maxTicks = W.hairspray.NEAR_MAX_TICKS;
+                } else if (distToBall < W.hairspray.MID_ZONE_END) {
+                    maxTicks = W.hairspray.MID_MAX_TICKS;
                 } else {
-                    maxTicks = HAIRSPRAY_FAR_MAX_TICKS;
+                    maxTicks = W.hairspray.FAR_MAX_TICKS;
                 }
                 const tickCount = projectile.cloudTickCounts[ball.id] || 0;
                 if (tickCount >= maxTicks) continue;
                 const lastTick = projectile.cloudLastTickAt[ball.id] || 0;
-                if (now - lastTick < HAIRSPRAY_TICK_INTERVAL_MS) continue;
+                if (now - lastTick < W.hairspray.TICK_INTERVAL_MS) continue;
                 projectile.cloudLastTickAt[ball.id] = now;
                 projectile.cloudTickCounts[ball.id] = tickCount + 1;
                 const dmg = Math.round(
-                    (HAIRSPRAY_TICK_DAMAGE_MIN + Math.random() * (HAIRSPRAY_TICK_DAMAGE_MAX - HAIRSPRAY_TICK_DAMAGE_MIN))
+                    (W.hairspray.TICK_DAMAGE_MIN + Math.random() * (W.hairspray.TICK_DAMAGE_MAX - W.hairspray.TICK_DAMAGE_MIN))
                     * (cloudOwner ? cloudOwner.getDamageMultiplier(now) : 1)
                 );
                 ball.takeDamage(dmg, 'chemical');
@@ -412,7 +313,7 @@ export function updateProjectiles(game, now) {
                     game.triggerPipExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || PIP_LAUNCHER_SPLASH_RADIUS,
+                        projectile.splashRadius || W.pipLauncher.SPLASH_RADIUS,
                         projectile.damage,
                         projectile.ownerId,
                         now
@@ -421,7 +322,7 @@ export function updateProjectiles(game, now) {
                     game.triggerExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || ROCKET_LAUNCHER_SPLASH_RADIUS,
+                        projectile.splashRadius || W.rocketLauncher.SPLASH_RADIUS,
                         projectile.damage,
                         projectile.ownerId,
                         now,
@@ -439,7 +340,7 @@ export function updateProjectiles(game, now) {
             if (projectile.type === 'swordsharpened' && !projectile.stuckToBallId) {
                 const shooter = game.balls.find(candidate => candidate.id === projectile.ownerId && candidate.isAlive());
                 if (shooter) {
-                    const missDamage = Math.floor(shooter.maxHP * SWORD_SHARPENED_PIERCE_DAMAGE_HP_RATIO);
+                    const missDamage = Math.floor(shooter.maxHP * W.swordSharpened.PIERCE_DAMAGE_HP_RATIO);
                     shooter.takeDamage(missDamage, 'piercing', 'swordsharpened', true);
                 }
             }
@@ -503,10 +404,10 @@ export function updateProjectiles(game, now) {
                     ball.takeDamage(projectile.damage, 'magic', 'egomagicbullet');
                     ball.applyAfterburn(
                         now,
-                        EGO_MAGIC_BULLET_AFTERBURN_DURATION_MS,
-                        EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MIN,
-                        EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MAX,
-                        EGO_MAGIC_BULLET_AFTERBURN_INTERVAL_MS
+                        W.egoMagicBullet.AFTERBURN_DURATION_MS,
+                        W.egoMagicBullet.AFTERBURN_DAMAGE_MIN,
+                        W.egoMagicBullet.AFTERBURN_DAMAGE_MAX,
+                        W.egoMagicBullet.AFTERBURN_INTERVAL_MS
                     );
                     projectile.piercedBallIds.add(ball.id);
                     continue;
@@ -552,7 +453,7 @@ export function updateProjectiles(game, now) {
                     }
 
                     projectile.stuckToBallId = ball.id;
-                    projectile.stickExpiresAt = now + HUNTSMAN_STICK_DURATION_MS;
+                    projectile.stickExpiresAt = now + W.huntsman.STICK_DURATION_MS;
                     projectile.stickOffsetX = projectile.pos.x - ball.pos.x;
                     projectile.stickOffsetY = projectile.pos.y - ball.pos.y;
                     projectile.vel.x = 0;
@@ -570,9 +471,9 @@ export function updateProjectiles(game, now) {
                         if (!projectile.sharpenStacks) {
                             projectile.sharpenStacks = 0;
                         }
-                        if (projectile.sharpenStacks < SWORD_SHARPENED_SHARPEN_MAX_STACKS) {
+                        if (projectile.sharpenStacks < W.swordSharpened.SHARPEN_MAX_STACKS) {
                             projectile.sharpenStacks++;
-                            projectile.sharpenExpiresAt = now + SWORD_SHARPENED_SHARPEN_DURATION_MS;
+                            projectile.sharpenExpiresAt = now + W.swordSharpened.SHARPEN_DURATION_MS;
                         }
                         
                         // Apply sharpening buff to the sword thrower
@@ -589,7 +490,7 @@ export function updateProjectiles(game, now) {
 
                     // Always stick to enemy
                     projectile.stuckToBallId = ball.id;
-                    projectile.stickExpiresAt = now + SWORD_SHARPENED_PIERCE_STICK_DURATION_MS;
+                    projectile.stickExpiresAt = now + W.swordSharpened.PIERCE_STICK_DURATION_MS;
                     projectile.stickOffsetX = projectile.pos.x - ball.pos.x;
                     projectile.stickOffsetY = projectile.pos.y - ball.pos.y;
                     projectile.vel.x = 0;
@@ -621,7 +522,7 @@ export function updateProjectiles(game, now) {
 
                     const dealtActual = Math.max(0, beforeHp - ball.hp);
                     if (shooter && shooter.isAlive() && dealtActual > 0) {
-                        shooter.heal(dealtActual * PARADISE_LOST_LIFESTEAL_RATIO);
+                        shooter.heal(dealtActual * W.paradiseLost.LIFESTEAL_RATIO);
 
                         for (const ally of game.balls) {
                             if (!ally.isAlive()) continue;
@@ -631,9 +532,9 @@ export function updateProjectiles(game, now) {
                             const dx = ally.pos.x - projectile.pos.x;
                             const dy = ally.pos.y - projectile.pos.y;
                             const distance = Math.sqrt(dx * dx + dy * dy);
-                            if (distance > PARADISE_LOST_ALLY_HEAL_RADIUS) continue;
+                            if (distance > W.paradiseLost.ALLY_HEAL_RADIUS) continue;
 
-                            ally.heal(dealtActual * PARADISE_LOST_ALLY_HEAL_RATIO);
+                            ally.heal(dealtActual * W.paradiseLost.ALLY_HEAL_RATIO);
                         }
                     }
 
@@ -647,10 +548,10 @@ export function updateProjectiles(game, now) {
                         ball.takeDamage(projectile.damage, 'piercing', 'hornet');
                         ball.applyAfterburn(
                             now,
-                            projectile.afterburnDuration ?? HORNET_RIFLE_AFTERBURN_DURATION_MS,
-                            projectile.afterburnMin ?? HORNET_RIFLE_AFTERBURN_DAMAGE_MIN,
-                            projectile.afterburnMax ?? HORNET_RIFLE_AFTERBURN_DAMAGE_MAX,
-                            projectile.afterburnInterval ?? HORNET_RIFLE_AFTERBURN_INTERVAL_MS
+                            projectile.afterburnDuration ?? W.hornet.RIFLE_AFTERBURN_DURATION_MS,
+                            projectile.afterburnMin ?? W.hornet.RIFLE_AFTERBURN_DAMAGE_MIN,
+                            projectile.afterburnMax ?? W.hornet.RIFLE_AFTERBURN_DAMAGE_MAX,
+                            projectile.afterburnInterval ?? W.hornet.RIFLE_AFTERBURN_INTERVAL_MS
                         );
                     }
                     game.projectiles.splice(i, 1);
@@ -663,10 +564,10 @@ export function updateProjectiles(game, now) {
                         ball.takeDamage(projectile.damage, 'piercing', 'hornet');
                         ball.applyAfterburn(
                             now,
-                            projectile.afterburnDuration ?? HORNET_RIFLE_AFTERBURN_DURATION_MS,
-                            projectile.afterburnMin ?? HORNET_RIFLE_AFTERBURN_DAMAGE_MIN,
-                            projectile.afterburnMax ?? HORNET_RIFLE_AFTERBURN_DAMAGE_MAX,
-                            projectile.afterburnInterval ?? HORNET_RIFLE_AFTERBURN_INTERVAL_MS
+                            projectile.afterburnDuration ?? W.hornet.RIFLE_AFTERBURN_DURATION_MS,
+                            projectile.afterburnMin ?? W.hornet.RIFLE_AFTERBURN_DAMAGE_MIN,
+                            projectile.afterburnMax ?? W.hornet.RIFLE_AFTERBURN_DAMAGE_MAX,
+                            projectile.afterburnInterval ?? W.hornet.RIFLE_AFTERBURN_INTERVAL_MS
                         );
                     }
                     game.projectiles.splice(i, 1);
@@ -678,7 +579,7 @@ export function updateProjectiles(game, now) {
                     const shooterSpeed = shooter ? shooter.currentSpeed : 0;
                     let directDamage = projectile.damage;
                     if (ball.currentSpeed > shooterSpeed) {
-                        directDamage *= DIRECT_HIT_VS_FASTER_MULTIPLIER;
+                        directDamage *= W.directHit.VS_FASTER_MULTIPLIER;
                     }
 
                     if (!ball.isUberActive(now)) {
@@ -687,7 +588,7 @@ export function updateProjectiles(game, now) {
                     game.triggerExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || ROCKET_LAUNCHER_SPLASH_RADIUS,
+                        projectile.splashRadius || W.rocketLauncher.SPLASH_RADIUS,
                         projectile.damage,
                         projectile.ownerId,
                         now,
@@ -719,7 +620,7 @@ export function updateProjectiles(game, now) {
                     game.triggerPipExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || PIP_LAUNCHER_SPLASH_RADIUS,
+                        projectile.splashRadius || W.pipLauncher.SPLASH_RADIUS,
                         projectile.damage,
                         projectile.ownerId,
                         now,
@@ -734,7 +635,7 @@ export function updateProjectiles(game, now) {
                     game.triggerExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || ROCKET_LAUNCHER_SPLASH_RADIUS,
+                        projectile.splashRadius || W.rocketLauncher.SPLASH_RADIUS,
                         0,
                         projectile.ownerId,
                         now,
@@ -751,7 +652,7 @@ export function updateProjectiles(game, now) {
                     const shooterSpeed = shooter ? shooter.currentSpeed : 0;
                     let directDamage = projectile.damage;
                     if (isNearMissedVariant && ball.currentSpeed < shooterSpeed) {
-                        directDamage *= NEAR_MISSED_VS_SLOWER_MULTIPLIER;
+                        directDamage *= W.nearMissed.VS_SLOWER_MULTIPLIER;
                     }
 
                     if (!ball.isUberActive(now)) {
@@ -760,7 +661,7 @@ export function updateProjectiles(game, now) {
                     game.triggerExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || ROCKET_LAUNCHER_SPLASH_RADIUS,
+                        projectile.splashRadius || W.rocketLauncher.SPLASH_RADIUS,
                         projectile.damage,
                         projectile.ownerId,
                         now,
@@ -778,7 +679,7 @@ export function updateProjectiles(game, now) {
                     game.triggerExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || ROCKET_LAUNCHER_SPLASH_RADIUS,
+                        projectile.splashRadius || W.rocketLauncher.SPLASH_RADIUS,
                         projectile.damage,
                         projectile.ownerId,
                         now,
@@ -813,10 +714,10 @@ export function updateProjectiles(game, now) {
                         ball.takeDamage(projectile.damage, 'fire');
                         ball.applyAfterburn(
                             now,
-                            FLAMETHROWER_AFTERBURN_DURATION_MS,
-                            FLAMETHROWER_AFTERBURN_DAMAGE_MIN,
-                            FLAMETHROWER_AFTERBURN_DAMAGE_MAX,
-                            FLAMETHROWER_AFTERBURN_INTERVAL_MS
+                            W.flamethrower.AFTERBURN_DURATION_MS,
+                            W.flamethrower.AFTERBURN_DAMAGE_MIN,
+                            W.flamethrower.AFTERBURN_DAMAGE_MAX,
+                            W.flamethrower.AFTERBURN_INTERVAL_MS
                         );
                     }
                     projectile.piercedBallIds.add(ball.id);
@@ -838,8 +739,8 @@ export function updateProjectiles(game, now) {
                     game.triggerExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || GRENADE_LAUNCHER_SPLASH_RADIUS,
-                        projectile.splashMaxDamage || GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE,
+                        projectile.splashRadius || W.grenadeLauncher.SPLASH_RADIUS,
+                        projectile.splashMaxDamage || W.grenadeLauncher.SPLASH_MAX_DAMAGE,
                         projectile.ownerId,
                         now,
                         ball.id
@@ -850,16 +751,16 @@ export function updateProjectiles(game, now) {
                 }
 
                 if (projectile.type === 'lochnload') {
-                    const isFast = ball.currentSpeed > ball.maxSpeed * LOCH_N_LOAD_FAST_SPEED_RATIO;
-                    const bonus  = isFast ? (1 + LOCH_N_LOAD_FAST_MOVE_BONUS) : 1;
+                    const isFast = ball.currentSpeed > ball.maxSpeed * W.lochNLoad.FAST_SPEED_RATIO;
+                    const bonus  = isFast ? (1 + W.lochNLoad.FAST_MOVE_BONUS) : 1;
                     if (!ball.isUberActive(now)) {
                         ball.takeDamage(projectile.damage * bonus, 'explosive');
                     }
                     game.triggerExplosion(
                         projectile.pos.x,
                         projectile.pos.y,
-                        projectile.splashRadius || LOCH_N_LOAD_SPLASH_RADIUS,
-                        (projectile.splashMaxDamage || LOCH_N_LOAD_SPLASH_MAX_DAMAGE) * bonus,
+                        projectile.splashRadius || W.lochNLoad.SPLASH_RADIUS,
+                        (projectile.splashMaxDamage || W.lochNLoad.SPLASH_MAX_DAMAGE) * bonus,
                         projectile.ownerId,
                         now,
                         ball.id
@@ -874,10 +775,10 @@ export function updateProjectiles(game, now) {
                     if (projectile.piercedBallIds.has(ball.id)) continue;
                     projectile.piercedBallIds.add(ball.id);
                     if (!ball.isUberActive(now)) {
-                        const dmg = Math.round((FAINT_AROMA_DAMAGE_MIN + Math.floor(Math.random() * (FAINT_AROMA_DAMAGE_MAX - FAINT_AROMA_DAMAGE_MIN + 1))) * (shooter ? shooter.getDamageMultiplier(now) : 1));
+                        const dmg = Math.round((W.faintAroma.DAMAGE_MIN + Math.floor(Math.random() * (W.faintAroma.DAMAGE_MAX - W.faintAroma.DAMAGE_MIN + 1))) * (shooter ? shooter.getDamageMultiplier(now) : 1));
                         ball.takeDamage(dmg, 'piercing');
                     }
-                    if (projectile.piercedBallIds.size >= FAINT_AROMA_PIERCE_COUNT) {
+                    if (projectile.piercedBallIds.size >= W.faintAroma.PIERCE_COUNT) {
                         game.projectiles.splice(i, 1);
                         collided = true;
                         break;
@@ -890,13 +791,13 @@ export function updateProjectiles(game, now) {
                     if (projectile.piercedBallIds.has(ball.id)) continue;
                     projectile.piercedBallIds.add(ball.id);
                     if (!ball.isUberActive(now)) {
-                        const baseDmg = ADORATION_DAMAGE_MIN + Math.floor(Math.random() * (ADORATION_DAMAGE_MAX - ADORATION_DAMAGE_MIN + 1));
+                        const baseDmg = W.adoration.DAMAGE_MIN + Math.floor(Math.random() * (W.adoration.DAMAGE_MAX - W.adoration.DAMAGE_MIN + 1));
                         const slowBonus = 1 + (1 - ball.getEffectiveSlowMultiplier(now));
                         const dmg = Math.round(baseDmg * slowBonus * (shooter ? shooter.getDamageMultiplier(now) : 1));
                         ball.takeDamage(dmg, 'piercing');
-                        ball.applyAdorationSlow(now, ADORATION_SLOW_DURATION_MS, ADORATION_SLOW_MULTIPLIER);
+                        ball.applyAdorationSlow(now, W.adoration.SLOW_DURATION_MS, W.adoration.SLOW_MULTIPLIER);
                     }
-                    if (projectile.piercedBallIds.size >= ADORATION_PIERCE_COUNT) {
+                    if (projectile.piercedBallIds.size >= W.adoration.PIERCE_COUNT) {
                         game.projectiles.splice(i, 1);
                         collided = true;
                         break;
@@ -919,7 +820,7 @@ export function updateProjectiles(game, now) {
 
                 if (projectile.type === 'solemnvowfuneral') {
                     if (!ball.isUberActive(now)) {
-                        ball.applyShootLock(now, SOLEMN_VOW_FUNERAL_SHOOT_LOCK_MS);
+                        ball.applyShootLock(now, W.solemnVow.FUNERAL_SHOOT_LOCK_MS);
                     }
                     game.projectiles.splice(i, 1);
                     collided = true;
@@ -960,14 +861,14 @@ export function updateProjectiles(game, now) {
                     }
 
                     if (projectile.sourceWeaponType === 'egoloneliness') {
-                        ball.applyLonelinessSlow(now, EGO_LONELINESS_SLOW_DURATION_MS, EGO_LONELINESS_SLOW_MULTIPLIER);
+                        ball.applyLonelinessSlow(now, W.egoLoneliness.SLOW_DURATION_MS, W.egoLoneliness.SLOW_MULTIPLIER);
                     }
                 }
 
                 if (projectile.type === 'blutsauger') {
                     const healedShooter = game.balls.find(candidate => candidate.id === projectile.ownerId && candidate.isAlive());
                     if (healedShooter) {
-                        const healAmount = Math.floor(Math.random() * (BLUTSAUGER_HEAL_MAX - BLUTSAUGER_HEAL_MIN + 1)) + BLUTSAUGER_HEAL_MIN;
+                        const healAmount = Math.floor(Math.random() * (W.blutsauger.HEAL_MAX - W.blutsauger.HEAL_MIN + 1)) + W.blutsauger.HEAL_MIN;
                         healedShooter.heal(healAmount);
                     }
                 }
@@ -976,21 +877,21 @@ export function updateProjectiles(game, now) {
                     const sodaShooter = game.balls.find(b => b.id === projectile.ownerId && b.isAlive());
                     if (projectile.sodaType === 'red') {
                         if (sodaShooter) {
-                            const healAmt = Math.floor(Math.random() * (EGOSODA_RED_HEAL_MAX - EGOSODA_RED_HEAL_MIN + 1)) + EGOSODA_RED_HEAL_MIN;
+                            const healAmt = Math.floor(Math.random() * (W.egoSoda.RED_HEAL_MAX - W.egoSoda.RED_HEAL_MIN + 1)) + W.egoSoda.RED_HEAL_MIN;
                             sodaShooter.heal(healAmt);
                         }
                     } else if (projectile.sodaType === 'blue') {
                         if (sodaShooter) {
-                            const tickHeal = Math.floor(Math.random() * (EGOSODA_BLUE_HEAL_MAX - EGOSODA_BLUE_HEAL_MIN + 1)) + EGOSODA_BLUE_HEAL_MIN;
-                            sodaShooter.applySodaBlueHoT(now, tickHeal, EGOSODA_BLUE_HEAL_DURATION_MS, EGOSODA_BLUE_HEAL_INTERVAL_MS);
+                            const tickHeal = Math.floor(Math.random() * (W.egoSoda.BLUE_HEAL_MAX - W.egoSoda.BLUE_HEAL_MIN + 1)) + W.egoSoda.BLUE_HEAL_MIN;
+                            sodaShooter.applySodaBlueHoT(now, tickHeal, W.egoSoda.BLUE_HEAL_DURATION_MS, W.egoSoda.BLUE_HEAL_INTERVAL_MS);
                         }
                     } else if (projectile.sodaType === 'purple') {
                         if (sodaShooter) {
-                            sodaShooter.hp = Math.max(1, sodaShooter.hp - sodaShooter.maxHP * EGOSODA_PURPLE_SELF_DAMAGE_PCT);
+                            sodaShooter.hp = Math.max(1, sodaShooter.hp - sodaShooter.maxHP * W.egoSoda.PURPLE_SELF_DAMAGE_PCT);
                         }
                         if (!ball.isUberActive(now)) {
-                            const extraFlat = Math.floor(Math.random() * (EGOSODA_PURPLE_DAMAGE_MAX - EGOSODA_PURPLE_DAMAGE_MIN + 1)) + EGOSODA_PURPLE_DAMAGE_MIN;
-                            const hpPct = EGOSODA_PURPLE_MAX_HP_PCT_MIN + Math.random() * (EGOSODA_PURPLE_MAX_HP_PCT_MAX - EGOSODA_PURPLE_MAX_HP_PCT_MIN);
+                            const extraFlat = Math.floor(Math.random() * (W.egoSoda.PURPLE_DAMAGE_MAX - W.egoSoda.PURPLE_DAMAGE_MIN + 1)) + W.egoSoda.PURPLE_DAMAGE_MIN;
+                            const hpPct = W.egoSoda.PURPLE_MAX_HP_PCT_MIN + Math.random() * (W.egoSoda.PURPLE_MAX_HP_PCT_MAX - W.egoSoda.PURPLE_MAX_HP_PCT_MIN);
                             ball.takeDamage(Math.floor(extraFlat + ball.maxHP * hpPct), 'generic');
                         }
                     }
@@ -998,11 +899,11 @@ export function updateProjectiles(game, now) {
 
                 if (projectile.type === 'laetitia') {
                     if (!ball.isUberActive(now)) {
-                        ball.applyLaetitiaGiftMark(now, LAETITIA_MARK_DURATION_MS);
+                        ball.applyLaetitiaGiftMark(now, W.laetitia.MARK_DURATION_MS);
                     }
                 }
 
-                if (projectile.sourceWeaponType === 'egoloneliness' && Math.random() < EGO_LONELINESS_AMMO_REFUND_CHANCE) {
+                if (projectile.sourceWeaponType === 'egoloneliness' && Math.random() < W.egoLoneliness.AMMO_REFUND_CHANCE) {
                     const refundedShooter = game.balls.find(candidate => candidate.id === projectile.ownerId && candidate.isAlive());
                     if (refundedShooter) {
                         refundedShooter.weapon.refundAmmo(1);
@@ -1024,7 +925,7 @@ export function tryPyroAirblast(game, ball, projectile, now) {
     if (ball.isUntargetable(now)) return false;
     if (now < ball.nextAirblastAt) return false;
     if (ball.weapon.isReloading) return false;
-    if (ball.weapon.ammo === Infinity || ball.weapon.ammo < PYRO_AIRBLAST_AMMO_COST) return false;
+    if (ball.weapon.ammo === Infinity || ball.weapon.ammo < W.flamethrower.AIRBLAST_AMMO_COST) return false;
 
     const originalShooter = game.balls.find(candidate => candidate.id === projectile.ownerId && candidate.isAlive());
     let direction;
@@ -1050,12 +951,12 @@ export function tryPyroAirblast(game, ball, projectile, now) {
     projectile.deflectIgnoreUntil = now + 140;
     projectile.piercedBallIds = new Set();
 
-    ball.weapon.ammo -= PYRO_AIRBLAST_AMMO_COST;
+    ball.weapon.ammo -= W.flamethrower.AIRBLAST_AMMO_COST;
     if (ball.weapon.ammo <= 0) {
         ball.weapon.ammo = 0;
         ball.weapon.startReload(now);
     }
-    ball.nextAirblastAt = now + PYRO_AIRBLAST_COOLDOWN_MS;
+    ball.nextAirblastAt = now + W.flamethrower.AIRBLAST_COOLDOWN_MS;
     ball.airblastFlashUntil = now + 180;
 
     return true;
@@ -1122,7 +1023,7 @@ export function triggerPipExplosion(game, x, y, radius, maxDamage, ownerId, now,
                 }
             }
         } else if (owner && !game.areEnemies(owner, ball)) {
-            const healRoll = Math.floor(Math.random() * (PIP_LAUNCHER_ALLY_HEAL_MAX - PIP_LAUNCHER_ALLY_HEAL_MIN + 1)) + PIP_LAUNCHER_ALLY_HEAL_MIN;
+            const healRoll = Math.floor(Math.random() * (W.pipLauncher.ALLY_HEAL_MAX - W.pipLauncher.ALLY_HEAL_MIN + 1)) + W.pipLauncher.ALLY_HEAL_MIN;
             const scaledHeal = healRoll * (0.35 + falloff * 0.65);
             ball.heal(scaledHeal);
         }
@@ -1130,7 +1031,7 @@ export function triggerPipExplosion(game, x, y, radius, maxDamage, ownerId, now,
 }
 
 export function triggerExplosiveFlask(game, x, y, ownerId, now, fromPickup = false) {
-    game.explosionEffects.push({ x, y, radius: EXPLOSIVE_FLASK_SPLASH_RADIUS, expiresAt: now + 300 });
+    game.explosionEffects.push({ x, y, radius: W.explosiveFlask.SPLASH_RADIUS, expiresAt: now + 300 });
 
     const owner = game.balls.find(candidate => candidate.id === ownerId);
     if (!owner) return;
@@ -1143,13 +1044,13 @@ export function triggerExplosiveFlask(game, x, y, ownerId, now, fromPickup = fal
         const dx = ball.pos.x - x;
         const dy = ball.pos.y - y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > EXPLOSIVE_FLASK_SPLASH_RADIUS + ball.radius) continue;
+        if (dist > W.explosiveFlask.SPLASH_RADIUS + ball.radius) continue;
 
         if (!ball.isUberActive(now)) {
             ball.applyExplosiveFlaskDebuff(
                 now,
-                EXPLOSIVE_FLASK_EFFECT_DURATION_MS,
-                EXPLOSIVE_FLASK_SLOW_MULTIPLIER,
+                W.explosiveFlask.EFFECT_DURATION_MS,
+                W.explosiveFlask.SLOW_MULTIPLIER,
                 fromPickup
             );
         }

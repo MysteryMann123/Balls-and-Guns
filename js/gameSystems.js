@@ -13,8 +13,8 @@ import {
     SCRUMPY_THROW_SPEED,
 } from './pickupConstants.js';
 import * as W from './weapons/index.js';
-import { Projectile } from './projectile.js';
-import { Vector } from './vector.js';
+import { Projectile } from './core/projectile.js';
+import { Vector } from './core/vector.js';
 
 export function updateRocketJumperMelee(game, now) {
     for (const attacker of game.balls) {
