@@ -41,6 +41,7 @@ const dealer = {
     PROJECTILE_SIZE:   projectileSize,
     PELLETS_PER_SHOT:  pelletsPerShot,
     SPREAD_ANGLE:      spreadAngle,
+    image: 'assets/Poker.jpg',
     DISPLAY_NAME:      'DEALER',
 
     CONFIG: {

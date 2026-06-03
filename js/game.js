@@ -8,12 +8,6 @@ import {
     DEAD_RINGER_DECOY_SPEED,
     PICKUP_SPAWN_RATE_MS,
 } from './pickupConstants.js';
-import {
-    LAETITIA_BLAST_RADIUS,
-    LAETITIA_BLAST_DAMAGE_MIN_RATIO,
-    LAETITIA_BLAST_DAMAGE_MAX_RATIO,
-    LAETITIA_MARK_DURATION_MS,
-} from './constants.js';
 import { Ball } from './ball.js';
 import { DealerWeapon } from './weapons/dealer.js';
 import {
@@ -31,7 +25,8 @@ import {
     fireSodaPopperRay as fireSodaPopperRayImpl,
     fireWidowmakerRay as fireWidowmakerRayImpl,
     rayCircleHitDistance as rayCircleHitDistanceImpl,
-    teleportMagicianHatShooter as teleportMagicianHatShooterImpl
+    teleportMagicianHatShooter as teleportMagicianHatShooterImpl,
+    triggerLaetitiaBlast as triggerLaetitiaBlastImpl
 } from './gameCombat.js';
 import {
     triggerExplosiveFlask as triggerExplosiveFlaskImpl,
@@ -66,77 +61,11 @@ import { ballShooting as ballShootingImpl } from './gameShooting.js';
 import { draw as drawImpl } from './gameRender.js';
 
 export class Game {
-    constructor(canvas, pistolProjectileImage, syringeAmmoImage, rocketAmmoImage, grenadeAmmoImage, arrowProjectileImage, crusadersCrossbowProjectileImage, explosiveFlaskImage, bunnyProjectileImage, magicBulletProjectileImage, appleProjectileImage, sniperRifleImage, machinaImage, huntsmanImage, crusadersCrossbowImage, smgImage, tommyGunImage, egoWeaponMagicBulletImage, egoWeaponLonelinessImage, egoWeaponPenitenceImage, egoWeaponParadiseLostImage, egoWeaponHarmonyImage, egoWeaponSolemnVowBlackImage, egoWeaponSolemnVowWhiteImage, kaleidoscopeMuzzleImage, funeralDeadButterfliesPortraitImage, portalImage, minigunImage, blutsaugerImage, shortCircuitImage, rocketLauncherImage, pipLauncherImage, beggersBazookaImage, directHitImage, rocketJumperImage, yellowTargeImage, medigunImage, grenadeLauncherImage, lochnLoadImage, faintaromaWeaponImage, hairsprayImage, adorationWeaponImage, flamethrowerImage, deadRingerImage, truePistolWeaponImage, revolverWeaponImage, shotgunWeaponImage, familyBusinessWeaponImage, sodaPopperWeaponImage, forceANatureWeaponImage, magicianHatWeaponImage, musketWeaponImage, widowmakerWeaponImage, scrumpyBottleImage, smokeImage, hornetRifleImage, hornetShotgunImage, sporeImage, sporeRoundImage, swordSharpenedImage, blessingShieldImage, hypocrisyWeaponImage, crimsonScarGunImage, crimsonScarBladeImage, crimsonScarMarkImage, pinksWeaponImage, sodaWeaponImage, laetitiaWeaponImage, pickupIcons, settings = {}) {
+    constructor(canvas, images, settings = {}) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.pistolProjectileImage = pistolProjectileImage;
-        this.syringeAmmoImage = syringeAmmoImage;
-        this.rocketAmmoImage = rocketAmmoImage;
-        this.grenadeAmmoImage = grenadeAmmoImage;
-        this.arrowProjectileImage = arrowProjectileImage;
-        this.crusadersCrossbowProjectileImage = crusadersCrossbowProjectileImage;
-        this.explosiveFlaskImage = explosiveFlaskImage;
-        this.bunnyProjectileImage = bunnyProjectileImage;
-        this.magicBulletProjectileImage = magicBulletProjectileImage;
-        this.appleProjectileImage = appleProjectileImage;
-        this.sniperRifleImage = sniperRifleImage;
-        this.machinaImage = machinaImage;
-        this.huntsmanImage = huntsmanImage;
-        this.crusadersCrossbowImage = crusadersCrossbowImage;
-        this.smgImage = smgImage;
-        this.tommyGunImage = tommyGunImage;
-        this.egoWeaponMagicBulletImage = egoWeaponMagicBulletImage;
-        this.egoWeaponLonelinessImage = egoWeaponLonelinessImage;
-        this.egoWeaponPenitenceImage = egoWeaponPenitenceImage;
-        this.egoWeaponParadiseLostImage = egoWeaponParadiseLostImage;
-        this.egoWeaponHarmonyImage = egoWeaponHarmonyImage;
-        this.egoWeaponSolemnVowBlackImage = egoWeaponSolemnVowBlackImage;
-        this.egoWeaponSolemnVowWhiteImage = egoWeaponSolemnVowWhiteImage;
-        this.kaleidoscopeMuzzleImage = kaleidoscopeMuzzleImage;
-        this.funeralDeadButterfliesPortraitImage = funeralDeadButterfliesPortraitImage;
-        this.portalImage = portalImage;
-        this.minigunImage = minigunImage;
-        this.blutsaugerImage = blutsaugerImage;
-        this.shortCircuitImage = shortCircuitImage;
-        this.rocketLauncherImage = rocketLauncherImage;
-        this.pipLauncherImage = pipLauncherImage;
-        this.beggersBazookaImage = beggersBazookaImage;
-        this.directHitImage = directHitImage;
-        this.rocketJumperImage = rocketJumperImage;
-        this.yellowTargeImage = yellowTargeImage;
-        this.medigunImage = medigunImage;
-        this.grenadeLauncherImage = grenadeLauncherImage;
-        this.lochnLoadImage = lochnLoadImage;
-        this.faintaromaWeaponImage = faintaromaWeaponImage;
-        this.hairsprayImage = hairsprayImage;
-        this.adorationWeaponImage = adorationWeaponImage;
-        this.flamethrowerImage = flamethrowerImage;
-        this.deadRingerImage = deadRingerImage;
-        this.truePistolWeaponImage = truePistolWeaponImage;
-        this.revolverWeaponImage = revolverWeaponImage;
-        this.shotgunWeaponImage = shotgunWeaponImage;
-        this.familyBusinessWeaponImage = familyBusinessWeaponImage;
-        this.sodaPopperWeaponImage = sodaPopperWeaponImage;
-        this.forceANatureWeaponImage = forceANatureWeaponImage;
-        this.magicianHatWeaponImage = magicianHatWeaponImage;
-        this.musketWeaponImage = musketWeaponImage;
-        this.widowmakerWeaponImage = widowmakerWeaponImage;
-        this.scrumpyBottleImage = scrumpyBottleImage;
-        this.smokeImage = smokeImage;
-        this.hornetRifleImage = hornetRifleImage;
-        this.hornetShotgunImage = hornetShotgunImage;
-        this.sporeImage = sporeImage;
-        this.sporeRoundImage = sporeRoundImage;
-        this.swordSharpenedImage = swordSharpenedImage;
-        this.blessingShieldImage = blessingShieldImage;
-        this.hypocrisyWeaponImage = hypocrisyWeaponImage;
-        this.crimsonScarGunImage = crimsonScarGunImage;
-        this.crimsonScarBladeImage = crimsonScarBladeImage;
-        this.crimsonScarMarkImage = crimsonScarMarkImage;
-        this.pinksWeaponImage = pinksWeaponImage;
-        this.sodaWeaponImage = sodaWeaponImage;
-        this.laetitiaWeaponImage = laetitiaWeaponImage;
-        this.pickupIcons = pickupIcons || {};
+        Object.assign(this, images);
+        this.pickupIcons = images.pickupIcons ?? {};
 
         this.settings = buildGameSettings(settings, this.normalizeStartWeapons.bind(this));
 
@@ -332,19 +261,7 @@ export class Game {
     }
 
     triggerLaetitiaBlast(victim, now) {
-        this.explosionEffects.push({ x: victim.pos.x, y: victim.pos.y, radius: LAETITIA_BLAST_RADIUS, expiresAt: now + 350 });
-        for (const ball of this.balls) {
-            if (!ball.isAlive() || ball.id === victim.id) continue;
-            if (!this.areEnemies(victim, ball)) continue;
-            if (ball.isUntargetable(now)) continue;
-            const dist = Math.hypot(ball.pos.x - victim.pos.x, ball.pos.y - victim.pos.y);
-            if (dist > LAETITIA_BLAST_RADIUS + ball.radius) continue;
-            if (!ball.isUberActive(now)) {
-                const dmgRatio = LAETITIA_BLAST_DAMAGE_MIN_RATIO + Math.random() * (LAETITIA_BLAST_DAMAGE_MAX_RATIO - LAETITIA_BLAST_DAMAGE_MIN_RATIO);
-                ball.takeDamage(ball.maxHP * dmgRatio, 'generic', 'laetitia_blast');
-                ball.applyLaetitiaGiftMark(now, LAETITIA_MARK_DURATION_MS);
-            }
-        }
+        return triggerLaetitiaBlastImpl(this, victim, now);
     }
 
     updateExplosionEffects(now) {
@@ -437,10 +354,6 @@ export class Game {
 
     applyParadiseLostHoming(projectile, now) {
         return applyParadiseLostHomingImpl(this, projectile, now);
-    }
-
-    applyLonelinessSlow(ball, now, durationMs, slowMultiplier) {
-        return ball.applyLonelinessSlow(now, durationMs, slowMultiplier);
     }
 
     fireMachinaTracer(shooter, angle, now) {

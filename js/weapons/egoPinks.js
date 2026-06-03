@@ -49,6 +49,7 @@ const egoPinks = {
     TRACER_RANGE:       tracerRange,
     TRACER_DURATION_MS: tracerDurationMs,
     TRACER_COLOR:       tracerColor,
+    image: 'assets/EGOWeaponPinks.webp',
     DISPLAY_NAME:       'EGO WEAPON PINKS',
 };
 

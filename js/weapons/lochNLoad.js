@@ -54,6 +54,7 @@ const lochNLoad = {
     PROJECTILE_SIZE:   projectileSize,
     PELLETS_PER_SHOT:  pelletsPerShot,
     SPREAD_ANGLE:      spreadAngle,
+    image: 'assets/LochnLoad.png',
     DISPLAY_NAME:      'LOCH-N-LOAD',
 };
 

@@ -40,6 +40,7 @@ const smg = {
     COLOR:            color,
     PROJECTILE_SIZE:  projectileSize,
     PELLETS_PER_SHOT: pelletsPerShot,
+    image: 'assets/SMG.png',
     DISPLAY_NAME:     'SMG',
 };
 

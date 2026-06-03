@@ -40,6 +40,7 @@ const sniper = {
     // Damage
     DAMAGE_MIN: damageMin,
     DAMAGE_MAX:   damageMax,
+    image: 'assets/Sniper_rifle.png',
     DISPLAY_NAME: 'SNIPER',
 };
 

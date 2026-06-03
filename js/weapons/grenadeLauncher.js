@@ -49,6 +49,7 @@ const grenadeLauncher = {
     PROJECTILE_SIZE:   projectileSize,
     PELLETS_PER_SHOT:  pelletsPerShot,
     SPREAD_ANGLE:      spreadAngle,
+    image: 'assets/Grenade_Launcher.png',
     DISPLAY_NAME:      'GRENADE',
 };
 

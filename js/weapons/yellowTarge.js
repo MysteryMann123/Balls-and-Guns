@@ -58,6 +58,7 @@ const yellowTarge = {
     PROJECTILE_SIZE:            projectileSize,
     PELLETS_PER_SHOT:           pelletsPerShot,
     SPREAD_ANGLE:               spreadAngle,
+    image: 'assets/YellowTarge.png',
     DISPLAY_NAME:               "CHARGIN' TARGE",
 };
 

@@ -48,6 +48,7 @@ const hypocrisy = {
     COLOR:                 color,
     PELLETS_PER_SHOT:      pelletsPerShot,
     SPREAD_ANGLE:          spreadAngle,
+    image: 'assets/EGOWeaponHypocrisy.webp',
     DISPLAY_NAME:          'EGO WEAPON HYPOCRISY',
 
     CONFIG: {

@@ -50,6 +50,7 @@ const egoLoneliness = {
     PROJECTILE_SIZE:    projectileSize,
     PELLETS_PER_SHOT:   pelletsPerShot,
     SPREAD_ANGLE:       spreadAngle,
+    image: 'assets/EGOWeaponLoneliness.webp',
     DISPLAY_NAME:       'EGO WEAPON LONELINESS',
 };
 

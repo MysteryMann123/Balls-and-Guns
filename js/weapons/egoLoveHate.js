@@ -86,6 +86,7 @@ const egoLoveHate = {
     COLOR:                  color,
     PELLETS_PER_SHOT:       pelletsPerShot,
     SPREAD_ANGLE:           spreadAngle,
+    image: 'assets/EGOWeaponIntheNameofLoveandHate.webp',
     DISPLAY_NAME:           'EGO: IN THE NAME OF LOVE AND HATE',
 };
 

@@ -48,6 +48,7 @@ const blutsauger = {
     // Lifesteal
     HEAL_MIN: healMin,
     HEAL_MAX:     healMax,
+    image: 'assets/Blutsauger.png',
     DISPLAY_NAME: 'BLUTSAUGER',
 };
 

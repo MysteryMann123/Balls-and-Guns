@@ -64,6 +64,7 @@ const soundOfStar = {
     // Config
     COLOR:                      color,
     PELLETS_PER_SHOT:           pelletsPerShot,
+    image: 'assets/EGOWeaponSoundofaStar.webp',
     DISPLAY_NAME:               'SOUND OF A STAR',
 
     CONFIG: {

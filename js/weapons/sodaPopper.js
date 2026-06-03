@@ -58,6 +58,7 @@ const sodaPopper = {
     SPEED:                  speed,
     COLOR:                  color,
     PROJECTILE_SIZE:        projectileSize,
+    image: 'assets/250px-Soda_Popper.PNG',
     DISPLAY_NAME:           'SODA POPPER',
 };
 

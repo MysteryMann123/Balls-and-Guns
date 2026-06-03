@@ -68,6 +68,7 @@ const hairspray = {
     COLOR:            color,
     PELLETS_PER_SHOT: pelletsPerShot,
     SPREAD_ANGLE:     spreadAngle,
+    image: 'assets/Emz_hairspray.jpg',
     DISPLAY_NAME:     'HAIRSPRAY',
 };
 

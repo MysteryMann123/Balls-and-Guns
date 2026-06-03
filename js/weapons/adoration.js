@@ -62,6 +62,7 @@ const adoration = {
     COLOR:                    color,
     PELLETS_PER_SHOT:         pelletsPerShot,
     SPREAD_ANGLE:             spreadAngle,
+    image: 'assets/EGOWeaponAdoration.webp',
     DISPLAY_NAME:             'ADORATION',
 };
 

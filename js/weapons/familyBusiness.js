@@ -48,6 +48,7 @@ const familyBusiness = {
     SPEED:            speed,
     COLOR:            color,
     PROJECTILE_SIZE:  projectileSize,
+    image: 'assets/Familybusiness.PNG',
     DISPLAY_NAME:     'FAMILY BUSINESS',
 };
 

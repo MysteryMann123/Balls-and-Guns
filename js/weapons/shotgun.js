@@ -50,6 +50,7 @@ const shotgun = {
     // Range
     HITSCAN_RANGE:      hitscanRange,
     TRACER_DURATION_MS: tracerDurationMs,
+    image: 'assets/Shotgun_IMG.png',
     DISPLAY_NAME:       'SHOTGUN',
 };
 

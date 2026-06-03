@@ -58,6 +58,7 @@ const rocketJumper = {
     PROJECTILE_SIZE:        projectileSize,
     PELLETS_PER_SHOT:       pelletsPerShot,
     SPREAD_ANGLE:           spreadAngle,
+    image: 'assets/Rocket_Jumper.png',
     DISPLAY_NAME:           'ROCKET JUMPER',
 };
 

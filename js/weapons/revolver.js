@@ -36,6 +36,7 @@ const revolver = {
 
     // Damage
     DAMAGE:        damage,
+    image: 'assets/Pistol.png',
     DISPLAY_NAME:  'REVOLVER',
 };
 

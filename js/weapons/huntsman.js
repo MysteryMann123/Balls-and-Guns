@@ -46,6 +46,7 @@ const huntsman = {
 
     // On-Hit
     STICK_DURATION_MS: stickDurationMs,
+    image: 'assets/Huntsman.png',
     DISPLAY_NAME:      'HUNTSMAN',
 };
 

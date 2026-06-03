@@ -62,6 +62,7 @@ const laetitia = {
     BLAST_RADIUS:                  blastRadius,
     BLAST_DAMAGE_MIN_RATIO:        blastDamageMinRatio,
     BLAST_DAMAGE_MAX_RATIO:        blastDamageMaxRatio,
+    image: 'assets/EGOWeaponLaetitia.webp',
     DISPLAY_NAME:                  'EGO WEAPON LAETITIA',
 };
 

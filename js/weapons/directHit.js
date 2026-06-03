@@ -49,6 +49,7 @@ const directHit = {
     PROJECTILE_SIZE:      projectileSize,
     PELLETS_PER_SHOT:     pelletsPerShot,
     SPREAD_ANGLE:         spreadAngle,
+    image: 'assets/Directhittransparent.png',
     DISPLAY_NAME:         'DIRECT HIT',
 };
 

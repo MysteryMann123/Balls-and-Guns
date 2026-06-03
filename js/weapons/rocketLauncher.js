@@ -43,6 +43,7 @@ const rocketLauncher = {
     PROJECTILE_SIZE:  projectileSize,
     PELLETS_PER_SHOT: pelletsPerShot,
     SPREAD_ANGLE:     spreadAngle,
+    image: 'assets/Rocket_launcher.png',
     DISPLAY_NAME:     'ROCKET',
 };
 

@@ -80,6 +80,10 @@ const swordSharpened = {
     COLOR:                        color,
     PELLETS_PER_SHOT:             pelletsPerShot,
     SPREAD_ANGLE:                 spreadAngle,
+    images: {
+        weapon: 'assets/EGOWeaponSwordSharpenedbyTears.webp',
+        shield: 'assets/KnightOfDespairBlessingShield.png',
+    },
     DISPLAY_NAME:                 'EGO SWORD SHARPENED BY TEARS',
 
     getEffectiveFireRate(weapon, now) {

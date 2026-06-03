@@ -1,5 +1,5 @@
 import { Vector } from './vector.js';
-import { FAINT_AROMA_AOE_RADIUS } from './constants.js';
+import * as W from './weapons/index.js';
 
 const _meltingLoveHeartImage = new Image();
 _meltingLoveHeartImage.src = 'assets/MeltingLoveHeart.webp';
@@ -159,20 +159,20 @@ export class Projectile {
 
         if (this.type === 'faintaroma') {
             // AOE radius indicator — faint pink/purple circle
-            const auraGradient = ctx.createRadialGradient(this.pos.x, this.pos.y, FAINT_AROMA_AOE_RADIUS * 0.5, this.pos.x, this.pos.y, FAINT_AROMA_AOE_RADIUS);
+            const auraGradient = ctx.createRadialGradient(this.pos.x, this.pos.y, W.faintAroma.AOE_RADIUS * 0.5, this.pos.x, this.pos.y, W.faintAroma.AOE_RADIUS);
             auraGradient.addColorStop(0, 'rgba(200, 80, 255, 0.08)');
             auraGradient.addColorStop(0.75, 'rgba(220, 100, 255, 0.12)');
             auraGradient.addColorStop(1, 'rgba(180, 60, 220, 0.22)');
             ctx.save();
             ctx.fillStyle = auraGradient;
             ctx.beginPath();
-            ctx.arc(this.pos.x, this.pos.y, FAINT_AROMA_AOE_RADIUS, 0, Math.PI * 2);
+            ctx.arc(this.pos.x, this.pos.y, W.faintAroma.AOE_RADIUS, 0, Math.PI * 2);
             ctx.fill();
             ctx.strokeStyle = 'rgba(210, 100, 255, 0.35)';
             ctx.lineWidth = 1;
             ctx.setLineDash([4, 4]);
             ctx.beginPath();
-            ctx.arc(this.pos.x, this.pos.y, FAINT_AROMA_AOE_RADIUS, 0, Math.PI * 2);
+            ctx.arc(this.pos.x, this.pos.y, W.faintAroma.AOE_RADIUS, 0, Math.PI * 2);
             ctx.stroke();
             ctx.setLineDash([]);
             ctx.restore();

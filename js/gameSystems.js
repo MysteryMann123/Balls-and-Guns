@@ -12,42 +12,7 @@ import {
     SCRUMPY_PUDDLE_TICK_INTERVAL_MS,
     SCRUMPY_THROW_SPEED,
 } from './pickupConstants.js';
-import {
-    DIRECT_HIT_DAMAGE,
-    DIRECT_HIT_SPEED,
-    DIRECT_HIT_SPLASH_RADIUS,
-    GRENADE_LAUNCHER_DIRECT_DAMAGE,
-    GRENADE_LAUNCHER_EXPLODE_DELAY_MS,
-    GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE,
-    GRENADE_LAUNCHER_SPLASH_RADIUS,
-    GRENADE_LAUNCHER_SPEED,
-    MEDIGUN_ALLY_HEAL_PER_SEC,
-    MEDIGUN_BEAM_RANGE,
-    MEDIGUN_ENEMY_DAMAGE_PER_SEC,
-    MEDIGUN_ENEMY_LIFESTEAL_PER_SEC,
-    MEDIGUN_SELF_REGEN_CAP,
-    MEDIGUN_SELF_REGEN_DELAY_MS,
-    MEDIGUN_SELF_REGEN_PER_SEC,
-    MEDIGUN_OVERHEAL_MULTIPLIER,
-    MEDIGUN_UBER_DAMAGE_THRESHOLD,
-    MEDIGUN_UBER_DURATION_MS,
-    MEDIGUN_UBER_HEAL_THRESHOLD,
-    ROCKET_LAUNCHER_DIRECT_DAMAGE,
-    ROCKET_LAUNCHER_SPLASH_RADIUS,
-    ROCKET_LAUNCHER_SPEED,
-    ROCKET_JUMPER_MELEE_COOLDOWN_MS,
-    ROCKET_JUMPER_MELEE_DAMAGE_PER_SPEED,
-    ROCKET_JUMPER_MELEE_MAX_DAMAGE,
-    ROCKET_JUMPER_MELEE_MIN_DAMAGE,
-    SHORT_CIRCUIT_DOT_DAMAGE,
-    SHORT_CIRCUIT_DOT_INTERVAL_MS,
-    YELLOW_TARGE_CHARGE_DAMAGE_MAX,
-    YELLOW_TARGE_CHARGE_DAMAGE_MIN,
-    YELLOW_TARGE_CHARGE_MAX_DURATION_MS,
-    YELLOW_TARGE_DAMAGE_PER_DISTANCE,
-    YELLOW_TARGE_KNOCKBACK,
-    EXPLOSIVE_FLASK_SPEED,
-} from './constants.js';
+import * as W from './weapons/index.js';
 import { Projectile } from './projectile.js';
 import { Vector } from './vector.js';
 
@@ -69,15 +34,15 @@ export function updateRocketJumperMelee(game, now) {
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance > attacker.radius + target.radius + 5) continue;
 
-            const rawDamage = attacker.currentSpeed * ROCKET_JUMPER_MELEE_DAMAGE_PER_SPEED;
-            const clampedDamage = Math.max(ROCKET_JUMPER_MELEE_MIN_DAMAGE, Math.min(ROCKET_JUMPER_MELEE_MAX_DAMAGE, rawDamage));
+            const rawDamage = attacker.currentSpeed * W.rocketJumper.MELEE_DAMAGE_PER_SPEED;
+            const clampedDamage = Math.max(W.rocketJumper.MELEE_MIN_DAMAGE, Math.min(W.rocketJumper.MELEE_MAX_DAMAGE, rawDamage));
             const meleeDamage = clampedDamage * attacker.getDamageMultiplier(now);
 
             if (!target.isUberActive(now)) {
                 target.takeDamage(meleeDamage, 'impact');
             }
 
-            attacker.nextMeleeAllowedAt = now + ROCKET_JUMPER_MELEE_COOLDOWN_MS;
+            attacker.nextMeleeAllowedAt = now + W.rocketJumper.MELEE_COOLDOWN_MS;
             attacker.rocketJumperPhase = 'seekWall';
             break;
         }
@@ -97,7 +62,7 @@ export function updateYellowTargeCharges(game, now) {
         attacker.targeChargeDistance += stepDistance;
         attacker.targeLastPos = attacker.pos.clone();
 
-        if (now - attacker.targeChargeStartAt > YELLOW_TARGE_CHARGE_MAX_DURATION_MS) {
+        if (now - attacker.targeChargeStartAt > W.yellowTarge.CHARGE_MAX_DURATION_MS) {
             attacker.targeChargeActive = false;
             attacker.targeTargetId = null;
             continue;
@@ -120,8 +85,8 @@ export function updateYellowTargeCharges(game, now) {
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance > attacker.radius + target.radius + 5) continue;
 
-        const rawDamage = YELLOW_TARGE_CHARGE_DAMAGE_MIN + attacker.targeChargeDistance * YELLOW_TARGE_DAMAGE_PER_DISTANCE;
-        const chargeDamage = Math.max(YELLOW_TARGE_CHARGE_DAMAGE_MIN, Math.min(YELLOW_TARGE_CHARGE_DAMAGE_MAX, rawDamage)) * attacker.getDamageMultiplier(now);
+        const rawDamage = W.yellowTarge.CHARGE_DAMAGE_MIN + attacker.targeChargeDistance * W.yellowTarge.DAMAGE_PER_DISTANCE;
+        const chargeDamage = Math.max(W.yellowTarge.CHARGE_DAMAGE_MIN, Math.min(W.yellowTarge.CHARGE_DAMAGE_MAX, rawDamage)) * attacker.getDamageMultiplier(now);
         const targetWasAlive = target.isAlive();
 
         if (!target.isUberActive(now)) {
@@ -130,7 +95,7 @@ export function updateYellowTargeCharges(game, now) {
 
         const distanceSafe = Math.max(1, distance);
         const knockbackDir = new Vector(dx / distanceSafe, dy / distanceSafe);
-        target.applyImpulse(knockbackDir.multiply(YELLOW_TARGE_KNOCKBACK));
+        target.applyImpulse(knockbackDir.multiply(W.yellowTarge.KNOCKBACK));
 
         if (targetWasAlive && !target.isAlive()) {
             attacker.weapon.isReloading = false;
@@ -151,11 +116,11 @@ export function getMedigunTarget(game, shooter) {
         const dx = candidate.pos.x - shooter.pos.x;
         const dy = candidate.pos.y - shooter.pos.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        return distance <= MEDIGUN_BEAM_RANGE;
+        return distance <= W.medigun.BEAM_RANGE;
     });
 
     const alliesNeedingHeal = inRange
-        .filter(candidate => !game.areEnemies(shooter, candidate) && candidate.hp < candidate.maxHP * MEDIGUN_OVERHEAL_MULTIPLIER)
+        .filter(candidate => !game.areEnemies(shooter, candidate) && candidate.hp < candidate.maxHP * W.medigun.OVERHEAL_MULTIPLIER)
         .sort((left, right) => {
             const leftRatio = left.hp / left.maxHP;
             const rightRatio = right.hp / right.maxHP;
@@ -193,10 +158,10 @@ export function updateMediguns(game, now, deltaMs) {
 
         const state = shooter.medigunState;
 
-        if (now - shooter.lastDamagedAt >= MEDIGUN_SELF_REGEN_DELAY_MS) {
-            const regenCap = Math.min(shooter.maxHP, state.selfRegenAnchorHp + MEDIGUN_SELF_REGEN_CAP);
+        if (now - shooter.lastDamagedAt >= W.medigun.SELF_REGEN_DELAY_MS) {
+            const regenCap = Math.min(shooter.maxHP, state.selfRegenAnchorHp + W.medigun.SELF_REGEN_CAP);
             if (shooter.hp < regenCap) {
-                shooter.heal(MEDIGUN_SELF_REGEN_PER_SEC * deltaSeconds);
+                shooter.heal(W.medigun.SELF_REGEN_PER_SEC * deltaSeconds);
                 if (shooter.hp > regenCap) shooter.hp = regenCap;
             }
         }
@@ -213,8 +178,8 @@ export function updateMediguns(game, now, deltaMs) {
             const dy = target.pos.y - shooter.pos.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
-            const outOfRange = distance > MEDIGUN_BEAM_RANGE;
-            const doneHealing = state.mode === 'ally' && target.hp >= target.maxHP * MEDIGUN_OVERHEAL_MULTIPLIER;
+            const outOfRange = distance > W.medigun.BEAM_RANGE;
+            const doneHealing = state.mode === 'ally' && target.hp >= target.maxHP * W.medigun.OVERHEAL_MULTIPLIER;
             const doneEnemy = state.mode === 'enemy' && !target.isAlive();
             const hidden = target.isUntargetable(now);
 
@@ -226,18 +191,18 @@ export function updateMediguns(game, now, deltaMs) {
 
             if (state.mode === 'ally') {
                 const before = target.hp;
-                const overhealCap = target.maxHP * MEDIGUN_OVERHEAL_MULTIPLIER;
-                target.hp = Math.min(overhealCap, target.hp + MEDIGUN_ALLY_HEAL_PER_SEC * deltaSeconds);
+                const overhealCap = target.maxHP * W.medigun.OVERHEAL_MULTIPLIER;
+                target.hp = Math.min(overhealCap, target.hp + W.medigun.ALLY_HEAL_PER_SEC * deltaSeconds);
                 const healed = Math.max(0, target.hp - before);
                 state.uberHealAccum += healed;
             } else {
                 const before = target.hp;
                 if (!target.isUberActive(now)) {
-                    target.takeDamage(MEDIGUN_ENEMY_DAMAGE_PER_SEC * deltaSeconds, 'energy');
+                    target.takeDamage(W.medigun.ENEMY_DAMAGE_PER_SEC * deltaSeconds, 'energy');
                 }
                 const dealt = Math.max(0, before - target.hp);
                 state.uberDamageAccum += dealt;
-                shooter.heal(MEDIGUN_ENEMY_LIFESTEAL_PER_SEC * deltaSeconds);
+                shooter.heal(W.medigun.ENEMY_LIFESTEAL_PER_SEC * deltaSeconds);
 
                 if (!target.isAlive()) {
                     state.targetId = null;
@@ -245,13 +210,13 @@ export function updateMediguns(game, now, deltaMs) {
                 }
             }
 
-            while (state.uberHealAccum >= MEDIGUN_UBER_HEAL_THRESHOLD || state.uberDamageAccum >= MEDIGUN_UBER_DAMAGE_THRESHOLD) {
-                if (state.uberHealAccum >= MEDIGUN_UBER_HEAL_THRESHOLD) {
-                    state.uberHealAccum -= MEDIGUN_UBER_HEAL_THRESHOLD;
+            while (state.uberHealAccum >= W.medigun.UBER_HEAL_THRESHOLD || state.uberDamageAccum >= W.medigun.UBER_DAMAGE_THRESHOLD) {
+                if (state.uberHealAccum >= W.medigun.UBER_HEAL_THRESHOLD) {
+                    state.uberHealAccum -= W.medigun.UBER_HEAL_THRESHOLD;
                 } else {
-                    state.uberDamageAccum -= MEDIGUN_UBER_DAMAGE_THRESHOLD;
+                    state.uberDamageAccum -= W.medigun.UBER_DAMAGE_THRESHOLD;
                 }
-                shooter.applyUbercharge(now, MEDIGUN_UBER_DURATION_MS);
+                shooter.applyUbercharge(now, W.medigun.UBER_DURATION_MS);
             }
 
             continue;
@@ -325,9 +290,9 @@ export function updateShortCircuitFields(game, now) {
 
             if (distance <= field.radius + ball.radius) {
                 const lastTickAt = field.lastTickByBall[ball.id] || 0;
-                if (now - lastTickAt >= SHORT_CIRCUIT_DOT_INTERVAL_MS) {
+                if (now - lastTickAt >= W.shortCircuit.DOT_INTERVAL_MS) {
                     if (!ball.isUberActive(now)) {
-                        ball.takeDamage(SHORT_CIRCUIT_DOT_DAMAGE, 'energy');
+                        ball.takeDamage(W.shortCircuit.DOT_DAMAGE, 'energy');
                     }
                     field.lastTickByBall[ball.id] = now;
                 }
@@ -413,7 +378,7 @@ export function throwExplosiveFlask(game, shooter, target, now, fromPickup = fal
             y: shooter.pos.y,
             targetX: target.pos.x,
             targetY: target.pos.y,
-            speed: EXPLOSIVE_FLASK_SPEED,
+            speed: W.explosiveFlask.SPEED,
             damage: 0,
             color: '#ffc977',
             size: 7,
@@ -481,15 +446,15 @@ export function launchBombanomicron(game, shooter, now) {
                     y: shooter.pos.y,
                     targetX,
                     targetY,
-                    speed: GRENADE_LAUNCHER_SPEED,
-                    damage: GRENADE_LAUNCHER_DIRECT_DAMAGE,
+                    speed: W.grenadeLauncher.SPEED,
+                    damage: W.grenadeLauncher.DIRECT_DAMAGE,
                     color: '#85ff5e',
                     size: 9,
                     ownerId: shooter.id,
                     type: 'grenadelauncher',
-                    splashRadius: GRENADE_LAUNCHER_SPLASH_RADIUS,
-                    splashMaxDamage: GRENADE_LAUNCHER_SPLASH_MAX_DAMAGE,
-                    explodeAt: now + GRENADE_LAUNCHER_EXPLODE_DELAY_MS,
+                    splashRadius: W.grenadeLauncher.SPLASH_RADIUS,
+                    splashMaxDamage: W.grenadeLauncher.SPLASH_MAX_DAMAGE,
+                    explodeAt: now + W.grenadeLauncher.EXPLODE_DELAY_MS,
                     gravity: 0.1,
                     drag: 0.996,
                     angularVelocity: (Math.random() * 0.3 + 0.15) * (Math.random() < 0.5 ? -1 : 1)
@@ -505,13 +470,13 @@ export function launchBombanomicron(game, shooter, now) {
                     y: shooter.pos.y,
                     targetX,
                     targetY,
-                    speed: ROCKET_LAUNCHER_SPEED,
-                    damage: ROCKET_LAUNCHER_DIRECT_DAMAGE,
+                    speed: W.rocketLauncher.SPEED,
+                    damage: W.rocketLauncher.DIRECT_DAMAGE,
                     color: '#ff954d',
                     size: 9,
                     ownerId: shooter.id,
                     type: 'rocketlauncher',
-                    splashRadius: ROCKET_LAUNCHER_SPLASH_RADIUS
+                    splashRadius: W.rocketLauncher.SPLASH_RADIUS
                 })
             );
             continue;
@@ -523,13 +488,13 @@ export function launchBombanomicron(game, shooter, now) {
                 y: shooter.pos.y,
                 targetX,
                 targetY,
-                speed: DIRECT_HIT_SPEED,
-                damage: DIRECT_HIT_DAMAGE,
+                speed: W.directHit.SPEED,
+                damage: W.directHit.DAMAGE,
                 color: '#ff8f4f',
                 size: 8,
                 ownerId: shooter.id,
                 type: 'directhit',
-                splashRadius: DIRECT_HIT_SPLASH_RADIUS
+                splashRadius: W.directHit.SPLASH_RADIUS
             })
         );
     }

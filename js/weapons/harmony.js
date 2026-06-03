@@ -58,6 +58,7 @@ const harmony = {
 
     // Config
     COLOR:              color,
+    image: 'assets/EGOWeaponHarmony.webp',
     DISPLAY_NAME:       'EGO WEAPON HARMONY',
 
     onAddHaste(weapon, now, damageTaken, maxHp) {

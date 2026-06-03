@@ -70,6 +70,7 @@ const medigun = {
     PROJECTILE_SIZE:         projectileSize,
     PELLETS_PER_SHOT:        pelletsPerShot,
     SPREAD_ANGLE:            spreadAngle,
+    image: 'assets/RED_Medigun.png',
     DISPLAY_NAME:            'MEDIGUN',
 };
 

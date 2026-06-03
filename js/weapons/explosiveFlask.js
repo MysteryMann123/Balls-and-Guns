@@ -23,6 +23,7 @@ const explosiveFlask = {
     EFFECT_DURATION_MS:       effectDurationMs,
     SLOW_MULTIPLIER:          slowMultiplier,
     PIP_DAMAGE_MULTIPLIER:    pipDamageMultiplier,
+    image: 'assets/Explosive_Flask.png',
     PICKUP_DAMAGE_MULTIPLIER: pickupDamageMultiplier,
 };
 

@@ -1,5 +1,5 @@
 import { SandboxGame } from './sandboxGame.js';
-import { loadGameImages } from './sandboxImages.js';
+import { loadImages } from './assetManager.js';
 import {
     AMMO_CRATE_DOUBLE_SHOT_MS,
     DEAD_RINGER_PICKUP_COOLDOWN_MS,
@@ -8,11 +8,7 @@ import {
     HEALTHICO_REGEN_INTERVAL_MS,
     HEALTHICO_REGEN_PER_TICK,
 } from './pickupConstants.js';
-import {
-    CRIMSON_SCAR_SPEED_BONUS,
-    ADORATION_WIELDER_SPEED_MULTIPLIER,
-    SOUND_OF_STAR_WIELDER_SLOW_PER_STAR,
-} from './constants.js';
+import * as W from './weapons/index.js';
 
 // --- Read URL params ---
 const query        = new URLSearchParams(window.location.search);
@@ -28,8 +24,8 @@ const playerUiEl  = document.getElementById('player-ui');
 const statusEl    = document.getElementById('status');
 
 // --- Load images & create game ---
-const { args: imageArgs } = loadGameImages();
-const game = new SandboxGame(canvas, imageArgs, playerWeapon, moverWeapon, startHp, moverBall);
+const images = await loadImages();
+const game = new SandboxGame(canvas, images, playerWeapon, moverWeapon, startHp, moverBall);
 
 // --- Input state ---
 const keys = {};
@@ -225,9 +221,9 @@ function updateUI() {
         if (now < (player.ammoCrateDoubleShotUntil || 0)) buffs.push('DOUBLE SHOT');
         const buffStr = buffs.length ? `  |  Buffs: ${buffs.join(', ')}${infiniteBuffs ? ' ∞' : ''}` : '';
 
-        const wieldMult = player.weapon.type === 'crimsonscar' ? (1 + CRIMSON_SCAR_SPEED_BONUS)
-            : player.weapon.type === 'adoration' ? ADORATION_WIELDER_SPEED_MULTIPLIER
-            : player.weapon.type === 'soundofstar' ? Math.max(0.1, 1 - player.weapon.ammo * SOUND_OF_STAR_WIELDER_SLOW_PER_STAR)
+        const wieldMult = player.weapon.type === 'crimsonscar' ? (1 + W.crimsonScar.SPEED_BONUS)
+            : player.weapon.type === 'adoration' ? W.adoration.WIELDER_SPEED_MULTIPLIER
+            : player.weapon.type === 'soundofstar' ? Math.max(0.1, 1 - player.weapon.ammo * W.soundOfStar.WIELDER_SLOW_PER_STAR)
             : 1;
         const currentSpd = (player.currentSpeed ?? 0).toFixed(1);
         const maxSpd = (player.maxSpeed * wieldMult).toFixed(1);

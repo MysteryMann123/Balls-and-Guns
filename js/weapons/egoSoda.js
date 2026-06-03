@@ -89,6 +89,7 @@ const egoSoda = {
     PURPLE_MAX_HP_PCT_MIN:  purpleMaxHpPctMin,
     PURPLE_MAX_HP_PCT_MAX:  purpleMaxHpPctMax,
     PURPLE_COLOR:           purpleColor,
+    image: 'assets/EGOWeaponSoda.webp',
     DISPLAY_NAME:           'EGO WEAPON SODA',
 };
 

@@ -56,6 +56,7 @@ const minigun = {
     MIN_FIRE_RATE:        minFireRate,
     RAMP_PER_SHOT:        rampPerShot,
     RAMP_RESET_DELAY_MS:  rampResetDelayMs,
+    image: 'assets/Minigun_IMG.png',
     DISPLAY_NAME:         'MINIGUN',
 
     onAfterAmmoReset(weapon, now) {

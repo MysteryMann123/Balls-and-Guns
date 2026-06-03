@@ -2,11 +2,7 @@ import {
     DEAD_RINGER_DECOY_DURATION_MS,
     SCRUMPY_PUDDLE_DURATION_MS,
 } from './pickupConstants.js';
-import {
-    MAGICIAN_HAT_TELEPORT_SMOKE_DURATION_MS,
-    SOUND_OF_STAR_ORBIT_RADIUS,
-    SOUND_OF_STAR_PROJECTILE_SIZE,
-} from './constants.js';
+import * as W from './weapons/index.js';
 
 const _arenaImage = new Image();
 _arenaImage.src = 'assets/Arena.jpg';
@@ -40,7 +36,7 @@ export function draw(game) {
         ctx.fill();
     }
     for (const effect of game.teleportSmokeEffects) {
-        const lifeRatio = Math.max(0, (effect.expiresAt - Date.now()) / MAGICIAN_HAT_TELEPORT_SMOKE_DURATION_MS);
+        const lifeRatio = Math.max(0, (effect.expiresAt - Date.now()) / W.magicianHat.TELEPORT_SMOKE_DURATION_MS);
         const size = 24 + (1 - lifeRatio) * 18;
         if (game.smokeImage && game.smokeImage.complete && game.smokeImage.naturalWidth > 0) {
             ctx.save();
@@ -285,8 +281,8 @@ export function draw(game) {
     for (const ball of game.balls) {
         if (!ball.isAlive() || ball.weapon.type !== 'soundofstar' || !ball.soundStarOrbitals?.length) continue;
         for (const orb of ball.soundStarOrbitals) {
-            const ox = ball.pos.x + Math.cos(orb.angle) * SOUND_OF_STAR_ORBIT_RADIUS;
-            const oy = ball.pos.y + Math.sin(orb.angle) * SOUND_OF_STAR_ORBIT_RADIUS;
+            const ox = ball.pos.x + Math.cos(orb.angle) * W.soundOfStar.ORBIT_RADIUS;
+            const oy = ball.pos.y + Math.sin(orb.angle) * W.soundOfStar.ORBIT_RADIUS;
 
             ctx.save();
             ctx.globalCompositeOperation = 'lighter';
@@ -300,7 +296,7 @@ export function draw(game) {
             ctx.restore();
 
             if (_soundOfStarOrbitalImage.complete && _soundOfStarOrbitalImage.naturalWidth > 0) {
-                const spriteSize = SOUND_OF_STAR_PROJECTILE_SIZE * 3.4;
+                const spriteSize = W.soundOfStar.PROJECTILE_SIZE * 3.4;
                 ctx.save();
                 ctx.translate(ox, oy);
                 ctx.rotate(orb.angle);
@@ -310,7 +306,7 @@ export function draw(game) {
                 ctx.save();
                 ctx.fillStyle = '#ffee88';
                 ctx.beginPath();
-                ctx.arc(ox, oy, SOUND_OF_STAR_PROJECTILE_SIZE, 0, Math.PI * 2);
+                ctx.arc(ox, oy, W.soundOfStar.PROJECTILE_SIZE, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.restore();
             }

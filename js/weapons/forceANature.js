@@ -56,6 +56,7 @@ const forceANature = {
     SPEED:            speed,
     COLOR:            color,
     PROJECTILE_SIZE:  projectileSize,
+    image: 'assets/Force-A-Nature.png',
     DISPLAY_NAME:     'FORCE-A-NATURE',
 };
 

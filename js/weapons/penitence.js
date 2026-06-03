@@ -66,6 +66,7 @@ const penitence = {
     PICKUP_HEAL_RATIO:     pickupHealRatio,
     ALLY_HEAL_FROM_DAMAGE: allyHealFromDamage,
     ALLY_HELP_HP_RATIO:    allyHelpHpRatio,
+    image: 'assets/EGOWeaponPenitence.webp',
     DISPLAY_NAME:          'EGO WEAPON PENITENCE',
 };
 

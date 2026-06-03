@@ -82,6 +82,10 @@ const egoMagicBullet = {
     // Config
     COLOR:                       color,
     PELLETS_PER_SHOT:            pelletsPerShot,
+    images: {
+        weapon: 'assets/EGOWeaponMagicBullet.webp',
+        portal: 'assets/DerFreischützPortal.png',
+    },
     DISPLAY_NAME:                'EGO MAGIC BULLET',
 };
 

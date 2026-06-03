@@ -1,140 +1,4 @@
-import {
-    BEGGERS_BAZOOKA_DEVIATION,
-    EGO_LOVE_HATE_SPEED,
-    EGO_LOVE_HATE_PROJECTILE_SIZE,
-    EGO_LOVE_HATE_RED_DAMAGE_MIN,
-    EGO_LOVE_HATE_RED_DAMAGE_MAX,
-    EGO_LOVE_HATE_BLACK_DAMAGE_MIN,
-    EGO_LOVE_HATE_BLACK_DAMAGE_MAX,
-    EGO_LOVE_HATE_BLACK_BURN_MIN,
-    EGO_LOVE_HATE_BLACK_BURN_MAX,
-    EGO_LOVE_HATE_BLACK_BURN_INTERVAL_MS,
-    EGO_LOVE_HATE_BLACK_BURN_DURATION_MS,
-    EGO_LOVE_HATE_WHITE_DAMAGE_MIN,
-    EGO_LOVE_HATE_WHITE_DAMAGE_MAX,
-    EGO_LOVE_HATE_WHITE_BURN_MIN,
-    EGO_LOVE_HATE_WHITE_BURN_MAX,
-    EGO_LOVE_HATE_WHITE_BURN_INTERVAL_MS,
-    EGO_LOVE_HATE_WHITE_BURN_DURATION_MS,
-    EGO_LOVE_HATE_PALE_MIN_RATIO,
-    EGO_LOVE_HATE_PALE_MAX_RATIO,
-    EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MAX,
-    EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MIN,
-    EGO_MAGIC_BULLET_AFTERBURN_DURATION_MS,
-    EGO_MAGIC_BULLET_AFTERBURN_INTERVAL_MS,
-    EGO_MAGIC_BULLET_CURSE_CYCLE,
-    EGO_MAGIC_BULLET_SELF_HIT_MULTIPLIER,
-    EGO_MAGIC_BULLET_CURSE_SPAWN_BEHIND_DISTANCE,
-    PENITENCE_ALLY_HEAL_FROM_DAMAGE,
-    PENITENCE_ALLY_HELP_HP_RATIO,
-    PENITENCE_DAMAGE_MAX,
-    PENITENCE_DAMAGE_MIN,
-    PENITENCE_MELEE_RANGE,
-    PENITENCE_SWING_ANIMATION_MS,
-    PENITENCE_SWING_ARC_DEGREES,
-    PARADISE_LOST_MAX_HP_DAMAGE_MAX_RATIO,
-    PARADISE_LOST_MAX_HP_DAMAGE_MIN_RATIO,
-    EXPLOSIVE_FLASK_COOLDOWN_MS,
-    FLAMETHROWER_HITSCAN_RANGE,
-    FLAMETHROWER_PARTICLE_LIFETIME_MS,
-    MUSKET_BAYONET_BLEED_DAMAGE_MAX,
-    MUSKET_BAYONET_BLEED_DAMAGE_MIN,
-    MUSKET_BAYONET_BLEED_DURATION_MS,
-    MUSKET_BAYONET_BLEED_INTERVAL_MS,
-    MUSKET_BAYONET_COOLDOWN_MS,
-    MUSKET_BAYONET_DAMAGE_MAX,
-    MUSKET_BAYONET_DAMAGE_MIN,
-    MUSKET_BAYONET_HEAL_MULTIPLIER,
-    MUSKET_BAYONET_RANGE,
-    ROCKET_JUMPER_SELF_BLAST_IMPULSE,
-    SHORT_CIRCUIT_DURATION_MS,
-    SHORT_CIRCUIT_RADIUS,
-    SOLEMN_VOW_BLACK_MAX_HP_DAMAGE_MAX_RATIO,
-    SOLEMN_VOW_BLACK_MAX_HP_DAMAGE_MIN_RATIO,
-    SOLEMN_VOW_BLACK_PELLETS_PER_SHOT,
-    SOLEMN_VOW_BLACK_SPREAD_ANGLE,
-    SOLEMN_VOW_FUNERAL_COOLDOWN_MS,
-    SOLEMN_VOW_FUNERAL_PELLETS_REQUIRED,
-    SOLEMN_VOW_FUNERAL_PROJECTILE_SIZE,
-    SOLEMN_VOW_FUNERAL_PROJECTILE_SPEED,
-    SOLEMN_VOW_MUZZLE_FLASH_MS,
-    SOLEMN_VOW_WHITE_AFTERBURN_DAMAGE_MAX,
-    SOLEMN_VOW_WHITE_AFTERBURN_DAMAGE_MIN,
-    SOLEMN_VOW_WHITE_AFTERBURN_DURATION_MS,
-    SOLEMN_VOW_WHITE_AFTERBURN_INTERVAL_MS,
-    SOLEMN_VOW_WHITE_PELLETS_PER_SHOT,
-    SOLEMN_VOW_WHITE_PROJECTILE_SIZE,
-    SOLEMN_VOW_WHITE_PROJECTILE_SPEED,
-    SOLEMN_VOW_WHITE_SPREAD_ANGLE,
-    HARMONY_DAMAGE_MAX,
-    HARMONY_DAMAGE_MIN,
-    HARMONY_PELLETS_PER_SHOT,
-    HARMONY_PROJECTILE_SIZE,
-    HARMONY_PROJECTILE_SPEED,
-    HARMONY_SELF_HP_COST_RATIO,
-    HARMONY_SPREAD_ANGLE,
-    HORNET_RANGE_SWITCH_DISTANCE,
-    HORNET_RIFLE_AFTERBURN_DAMAGE_MAX,
-    HORNET_RIFLE_AFTERBURN_DAMAGE_MIN,
-    HORNET_RIFLE_AFTERBURN_DURATION_MS,
-    HORNET_RIFLE_AFTERBURN_INTERVAL_MS,
-    HORNET_RIFLE_DAMAGE_MAX,
-    HORNET_RIFLE_DAMAGE_MIN,
-    HORNET_RIFLE_PROJECTILE_SIZE,
-    HORNET_RIFLE_SPEED,
-    HORNET_SHOTGUN_PELLETS_PER_SHOT,
-    HORNET_SHOTGUN_SPREAD_ANGLE,
-    SWORD_SHARPENED_BLESSING_SHIELD_RADIUS,
-    SWORD_SHARPENED_DAMAGE_MIN,
-    SWORD_SHARPENED_DAMAGE_MAX,
-    SWORD_SHARPENED_SHARPEN_MAX_STACKS,
-    SWORD_SHARPENED_SHARPEN_SPEED_BONUS,
-    SWORD_SHARPENED_SPEED,
-    SWORD_SHARPENED_SIZE,
-    SWORD_SHARPENED_BLESSING_SHIELD_DURATION_MS,
-    SWORD_SHARPENED_BLESSING_SHIELD_DAMAGE_BLOCK,
-    YELLOW_TARGE_CHARGE_IMPULSE,
-    YELLOW_TARGE_CHARGE_TRIGGER_RANGE,
-    SOUND_OF_STAR_DAMAGE_MIN,
-    SOUND_OF_STAR_DAMAGE_MAX,
-    SOUND_OF_STAR_SPEED,
-    SOUND_OF_STAR_PROJECTILE_SIZE,
-    SOUND_OF_STAR_SPREAD_ANGLE,
-    SOUND_OF_STAR_BURN_DAMAGE_MIN,
-    SOUND_OF_STAR_BURN_DAMAGE_MAX,
-    SOUND_OF_STAR_BURN_INTERVAL_MS,
-    SOUND_OF_STAR_BURN_DURATION_MS,
-    SOUND_OF_STAR_HOMING_STRENGTH,
-    SOUND_OF_STAR_HOMING_RANGE,
-    SOUND_OF_STAR_ORBIT_RATE,
-    SOUND_OF_STAR_ORBIT_RADIUS,
-    SOUND_OF_STAR_MAX_AMMO,
-    SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER,
-    LOCH_N_LOAD_SPLASH_RADIUS,
-    LOCH_N_LOAD_SPLASH_MAX_DAMAGE,
-    LOCH_N_LOAD_FAST_MOVE_BONUS,
-    LOCH_N_LOAD_FAST_SPEED_RATIO,
-    HYPOCRISY_FIRE_RATE_BASE,
-    HYPOCRISY_FIRE_RATE_MIN,
-    HYPOCRISY_DAMAGE_MULTIPLIER_MAX,
-    CRIMSON_SCAR_RANGE_SWITCH_DISTANCE,
-    CRIMSON_SCAR_GUN_DAMAGE_MIN,
-    CRIMSON_SCAR_GUN_DAMAGE_MAX,
-    CRIMSON_SCAR_GUN_SPEED,
-    CRIMSON_SCAR_GUN_PROJECTILE_SIZE,
-    CRIMSON_SCAR_BLADE_DAMAGE_MIN,
-    CRIMSON_SCAR_BLADE_DAMAGE_MAX,
-    CRIMSON_SCAR_BLADE_RANGE,
-    CRIMSON_SCAR_BLADE_SWING_ARC_DEGREES,
-    CRIMSON_SCAR_BLEED_DAMAGE_MIN,
-    CRIMSON_SCAR_BLEED_DAMAGE_MAX,
-    CRIMSON_SCAR_BLEED_INTERVAL_MS,
-    CRIMSON_SCAR_BLEED_DURATION_MS,
-    EGOSODA_PURPLE_CHANCE,
-    EGOSODA_RED_COLOR,
-    EGOSODA_BLUE_COLOR,
-    EGOSODA_PURPLE_COLOR,
-} from './constants.js';
+import * as W from './weapons/index.js';
 import { DealerWeapon } from './weapons/dealer.js';
 import { Projectile } from './projectile.js';
 import { Vector } from './vector.js';
@@ -171,24 +35,24 @@ function tryMusketBayonet(game, shooter, now) {
     }
 
     if (!bestTarget) return false;
-    if (bestDistance > shooter.radius + bestTarget.radius + MUSKET_BAYONET_RANGE) return false;
+    if (bestDistance > shooter.radius + bestTarget.radius + W.musket.BAYONET_RANGE) return false;
 
-    const damageRoll = Math.floor(Math.random() * (MUSKET_BAYONET_DAMAGE_MAX - MUSKET_BAYONET_DAMAGE_MIN + 1)) + MUSKET_BAYONET_DAMAGE_MIN;
+    const damageRoll = Math.floor(Math.random() * (W.musket.BAYONET_DAMAGE_MAX - W.musket.BAYONET_DAMAGE_MIN + 1)) + W.musket.BAYONET_DAMAGE_MIN;
     const stabDamage = damageRoll * shooter.getDamageMultiplier(now);
 
     if (!bestTarget.isUberActive(now)) {
         bestTarget.takeDamage(stabDamage, 'slash', 'musket');
         bestTarget.applyBayonetBleed(
             now,
-            MUSKET_BAYONET_BLEED_DURATION_MS,
-            MUSKET_BAYONET_BLEED_DAMAGE_MIN,
-            MUSKET_BAYONET_BLEED_DAMAGE_MAX,
-            MUSKET_BAYONET_BLEED_INTERVAL_MS,
-            MUSKET_BAYONET_HEAL_MULTIPLIER
+            W.musket.BAYONET_BLEED_DURATION_MS,
+            W.musket.BAYONET_BLEED_DAMAGE_MIN,
+            W.musket.BAYONET_BLEED_DAMAGE_MAX,
+            W.musket.BAYONET_BLEED_INTERVAL_MS,
+            W.musket.BAYONET_HEAL_MULTIPLIER
         );
     }
 
-    shooter.nextMusketBayonetAt = now + MUSKET_BAYONET_COOLDOWN_MS;
+    shooter.nextMusketBayonetAt = now + W.musket.BAYONET_COOLDOWN_MS;
     return true;
 }
 
@@ -200,15 +64,15 @@ function angleDiffRadians(a, b) {
 }
 
 function getPenitenceTarget(game, shooter, teamEnemies, teamAllies) {
-    const woundedAllies = teamAllies.filter(ball => ball.hp < ball.maxHP && (ball.hp / ball.maxHP) <= PENITENCE_ALLY_HELP_HP_RATIO);
+    const woundedAllies = teamAllies.filter(ball => ball.hp < ball.maxHP && (ball.hp / ball.maxHP) <= W.penitence.ALLY_HELP_HP_RATIO);
     const targetPool = woundedAllies.length > 0 ? woundedAllies : teamEnemies;
     if (targetPool.length === 0) return null;
     return game.findNearest(shooter, targetPool);
 }
 
 function tryCrimsonScarBlade(game, shooter, now) {
-    const coneHalfAngle = (CRIMSON_SCAR_BLADE_SWING_ARC_DEGREES * Math.PI / 180) * 0.5;
-    const meleeReach = CRIMSON_SCAR_BLADE_RANGE;
+    const coneHalfAngle = (W.crimsonScar.BLADE_SWING_ARC_DEGREES * Math.PI / 180) * 0.5;
+    const meleeReach = W.crimsonScar.BLADE_RANGE;
     const damageMultiplier = shooter.getDamageMultiplier(now);
 
     for (const candidate of game.balls) {
@@ -226,22 +90,22 @@ function tryCrimsonScarBlade(game, shooter, now) {
         const angleToCandidate = Math.atan2(dy, dx);
         if (angleDiffRadians(angleToCandidate, shooter.aimAngle) > coneHalfAngle) continue;
 
-        const damageRoll = Math.floor(Math.random() * (CRIMSON_SCAR_BLADE_DAMAGE_MAX - CRIMSON_SCAR_BLADE_DAMAGE_MIN + 1)) + CRIMSON_SCAR_BLADE_DAMAGE_MIN;
+        const damageRoll = Math.floor(Math.random() * (W.crimsonScar.BLADE_DAMAGE_MAX - W.crimsonScar.BLADE_DAMAGE_MIN + 1)) + W.crimsonScar.BLADE_DAMAGE_MIN;
         candidate.takeDamage(damageRoll * damageMultiplier, 'slash', 'crimsonscar');
 
-        candidate.crimsonScarBleed.until = now + CRIMSON_SCAR_BLEED_DURATION_MS;
-        candidate.crimsonScarBleed.nextTickAt = now + CRIMSON_SCAR_BLEED_INTERVAL_MS;
-        candidate.crimsonScarBleed.damageMin = CRIMSON_SCAR_BLEED_DAMAGE_MIN;
-        candidate.crimsonScarBleed.damageMax = CRIMSON_SCAR_BLEED_DAMAGE_MAX;
-        candidate.crimsonScarBleed.intervalMs = CRIMSON_SCAR_BLEED_INTERVAL_MS;
+        candidate.crimsonScarBleed.until = now + W.crimsonScar.BLEED_DURATION_MS;
+        candidate.crimsonScarBleed.nextTickAt = now + W.crimsonScar.BLEED_INTERVAL_MS;
+        candidate.crimsonScarBleed.damageMin = W.crimsonScar.BLEED_DAMAGE_MIN;
+        candidate.crimsonScarBleed.damageMax = W.crimsonScar.BLEED_DAMAGE_MAX;
+        candidate.crimsonScarBleed.intervalMs = W.crimsonScar.BLEED_INTERVAL_MS;
     }
 }
 
 function tryPenitenceSwing(game, shooter, now) {
     if (shooter.weapon.type !== 'penitence') return false;
 
-    const coneHalfAngle = (PENITENCE_SWING_ARC_DEGREES * Math.PI / 180) * 0.5;
-    const meleeReach = PENITENCE_MELEE_RANGE;
+    const coneHalfAngle = (W.penitence.SWING_ARC_DEGREES * Math.PI / 180) * 0.5;
+    const meleeReach = W.penitence.MELEE_RANGE;
     const damageMultiplier = shooter.getDamageMultiplier(now);
     let didHit = false;
 
@@ -259,7 +123,7 @@ function tryPenitenceSwing(game, shooter, now) {
         const angleToCandidate = Math.atan2(dy, dx);
         if (angleDiffRadians(angleToCandidate, shooter.aimAngle) > coneHalfAngle) continue;
 
-        const damageRoll = Math.floor(Math.random() * (PENITENCE_DAMAGE_MAX - PENITENCE_DAMAGE_MIN + 1)) + PENITENCE_DAMAGE_MIN;
+        const damageRoll = Math.floor(Math.random() * (W.penitence.DAMAGE_MAX - W.penitence.DAMAGE_MIN + 1)) + W.penitence.DAMAGE_MIN;
         const dealtAmount = damageRoll * damageMultiplier;
 
         if (game.areEnemies(shooter, candidate)) {
@@ -268,7 +132,7 @@ function tryPenitenceSwing(game, shooter, now) {
                 didHit = true;
             }
         } else if (candidate.hp < candidate.maxHP) {
-            candidate.heal(dealtAmount * PENITENCE_ALLY_HEAL_FROM_DAMAGE);
+            candidate.heal(dealtAmount * W.penitence.ALLY_HEAL_FROM_DAMAGE);
             didHit = true;
         }
     }
@@ -285,18 +149,18 @@ function fireSolemnVowFuneral(game, shooter, target, now) {
             y: shooter.pos.y,
             targetX: shooter.pos.x + Math.cos(angle) * 900,
             targetY: shooter.pos.y + Math.sin(angle) * 900,
-            speed: SOLEMN_VOW_FUNERAL_PROJECTILE_SPEED,
+            speed: W.solemnVow.FUNERAL_PROJECTILE_SPEED,
             damage: 0,
             color: '#e8f8ff',
-            size: SOLEMN_VOW_FUNERAL_PROJECTILE_SIZE,
+            size: W.solemnVow.FUNERAL_PROJECTILE_SIZE,
             ownerId: shooter.id,
             type: 'solemnvowfuneral',
             sourceWeaponType: 'solemnvow'
         })
     );
 
-    shooter.solemnVow.nextFuneralAllowedAt = now + SOLEMN_VOW_FUNERAL_COOLDOWN_MS;
-    if (shooter.solemnVow.pelletsShotSinceFuneral >= SOLEMN_VOW_FUNERAL_PELLETS_REQUIRED) {
+    shooter.solemnVow.nextFuneralAllowedAt = now + W.solemnVow.FUNERAL_COOLDOWN_MS;
+    if (shooter.solemnVow.pelletsShotSinceFuneral >= W.solemnVow.FUNERAL_PELLETS_REQUIRED) {
         shooter.solemnVow.pelletsShotSinceFuneral = 0;
     }
     if (shooter.weapon.isReloading) {
@@ -305,9 +169,9 @@ function fireSolemnVowFuneral(game, shooter, target, now) {
 }
 
 function fireSoundOfStarShot(game, shooter, orbAngle, now) {
-    const startX = shooter.pos.x + Math.cos(orbAngle) * SOUND_OF_STAR_ORBIT_RADIUS;
-    const startY = shooter.pos.y + Math.sin(orbAngle) * SOUND_OF_STAR_ORBIT_RADIUS;
-    const damageRoll = Math.floor(Math.random() * (SOUND_OF_STAR_DAMAGE_MAX - SOUND_OF_STAR_DAMAGE_MIN + 1)) + SOUND_OF_STAR_DAMAGE_MIN;
+    const startX = shooter.pos.x + Math.cos(orbAngle) * W.soundOfStar.ORBIT_RADIUS;
+    const startY = shooter.pos.y + Math.sin(orbAngle) * W.soundOfStar.ORBIT_RADIUS;
+    const damageRoll = Math.floor(Math.random() * (W.soundOfStar.DAMAGE_MAX - W.soundOfStar.DAMAGE_MIN + 1)) + W.soundOfStar.DAMAGE_MIN;
     const damage = damageRoll * shooter.getDamageMultiplier(now);
 
     // Use the shooter's tracked aim angle (toward cursor for player, toward nearest enemy for AI).
@@ -319,19 +183,19 @@ function fireSoundOfStarShot(game, shooter, orbAngle, now) {
         y: startY,
         targetX: startX + Math.cos(fireAngle) * 900,
         targetY: startY + Math.sin(fireAngle) * 900,
-        speed: SOUND_OF_STAR_SPEED,
+        speed: W.soundOfStar.SPEED,
         damage,
         color: '#ffee88',
-        size: SOUND_OF_STAR_PROJECTILE_SIZE,
+        size: W.soundOfStar.PROJECTILE_SIZE,
         ownerId: shooter.id,
         type: 'soundofstar',
         sourceWeaponType: 'soundofstar',
-        afterburnMin: SOUND_OF_STAR_BURN_DAMAGE_MIN,
-        afterburnMax: SOUND_OF_STAR_BURN_DAMAGE_MAX,
-        afterburnDuration: SOUND_OF_STAR_BURN_DURATION_MS,
-        afterburnInterval: SOUND_OF_STAR_BURN_INTERVAL_MS,
-        soundStarHomingStrength: SOUND_OF_STAR_HOMING_STRENGTH,
-        soundStarHomingRange: SOUND_OF_STAR_HOMING_RANGE,
+        afterburnMin: W.soundOfStar.BURN_DAMAGE_MIN,
+        afterburnMax: W.soundOfStar.BURN_DAMAGE_MAX,
+        afterburnDuration: W.soundOfStar.BURN_DURATION_MS,
+        afterburnInterval: W.soundOfStar.BURN_INTERVAL_MS,
+        soundStarHomingStrength: W.soundOfStar.HOMING_STRENGTH,
+        soundStarHomingRange: W.soundOfStar.HOMING_RANGE,
         soundStarOrbitAngle: orbAngle,
         soundStarImage: _soundOfStarImage,
         expiresAt: now + 6000,
@@ -348,25 +212,25 @@ export function ballShooting(game, now) {
             const targetCount = shooter.weapon.ammo;
             if (!shooter.soundStarOrbitals) shooter.soundStarOrbitals = [];
             while (shooter.soundStarOrbitals.length < targetCount) {
-                const initAngle = (shooter.soundStarOrbitals.length / SOUND_OF_STAR_MAX_AMMO) * Math.PI * 2;
+                const initAngle = (shooter.soundStarOrbitals.length / W.soundOfStar.MAX_AMMO) * Math.PI * 2;
                 shooter.soundStarOrbitals.push({ angle: initAngle });
             }
             shooter.soundStarOrbitals.length = Math.min(shooter.soundStarOrbitals.length, targetCount);
             for (const orb of shooter.soundStarOrbitals) {
-                orb.angle += SOUND_OF_STAR_ORBIT_RATE;
+                orb.angle += W.soundOfStar.ORBIT_RATE;
 
-                const ox = shooter.pos.x + Math.cos(orb.angle) * SOUND_OF_STAR_ORBIT_RADIUS;
-                const oy = shooter.pos.y + Math.sin(orb.angle) * SOUND_OF_STAR_ORBIT_RADIUS;
+                const ox = shooter.pos.x + Math.cos(orb.angle) * W.soundOfStar.ORBIT_RADIUS;
+                const oy = shooter.pos.y + Math.sin(orb.angle) * W.soundOfStar.ORBIT_RADIUS;
                 for (const ball of game.balls) {
                     if (!ball.isAlive() || !game.areEnemies(shooter, ball) || ball.isUntargetable(now)) continue;
-                    if (Math.hypot(ball.pos.x - ox, ball.pos.y - oy) > SOUND_OF_STAR_PROJECTILE_SIZE + ball.radius) continue;
+                    if (Math.hypot(ball.pos.x - ox, ball.pos.y - oy) > W.soundOfStar.PROJECTILE_SIZE + ball.radius) continue;
                     if (!orb.lastHitByBall) orb.lastHitByBall = {};
                     if ((orb.lastHitByBall[ball.id] || 0) + 500 > now) continue;
                     orb.lastHitByBall[ball.id] = now;
                     if (!ball.isUberActive(now)) {
-                        const dmg = (Math.floor(Math.random() * (SOUND_OF_STAR_DAMAGE_MAX - SOUND_OF_STAR_DAMAGE_MIN + 1)) + SOUND_OF_STAR_DAMAGE_MIN) * shooter.getDamageMultiplier(now) * SOUND_OF_STAR_ORBITAL_CONTACT_MULTIPLIER;
+                        const dmg = (Math.floor(Math.random() * (W.soundOfStar.DAMAGE_MAX - W.soundOfStar.DAMAGE_MIN + 1)) + W.soundOfStar.DAMAGE_MIN) * shooter.getDamageMultiplier(now) * W.soundOfStar.ORBITAL_CONTACT_MULTIPLIER;
                         ball.takeDamage(dmg, 'spiritual', 'soundofstar');
-                        ball.applyAfterburn(now, SOUND_OF_STAR_BURN_DURATION_MS, SOUND_OF_STAR_BURN_DAMAGE_MIN, SOUND_OF_STAR_BURN_DAMAGE_MAX, SOUND_OF_STAR_BURN_INTERVAL_MS);
+                        ball.applyAfterburn(now, W.soundOfStar.BURN_DURATION_MS, W.soundOfStar.BURN_DAMAGE_MIN, W.soundOfStar.BURN_DAMAGE_MAX, W.soundOfStar.BURN_INTERVAL_MS);
                     }
                 }
             }
@@ -435,7 +299,7 @@ export function ballShooting(game, now) {
             const dx = target.pos.x - shooter.pos.x;
             const dy = target.pos.y - shooter.pos.y;
             const distanceToTarget = Math.sqrt(dx * dx + dy * dy);
-            if (distanceToTarget > FLAMETHROWER_HITSCAN_RANGE) {
+            if (distanceToTarget > W.flamethrower.HITSCAN_RANGE) {
                 continue;
             }
         }
@@ -450,7 +314,7 @@ export function ballShooting(game, now) {
         if (shooter.weapon.type === 'penitence') {
             if (!shooter.weapon.shoot(now)) continue;
             shooter.penitence.swingStartedAt = now;
-            shooter.penitence.swingUntil = now + PENITENCE_SWING_ANIMATION_MS;
+            shooter.penitence.swingUntil = now + W.penitence.SWING_ANIMATION_MS;
             tryPenitenceSwing(game, shooter, now);
             shooter.nextShootAllowedAt = now + shooter.reactionDelayMs;
             continue;
@@ -470,7 +334,7 @@ export function ballShooting(game, now) {
 
         if (shooter.weapon.type === 'hornet') {
             const distanceToTarget = Math.hypot(target.pos.x - shooter.pos.x, target.pos.y - shooter.pos.y);
-            const hornetForm = distanceToTarget <= HORNET_RANGE_SWITCH_DISTANCE ? 'shotgun' : 'rifle';
+            const hornetForm = distanceToTarget <= W.hornet.RANGE_SWITCH_DISTANCE ? 'shotgun' : 'rifle';
             shooter.weapon.hornetForm = hornetForm;
 
             if (!shooter.weapon.shoot(now, hornetForm)) continue;
@@ -478,29 +342,29 @@ export function ballShooting(game, now) {
             const damageMultiplier = shooter.getDamageMultiplier(now);
 
             if (hornetForm === 'shotgun') {
-                for (let p = 0; p < HORNET_SHOTGUN_PELLETS_PER_SHOT; p++) {
-                    const spreadOffset = (Math.random() * 2 - 1) * HORNET_SHOTGUN_SPREAD_ANGLE;
+                for (let p = 0; p < W.hornet.SHOTGUN_PELLETS_PER_SHOT; p++) {
+                    const spreadOffset = (Math.random() * 2 - 1) * W.hornet.SHOTGUN_SPREAD_ANGLE;
                     game.fireHornetShotgunRay(shooter, shooter.aimAngle + spreadOffset, now, damageMultiplier);
                 }
             } else {
-                const damageRoll = Math.floor(Math.random() * (HORNET_RIFLE_DAMAGE_MAX - HORNET_RIFLE_DAMAGE_MIN + 1)) + HORNET_RIFLE_DAMAGE_MIN;
+                const damageRoll = Math.floor(Math.random() * (W.hornet.RIFLE_DAMAGE_MAX - W.hornet.RIFLE_DAMAGE_MIN + 1)) + W.hornet.RIFLE_DAMAGE_MIN;
                 game.projectiles.push(
                     new Projectile({
                         x: shooter.pos.x,
                         y: shooter.pos.y,
                         targetX: shooter.pos.x + Math.cos(shooter.aimAngle) * 1000,
                         targetY: shooter.pos.y + Math.sin(shooter.aimAngle) * 1000,
-                        speed: HORNET_RIFLE_SPEED,
+                        speed: W.hornet.RIFLE_SPEED,
                         damage: damageRoll * damageMultiplier,
                         color: '#ffe07a',
-                        size: HORNET_RIFLE_PROJECTILE_SIZE,
+                        size: W.hornet.RIFLE_PROJECTILE_SIZE,
                         ownerId: shooter.id,
                         type: 'hornetrifle',
                         sourceWeaponType: 'hornet',
-                        afterburnMin: HORNET_RIFLE_AFTERBURN_DAMAGE_MIN,
-                        afterburnMax: HORNET_RIFLE_AFTERBURN_DAMAGE_MAX,
-                        afterburnDuration: HORNET_RIFLE_AFTERBURN_DURATION_MS,
-                        afterburnInterval: HORNET_RIFLE_AFTERBURN_INTERVAL_MS
+                        afterburnMin: W.hornet.RIFLE_AFTERBURN_DAMAGE_MIN,
+                        afterburnMax: W.hornet.RIFLE_AFTERBURN_DAMAGE_MAX,
+                        afterburnDuration: W.hornet.RIFLE_AFTERBURN_DURATION_MS,
+                        afterburnInterval: W.hornet.RIFLE_AFTERBURN_INTERVAL_MS
                     })
                 );
             }
@@ -511,7 +375,7 @@ export function ballShooting(game, now) {
 
         if (shooter.weapon.type === 'crimsonscar') {
             const distToTarget = Math.hypot(target.pos.x - shooter.pos.x, target.pos.y - shooter.pos.y);
-            const crimsonForm = distToTarget <= CRIMSON_SCAR_RANGE_SWITCH_DISTANCE ? 'blade' : 'gun';
+            const crimsonForm = distToTarget <= W.crimsonScar.RANGE_SWITCH_DISTANCE ? 'blade' : 'gun';
             shooter.weapon.crimsonScarForm = crimsonForm;
 
             if (!shooter.weapon.canShoot(now, crimsonForm)) continue;
@@ -523,17 +387,17 @@ export function ballShooting(game, now) {
                 shooter.weapon.crimsonScarBladeSwingStartedAt = now;
                 tryCrimsonScarBlade(game, shooter, now);
             } else {
-                const damageRoll = Math.floor(Math.random() * (CRIMSON_SCAR_GUN_DAMAGE_MAX - CRIMSON_SCAR_GUN_DAMAGE_MIN + 1)) + CRIMSON_SCAR_GUN_DAMAGE_MIN;
+                const damageRoll = Math.floor(Math.random() * (W.crimsonScar.GUN_DAMAGE_MAX - W.crimsonScar.GUN_DAMAGE_MIN + 1)) + W.crimsonScar.GUN_DAMAGE_MIN;
                 game.projectiles.push(
                     new Projectile({
                         x: shooter.pos.x,
                         y: shooter.pos.y,
                         targetX: shooter.pos.x + Math.cos(shooter.aimAngle) * 1000,
                         targetY: shooter.pos.y + Math.sin(shooter.aimAngle) * 1000,
-                        speed: CRIMSON_SCAR_GUN_SPEED,
+                        speed: W.crimsonScar.GUN_SPEED,
                         damage: damageRoll * damageMultiplier,
                         color: '#cc2222',
-                        size: CRIMSON_SCAR_GUN_PROJECTILE_SIZE,
+                        size: W.crimsonScar.GUN_PROJECTILE_SIZE,
                         ownerId: shooter.id,
                         type: 'crimsonscar',
                         sourceWeaponType: 'crimsonscar',
@@ -554,30 +418,30 @@ export function ballShooting(game, now) {
 
             if (roll < 0.25) {
                 loveHateDamageType = 'red';
-                baseDamage = (Math.floor(Math.random() * (EGO_LOVE_HATE_RED_DAMAGE_MAX - EGO_LOVE_HATE_RED_DAMAGE_MIN + 1)) + EGO_LOVE_HATE_RED_DAMAGE_MIN) * damageMultiplier;
+                baseDamage = (Math.floor(Math.random() * (W.egoLoveHate.RED_DAMAGE_MAX - W.egoLoveHate.RED_DAMAGE_MIN + 1)) + W.egoLoveHate.RED_DAMAGE_MIN) * damageMultiplier;
                 projectileColor = '#ff3333';
             } else if (roll < 0.5) {
                 loveHateDamageType = 'black';
-                baseDamage = (Math.floor(Math.random() * (EGO_LOVE_HATE_BLACK_DAMAGE_MAX - EGO_LOVE_HATE_BLACK_DAMAGE_MIN + 1)) + EGO_LOVE_HATE_BLACK_DAMAGE_MIN) * damageMultiplier;
+                baseDamage = (Math.floor(Math.random() * (W.egoLoveHate.BLACK_DAMAGE_MAX - W.egoLoveHate.BLACK_DAMAGE_MIN + 1)) + W.egoLoveHate.BLACK_DAMAGE_MIN) * damageMultiplier;
                 projectileColor = '#2b2b2b';
-                burnMin = EGO_LOVE_HATE_BLACK_BURN_MIN * damageMultiplier;
-                burnMax = EGO_LOVE_HATE_BLACK_BURN_MAX * damageMultiplier;
-                burnDuration = EGO_LOVE_HATE_BLACK_BURN_DURATION_MS;
-                burnInterval = EGO_LOVE_HATE_BLACK_BURN_INTERVAL_MS;
+                burnMin = W.egoLoveHate.BLACK_BURN_MIN * damageMultiplier;
+                burnMax = W.egoLoveHate.BLACK_BURN_MAX * damageMultiplier;
+                burnDuration = W.egoLoveHate.BLACK_BURN_DURATION_MS;
+                burnInterval = W.egoLoveHate.BLACK_BURN_INTERVAL_MS;
             } else if (roll < 0.75) {
                 loveHateDamageType = 'white';
-                baseDamage = (Math.floor(Math.random() * (EGO_LOVE_HATE_WHITE_DAMAGE_MAX - EGO_LOVE_HATE_WHITE_DAMAGE_MIN + 1)) + EGO_LOVE_HATE_WHITE_DAMAGE_MIN) * damageMultiplier;
+                baseDamage = (Math.floor(Math.random() * (W.egoLoveHate.WHITE_DAMAGE_MAX - W.egoLoveHate.WHITE_DAMAGE_MIN + 1)) + W.egoLoveHate.WHITE_DAMAGE_MIN) * damageMultiplier;
                 projectileColor = '#f0f0f0';
-                burnMin = EGO_LOVE_HATE_WHITE_BURN_MIN * damageMultiplier;
-                burnMax = EGO_LOVE_HATE_WHITE_BURN_MAX * damageMultiplier;
-                burnDuration = EGO_LOVE_HATE_WHITE_BURN_DURATION_MS;
-                burnInterval = EGO_LOVE_HATE_WHITE_BURN_INTERVAL_MS;
+                burnMin = W.egoLoveHate.WHITE_BURN_MIN * damageMultiplier;
+                burnMax = W.egoLoveHate.WHITE_BURN_MAX * damageMultiplier;
+                burnDuration = W.egoLoveHate.WHITE_BURN_DURATION_MS;
+                burnInterval = W.egoLoveHate.WHITE_BURN_INTERVAL_MS;
             } else {
                 loveHateDamageType = 'pale';
                 baseDamage = 0;
                 projectileColor = '#d4b8b8';
-                maxHpRatioMin = EGO_LOVE_HATE_PALE_MIN_RATIO;
-                maxHpRatioMax = EGO_LOVE_HATE_PALE_MAX_RATIO;
+                maxHpRatioMin = W.egoLoveHate.PALE_MIN_RATIO;
+                maxHpRatioMax = W.egoLoveHate.PALE_MAX_RATIO;
             }
 
             game.projectiles.push(new Projectile({
@@ -585,10 +449,10 @@ export function ballShooting(game, now) {
                 y: shooter.pos.y,
                 targetX: shooter.pos.x + Math.cos(shooter.aimAngle) * 900,
                 targetY: shooter.pos.y + Math.sin(shooter.aimAngle) * 900,
-                speed: EGO_LOVE_HATE_SPEED,
+                speed: W.egoLoveHate.SPEED,
                 damage: baseDamage,
                 color: projectileColor,
-                size: EGO_LOVE_HATE_PROJECTILE_SIZE,
+                size: W.egoLoveHate.PROJECTILE_SIZE,
                 ownerId: shooter.id,
                 type: 'egolovehate',
                 sourceWeaponType: 'egolovehate',
@@ -618,11 +482,11 @@ export function ballShooting(game, now) {
             if (!shooter.weapon.shoot(now)) continue;
 
             const damageMultiplier = shooter.getDamageMultiplier(now);
-            const damageRoll = Math.floor(Math.random() * (SWORD_SHARPENED_DAMAGE_MAX - SWORD_SHARPENED_DAMAGE_MIN + 1)) + SWORD_SHARPENED_DAMAGE_MIN;
+            const damageRoll = Math.floor(Math.random() * (W.swordSharpened.DAMAGE_MAX - W.swordSharpened.DAMAGE_MIN + 1)) + W.swordSharpened.DAMAGE_MIN;
             const damage = damageRoll * damageMultiplier;
 
-            const sharpenStacks = Math.max(0, Math.min(SWORD_SHARPENED_SHARPEN_MAX_STACKS, shooter.swordSharpenStacks || 0));
-            const speedMultiplier = 1 + Math.min(0.6, SWORD_SHARPENED_SHARPEN_SPEED_BONUS * sharpenStacks);
+            const sharpenStacks = Math.max(0, Math.min(W.swordSharpened.SHARPEN_MAX_STACKS, shooter.swordSharpenStacks || 0));
+            const speedMultiplier = 1 + Math.min(0.6, W.swordSharpened.SHARPEN_SPEED_BONUS * sharpenStacks);
 
             // Try to give blessing shield to nearby ally
             const alliedBalls = game.balls.filter(b => b.isAlive() && b.teamId === shooter.teamId && b.id !== shooter.id);
@@ -632,12 +496,12 @@ export function ballShooting(game, now) {
                 let closestDist = Math.hypot(closestAlly.pos.x - shooter.pos.x, closestAlly.pos.y - shooter.pos.y);
                 for (const ally of alliedBalls) {
                     const dist = Math.hypot(ally.pos.x - shooter.pos.x, ally.pos.y - shooter.pos.y);
-                    if (dist < closestDist && dist <= SWORD_SHARPENED_BLESSING_SHIELD_RADIUS) {
+                    if (dist < closestDist && dist <= W.swordSharpened.BLESSING_SHIELD_RADIUS) {
                         closestAlly = ally;
                         closestDist = dist;
                     }
                 }
-                if (closestDist <= SWORD_SHARPENED_BLESSING_SHIELD_RADIUS) {
+                if (closestDist <= W.swordSharpened.BLESSING_SHIELD_RADIUS) {
                     blessingTargetId = closestAlly.id;
                 }
             }
@@ -648,10 +512,10 @@ export function ballShooting(game, now) {
                     y: shooter.pos.y,
                     targetX: shooter.pos.x + Math.cos(shooter.aimAngle) * 1000,
                     targetY: shooter.pos.y + Math.sin(shooter.aimAngle) * 1000,
-                    speed: SWORD_SHARPENED_SPEED * speedMultiplier,
+                    speed: W.swordSharpened.SPEED * speedMultiplier,
                     damage: damage,
                     color: '#4da6ff',
-                    size: SWORD_SHARPENED_SIZE,
+                    size: W.swordSharpened.SIZE,
                     ownerId: shooter.id,
                     type: 'swordsharpened',
                     sourceWeaponType: 'swordsharpened',
@@ -662,8 +526,8 @@ export function ballShooting(game, now) {
             // Apply blessing shield immediately to target or self
             const blessingTarget = blessingTargetId ? game.balls.find(b => b.id === blessingTargetId) : shooter;
             if (blessingTarget) {
-                blessingTarget.blessingShield.until = now + SWORD_SHARPENED_BLESSING_SHIELD_DURATION_MS;
-                blessingTarget.blessingShield.damageBlockRatio = SWORD_SHARPENED_BLESSING_SHIELD_DAMAGE_BLOCK;
+                blessingTarget.blessingShield.until = now + W.swordSharpened.BLESSING_SHIELD_DURATION_MS;
+                blessingTarget.blessingShield.damageBlockRatio = W.swordSharpened.BLESSING_SHIELD_DAMAGE_BLOCK;
             }
 
             shooter.nextShootAllowedAt = now + shooter.reactionDelayMs;
@@ -678,9 +542,9 @@ export function ballShooting(game, now) {
             const dy = chargeTarget.pos.y - shooter.pos.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance <= YELLOW_TARGE_CHARGE_TRIGGER_RANGE) {
+            if (distance <= W.yellowTarge.CHARGE_TRIGGER_RANGE) {
                 const direction = new Vector(dx, dy).normalize();
-                shooter.applyImpulse(direction.multiply(YELLOW_TARGE_CHARGE_IMPULSE));
+                shooter.applyImpulse(direction.multiply(W.yellowTarge.CHARGE_IMPULSE));
                 shooter.targeChargeActive = true;
                 shooter.targeChargeStartAt = now;
                 shooter.targeChargeDistance = 0;
@@ -708,8 +572,8 @@ export function ballShooting(game, now) {
                 ownerId: shooter.id,
                 pos: new Vector(shooter.pos.x, shooter.pos.y),
                 vel: direction.multiply(shooter.weapon.speed),
-                radius: SHORT_CIRCUIT_RADIUS,
-                expiresAt: now + SHORT_CIRCUIT_DURATION_MS,
+                radius: W.shortCircuit.RADIUS,
+                expiresAt: now + W.shortCircuit.DURATION_MS,
                 lastTickByBall: {}
             });
             shooter.nextShootAllowedAt = now + shooter.reactionDelayMs;
@@ -722,7 +586,7 @@ export function ballShooting(game, now) {
 
         if (shooter.weapon.type === 'harmony') {
             const damageMultiplier = shooter.getDamageMultiplier(now);
-            const intendedSelfHpCost = Math.min(shooter.maxHP * HARMONY_SELF_HP_COST_RATIO, Math.max(0, shooter.hp - 1));
+            const intendedSelfHpCost = Math.min(shooter.maxHP * W.harmony.SELF_HP_COST_RATIO, Math.max(0, shooter.hp - 1));
             const selfHpCost = shooter.hp > 1 && shooter.hp - intendedSelfHpCost > 1 ? intendedSelfHpCost : 0;
 
             if (selfHpCost > 0) {
@@ -731,10 +595,10 @@ export function ballShooting(game, now) {
 
             const boostedMultiplier = damageMultiplier * (selfHpCost > 0 ? 2 : 1);
 
-            for (let p = 0; p < HARMONY_PELLETS_PER_SHOT; p++) {
-                const spreadOffset = (Math.random() * 2 - 1) * HARMONY_SPREAD_ANGLE;
+            for (let p = 0; p < W.harmony.PELLETS_PER_SHOT; p++) {
+                const spreadOffset = (Math.random() * 2 - 1) * W.harmony.SPREAD_ANGLE;
                 const angle = shooter.aimAngle + spreadOffset;
-                const pelletDamage = (Math.floor(Math.random() * (HARMONY_DAMAGE_MAX - HARMONY_DAMAGE_MIN + 1)) + HARMONY_DAMAGE_MIN) * boostedMultiplier;
+                const pelletDamage = (Math.floor(Math.random() * (W.harmony.DAMAGE_MAX - W.harmony.DAMAGE_MIN + 1)) + W.harmony.DAMAGE_MIN) * boostedMultiplier;
 
                 game.projectiles.push(
                     new Projectile({
@@ -742,10 +606,10 @@ export function ballShooting(game, now) {
                         y: shooter.pos.y,
                         targetX: shooter.pos.x + Math.cos(angle) * 900,
                         targetY: shooter.pos.y + Math.sin(angle) * 900,
-                        speed: HARMONY_PROJECTILE_SPEED,
+                        speed: W.harmony.PROJECTILE_SPEED,
                         damage: pelletDamage,
                         color: '#dcecff',
-                        size: HARMONY_PROJECTILE_SIZE,
+                        size: W.harmony.PROJECTILE_SIZE,
                         ownerId: shooter.id,
                         type: 'harmony',
                         sourceWeaponType: 'harmony'
@@ -760,11 +624,11 @@ export function ballShooting(game, now) {
         if (shooter.weapon.type === 'solemnvow') {
             const damageMultiplier = shooter.getDamageMultiplier(now);
             const isBlackShot = shooter.solemnVow.nextBlackShot;
-            shooter.solemnVow.muzzleFlashUntil = now + SOLEMN_VOW_MUZZLE_FLASH_MS;
+            shooter.solemnVow.muzzleFlashUntil = now + W.solemnVow.MUZZLE_FLASH_MS;
 
             if (isBlackShot) {
-                for (let p = 0; p < SOLEMN_VOW_BLACK_PELLETS_PER_SHOT; p++) {
-                    const spreadOffset = (Math.random() * 2 - 1) * SOLEMN_VOW_BLACK_SPREAD_ANGLE;
+                for (let p = 0; p < W.solemnVow.BLACK_PELLETS_PER_SHOT; p++) {
+                    const spreadOffset = (Math.random() * 2 - 1) * W.solemnVow.BLACK_SPREAD_ANGLE;
                     const angle = shooter.aimAngle + spreadOffset;
 
                     game.projectiles.push(
@@ -780,16 +644,16 @@ export function ballShooting(game, now) {
                             ownerId: shooter.id,
                             type: 'solemnvowblack',
                             sourceWeaponType: 'solemnvow',
-                            maxHpRatioMin: SOLEMN_VOW_BLACK_MAX_HP_DAMAGE_MIN_RATIO,
-                            maxHpRatioMax: SOLEMN_VOW_BLACK_MAX_HP_DAMAGE_MAX_RATIO,
+                            maxHpRatioMin: W.solemnVow.BLACK_MAX_HP_DAMAGE_MIN_RATIO,
+                            maxHpRatioMax: W.solemnVow.BLACK_MAX_HP_DAMAGE_MAX_RATIO,
                             solemnDamageMultiplier: damageMultiplier
                         })
                     );
                 }
-                shooter.markSolemnVowPelletsFired(SOLEMN_VOW_BLACK_PELLETS_PER_SHOT);
+                shooter.markSolemnVowPelletsFired(W.solemnVow.BLACK_PELLETS_PER_SHOT);
             } else {
-                    for (let p = 0; p < SOLEMN_VOW_WHITE_PELLETS_PER_SHOT; p++) {
-                        const spreadOffset = (Math.random() * 2 - 1) * SOLEMN_VOW_WHITE_SPREAD_ANGLE;
+                    for (let p = 0; p < W.solemnVow.WHITE_PELLETS_PER_SHOT; p++) {
+                        const spreadOffset = (Math.random() * 2 - 1) * W.solemnVow.WHITE_SPREAD_ANGLE;
                         const angle = shooter.aimAngle + spreadOffset;
 
                         game.projectiles.push(
@@ -798,21 +662,21 @@ export function ballShooting(game, now) {
                                 y: shooter.pos.y,
                                 targetX: shooter.pos.x + Math.cos(angle) * 900,
                                 targetY: shooter.pos.y + Math.sin(angle) * 900,
-                                speed: SOLEMN_VOW_WHITE_PROJECTILE_SPEED,
+                                speed: W.solemnVow.WHITE_PROJECTILE_SPEED,
                                 damage: 0,
                                 color: '#e8e8ff',
-                                size: SOLEMN_VOW_WHITE_PROJECTILE_SIZE,
+                                size: W.solemnVow.WHITE_PROJECTILE_SIZE,
                                 ownerId: shooter.id,
                                 type: 'solemnvowwhite',
                                 sourceWeaponType: 'solemnvow',
-                                afterburnMin: SOLEMN_VOW_WHITE_AFTERBURN_DAMAGE_MIN * damageMultiplier,
-                                afterburnMax: SOLEMN_VOW_WHITE_AFTERBURN_DAMAGE_MAX * damageMultiplier,
-                                afterburnDuration: SOLEMN_VOW_WHITE_AFTERBURN_DURATION_MS,
-                                afterburnInterval: SOLEMN_VOW_WHITE_AFTERBURN_INTERVAL_MS
+                                afterburnMin: W.solemnVow.WHITE_AFTERBURN_DAMAGE_MIN * damageMultiplier,
+                                afterburnMax: W.solemnVow.WHITE_AFTERBURN_DAMAGE_MAX * damageMultiplier,
+                                afterburnDuration: W.solemnVow.WHITE_AFTERBURN_DURATION_MS,
+                                afterburnInterval: W.solemnVow.WHITE_AFTERBURN_INTERVAL_MS
                             })
                         );
                     }
-                    shooter.markSolemnVowPelletsFired(SOLEMN_VOW_WHITE_PELLETS_PER_SHOT);
+                    shooter.markSolemnVowPelletsFired(W.solemnVow.WHITE_PELLETS_PER_SHOT);
             }
 
             shooter.solemnVow.nextBlackShot = !isBlackShot;
@@ -850,7 +714,7 @@ export function ballShooting(game, now) {
             }
 
             if (shooter.weapon.type === 'beggersbazooka') {
-                const randomDeviation = (Math.random() * 2 - 1) * BEGGERS_BAZOOKA_DEVIATION;
+                const randomDeviation = (Math.random() * 2 - 1) * W.beggersBasooka.DEVIATION;
                 angle += randomDeviation;
             }
 
@@ -870,7 +734,7 @@ export function ballShooting(game, now) {
 
                 if (p === 0 && now >= (shooter.nextPipFlaskAt || 0)) {
                     game.throwExplosiveFlask(shooter, target, now, false);
-                    shooter.nextPipFlaskAt = now + EXPLOSIVE_FLASK_COOLDOWN_MS;
+                    shooter.nextPipFlaskAt = now + W.explosiveFlask.COOLDOWN_MS;
                 }
             }
 
@@ -909,14 +773,14 @@ export function ballShooting(game, now) {
             }
 
             if (shooter.weapon.type === 'paradiselost') {
-                const maxHpRatioRoll = PARADISE_LOST_MAX_HP_DAMAGE_MIN_RATIO + Math.random() * (PARADISE_LOST_MAX_HP_DAMAGE_MAX_RATIO - PARADISE_LOST_MAX_HP_DAMAGE_MIN_RATIO);
+                const maxHpRatioRoll = W.paradiseLost.MAX_HP_DAMAGE_MIN_RATIO + Math.random() * (W.paradiseLost.MAX_HP_DAMAGE_MAX_RATIO - W.paradiseLost.MAX_HP_DAMAGE_MIN_RATIO);
                 damage += shooter.maxHP * maxHpRatioRoll;
             }
 
             if (shooter.weapon.type === 'hypocrisy') {
-                const currentRate = shooter.weapon.hypocrisyCurrentRate ?? HYPOCRISY_FIRE_RATE_BASE;
-                const ratio = (currentRate - HYPOCRISY_FIRE_RATE_MIN) / (HYPOCRISY_FIRE_RATE_BASE - HYPOCRISY_FIRE_RATE_MIN);
-                damage *= 1 + ratio * (HYPOCRISY_DAMAGE_MULTIPLIER_MAX - 1);
+                const currentRate = shooter.weapon.hypocrisyCurrentRate ?? W.hypocrisy.FIRE_RATE_BASE;
+                const ratio = (currentRate - W.hypocrisy.FIRE_RATE_MIN) / (W.hypocrisy.FIRE_RATE_BASE - W.hypocrisy.FIRE_RATE_MIN);
+                damage *= 1 + ratio * (W.hypocrisy.DAMAGE_MULTIPLIER_MAX - 1);
             }
 
             const damageMultiplier = shooter.getDamageMultiplier(now);
@@ -972,7 +836,7 @@ export function ballShooting(game, now) {
 
             if (shooter.weapon.type === 'rocketjumper') {
                 const blastDirection = new Vector(Math.cos(angle), Math.sin(angle));
-                const selfImpulse = blastDirection.clone().multiply(-ROCKET_JUMPER_SELF_BLAST_IMPULSE);
+                const selfImpulse = blastDirection.clone().multiply(-W.rocketJumper.SELF_BLAST_IMPULSE);
                 shooter.applyImpulse(selfImpulse);
             }
 
@@ -983,24 +847,24 @@ export function ballShooting(game, now) {
 
             if (shooter.weapon.type === 'egomagicbullet') {
                 shooter.egoMagicBulletShotCount = (shooter.egoMagicBulletShotCount || 0) + 1;
-                const isCursedShot = shooter.egoMagicBulletShotCount % EGO_MAGIC_BULLET_CURSE_CYCLE === 0;
+                const isCursedShot = shooter.egoMagicBulletShotCount % W.egoMagicBullet.CURSE_CYCLE === 0;
                 if (isCursedShot) {
                     const fireDirX = Math.cos(angle);
                     const fireDirY = Math.sin(angle);
-                    spawnX = shooter.pos.x - fireDirX * EGO_MAGIC_BULLET_CURSE_SPAWN_BEHIND_DISTANCE;
-                    spawnY = shooter.pos.y - fireDirY * EGO_MAGIC_BULLET_CURSE_SPAWN_BEHIND_DISTANCE;
+                    spawnX = shooter.pos.x - fireDirX * W.egoMagicBullet.CURSE_SPAWN_BEHIND_DISTANCE;
+                    spawnY = shooter.pos.y - fireDirY * W.egoMagicBullet.CURSE_SPAWN_BEHIND_DISTANCE;
                     finalTargetX = shooter.pos.x + fireDirX * 900;
                     finalTargetY = shooter.pos.y + fireDirY * 900;
 
-                    shooter.hp = Math.max(0, shooter.hp - damage * EGO_MAGIC_BULLET_SELF_HIT_MULTIPLIER);
+                    shooter.hp = Math.max(0, shooter.hp - damage * W.egoMagicBullet.SELF_HIT_MULTIPLIER);
                     shooter.lastDamagedAt = now;
                     shooter.medigunState.selfRegenAnchorHp = shooter.hp;
                     shooter.applyAfterburn(
                         now,
-                        EGO_MAGIC_BULLET_AFTERBURN_DURATION_MS,
-                        EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MIN,
-                        EGO_MAGIC_BULLET_AFTERBURN_DAMAGE_MAX,
-                        EGO_MAGIC_BULLET_AFTERBURN_INTERVAL_MS
+                        W.egoMagicBullet.AFTERBURN_DURATION_MS,
+                        W.egoMagicBullet.AFTERBURN_DAMAGE_MIN,
+                        W.egoMagicBullet.AFTERBURN_DAMAGE_MAX,
+                        W.egoMagicBullet.AFTERBURN_INTERVAL_MS
                     );
                 }
             }
@@ -1008,15 +872,15 @@ export function ballShooting(game, now) {
             let _egosodaType = null;
             if (shooter.weapon.type === 'egosoda') {
                 const _sodaRoll = Math.random();
-                if (_sodaRoll < EGOSODA_PURPLE_CHANCE) {
+                if (_sodaRoll < W.egoSoda.PURPLE_CHANCE) {
                     _egosodaType = 'purple';
-                } else if (_sodaRoll < EGOSODA_PURPLE_CHANCE + (1 - EGOSODA_PURPLE_CHANCE) * 0.5) {
+                } else if (_sodaRoll < W.egoSoda.PURPLE_CHANCE + (1 - W.egoSoda.PURPLE_CHANCE) * 0.5) {
                     _egosodaType = 'blue';
                 } else {
                     _egosodaType = 'red';
                 }
             }
-            const _egosodaColor = _egosodaType === 'purple' ? EGOSODA_PURPLE_COLOR : _egosodaType === 'blue' ? EGOSODA_BLUE_COLOR : _egosodaType === 'red' ? EGOSODA_RED_COLOR : null;
+            const _egosodaColor = _egosodaType === 'purple' ? W.egoSoda.PURPLE_COLOR : _egosodaType === 'blue' ? W.egoSoda.BLUE_COLOR : _egosodaType === 'red' ? W.egoSoda.RED_COLOR : null;
             const _projColor = shooter.weapon.type === 'egosoda' ? _egosodaColor
                 : shooter.weapon.type === 'machina' || shooter.weapon.type === 'huntsman' || shooter.weapon.type === 'hypocrisy' || shooter.weapon.type === 'crusaderscrossbow' || shooter.weapon.type === 'piplauncher' || shooter.weapon.type === 'egomagicbullet' ? shooter.color : shooter.weapon.color;
             const _projType = shooter.weapon.type === 'nearmissed'
@@ -1045,7 +909,7 @@ export function ballShooting(game, now) {
                 splashRadius: shooter.weapon.splashRadius,
                 knockbackStrength: shooter.weapon.knockbackStrength,
                 splashMaxDamage: shooter.weapon.splashMaxDamage,
-                expiresAt: shooter.weapon.type === 'flamethrower' ? now + FLAMETHROWER_PARTICLE_LIFETIME_MS : undefined,
+                expiresAt: shooter.weapon.type === 'flamethrower' ? now + W.flamethrower.PARTICLE_LIFETIME_MS : undefined,
                 explodeAt: shooter.weapon.type === 'grenadelauncher' ? now + shooter.weapon.explodeDelayMs : undefined,
                 gravity: (shooter.weapon.type === 'grenadelauncher' || shooter.weapon.type === 'lochnload') ? 0.1 : 0,
                 drag: (shooter.weapon.type === 'grenadelauncher' || shooter.weapon.type === 'lochnload') ? 0.996 : 1,

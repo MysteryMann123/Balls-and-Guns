@@ -48,6 +48,7 @@ const machina = {
     // Tracer
     TRACER_RANGE:       tracerRange,
     TRACER_DURATION_MS: tracerDurationMs,
+    image: 'assets/Machina.png',
     DISPLAY_NAME:       'MACHINA',
 };
 

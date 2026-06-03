@@ -66,6 +66,7 @@ const musket = {
     COLOR:                     color,
     PROJECTILE_SIZE:           projectileSize,
     PELLETS_PER_SHOT:          pelletsPerShot,
+    image: 'assets/rifle-on-a-transparent-free-png-864369422.png',
     DISPLAY_NAME:              'MUSKET',
 };
 

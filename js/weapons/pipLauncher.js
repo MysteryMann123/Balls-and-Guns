@@ -57,6 +57,7 @@ const pipLauncher = {
     PROJECTILE_SIZE:    projectileSize,
     PELLETS_PER_SHOT:   pelletsPerShot,
     SPREAD_ANGLE:       spreadAngle,
+    image: 'assets/Pip_launcher.png',
     DISPLAY_NAME:       'PIP LAUNCHER',
 };
 

@@ -36,6 +36,7 @@ const pistol = {
 
     // Damage
     DAMAGE:        damage,
+    image: 'assets/Pistol_True.png',
     DISPLAY_NAME:  'PISTOL',
 };
 

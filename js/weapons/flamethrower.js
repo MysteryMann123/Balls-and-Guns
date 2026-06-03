@@ -70,6 +70,7 @@ const flamethrower = {
     RELOAD_MS:             reloadMs,
     COLOR:                 color,
     PROJECTILE_SIZE:       projectileSize,
+    image: 'assets/RedFlamethrowerpng.png',
     DISPLAY_NAME:          'FLAMETHROWER',
 };
 

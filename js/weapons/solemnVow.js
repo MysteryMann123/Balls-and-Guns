@@ -80,6 +80,13 @@ const solemnVow = {
     // Config
     COLOR:                         color,
     SPREAD_ANGLE:                  spreadAngle,
+    images: {
+        black:           'assets/EGOWeaponSolemnVow_Black.jpg',
+        white:           'assets/EGOWeaponSolemnVow_White.jpg',
+        muzzle:          'assets/ButterfliesSpriteSheet.png',
+        portrait:        'assets/FuneraloftheDeadButterfliesPortrait.webp',
+        portraitFallback:'assets/ButterfliesSpriteSheet.png',
+    },
     DISPLAY_NAME:                  'EGO WEAPON SOLEMN VOW',
 };
 

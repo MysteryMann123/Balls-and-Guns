@@ -35,6 +35,7 @@ const tommyGun = {
     COLOR:            color,
     PROJECTILE_SIZE:  projectileSize,
     PELLETS_PER_SHOT: pelletsPerShot,
+    image: 'assets/TOMMY_GUN.png',
     DISPLAY_NAME:     'TOMMY GUN',
 };
 

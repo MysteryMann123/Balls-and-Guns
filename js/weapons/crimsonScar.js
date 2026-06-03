@@ -76,6 +76,12 @@ const crimsonScar = {
     COLOR:                    color,
     PELLETS_PER_SHOT:         pelletsPerShot,
     SPREAD_ANGLE:             spreadAngle,
+    images: {
+        gun:    'assets/EGOCrimsonGun.png',
+        blade:  'assets/EGOCrimsonBlade.png',
+        mark:   'assets/LittleRedTarget.webp',
+        pickup: 'assets/EGOWeaponCrimsonScar.webp',
+    },
     DISPLAY_NAME:             'EGO WEAPON CRIMSONSCAR',
 
     CONFIG: {

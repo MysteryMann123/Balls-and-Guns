@@ -43,6 +43,7 @@ const beggersBasooka = {
     COLOR:            color,
     PROJECTILE_SIZE:  projectileSize,
     PELLETS_PER_SHOT: pelletsPerShot,
+    image: 'assets/Beggar\'s_Bazooka.png',
     DISPLAY_NAME:     "BEGGER'S BAZOOKA",
 };
 

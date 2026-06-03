@@ -60,6 +60,7 @@ const magicianHat = {
     COLOR:                      color,
     PELLETS_PER_SHOT:           pelletsPerShot,
     SPREAD_ANGLE:               spreadAngle,
+    image: 'assets/Magic-Hat-PNG-Image-File-3052888691.png',
     DISPLAY_NAME:               'MAGICIAN HAT',
 };
 

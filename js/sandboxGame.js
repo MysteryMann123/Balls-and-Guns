@@ -14,7 +14,7 @@
 import { Game } from './game.js';
 import { Ball } from './ball.js';
 import { ARENA_WIDTH, ARENA_HEIGHT } from './gameConfig.js';
-import { ADORATION_WIELDER_SPEED_MULTIPLIER, SOUND_OF_STAR_WIELDER_SLOW_PER_STAR, CRIMSON_SCAR_SPEED_BONUS } from './constants.js';
+import * as W from './weapons/index.js';
 import { DealerWeapon } from './weapons/dealer.js';
 
 const DEFAULT_SANDBOX_HP = 1_000_000;
@@ -22,15 +22,15 @@ const DEFAULT_SANDBOX_HP = 1_000_000;
 export class SandboxGame extends Game {
     /**
      * @param {HTMLCanvasElement} canvas
-     * @param {any[]} imageArgs   - spread of every image arg in Game constructor order
+     * @param {object} images      - images object from assetManager.loadImages()
      * @param {string} playerWeapon
      * @param {string} moverWeapon
      * @param {number} startHp
      * @param {boolean} moverBall
      */
-    constructor(canvas, imageArgs, playerWeapon = 'pistol', moverWeapon = 'pistol', startHp = DEFAULT_SANDBOX_HP, moverBall = false) {
+    constructor(canvas, images, playerWeapon = 'pistol', moverWeapon = 'pistol', startHp = DEFAULT_SANDBOX_HP, moverBall = false) {
         const entityCount = moverBall ? 3 : 2;
-        super(canvas, ...imageArgs, {
+        super(canvas, images, {
             ballCount: entityCount,
             teamCount: entityCount,
             dropFrequencyMs: 99_999_999,
@@ -119,9 +119,9 @@ export class SandboxGame extends Game {
 
             if (dx !== 0 || dy !== 0) {
                 const len = Math.sqrt(dx * dx + dy * dy);
-                const wieldMult = player.weapon.type === 'adoration' ? ADORATION_WIELDER_SPEED_MULTIPLIER
-                : player.weapon.type === 'soundofstar' ? Math.max(0.1, 1 - player.weapon.ammo * SOUND_OF_STAR_WIELDER_SLOW_PER_STAR)
-                : player.weapon.type === 'crimsonscar' ? (1 + CRIMSON_SCAR_SPEED_BONUS)
+                const wieldMult = player.weapon.type === 'adoration' ? W.adoration.WIELDER_SPEED_MULTIPLIER
+                : player.weapon.type === 'soundofstar' ? Math.max(0.1, 1 - player.weapon.ammo * W.soundOfStar.WIELDER_SLOW_PER_STAR)
+                : player.weapon.type === 'crimsonscar' ? (1 + W.crimsonScar.SPEED_BONUS)
                 : 1;
                 player.vel.x = (dx / len) * player.maxSpeed * wieldMult;
                 player.vel.y = (dy / len) * player.maxSpeed * wieldMult;

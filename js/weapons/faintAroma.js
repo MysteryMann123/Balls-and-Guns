@@ -63,6 +63,7 @@ const faintAroma = {
 
     AOE_RADIUS:          aoeRadius,
     AOE_HIT_COOLDOWN_MS: aoeHitCooldownMs,
+    image: 'assets/EGOWeaponReverberation.webp',
     DISPLAY_NAME:        'FAINT AROMA',
 };
 

@@ -50,6 +50,7 @@ const widowmaker = {
     SPEED:              speed,
     COLOR:              color,
     PROJECTILE_SIZE:    projectileSize,
+    image: 'assets/Widowmaker.png',
     DISPLAY_NAME:       'WIDOWMAKER',
 
     getAmmoCost(weapon) {

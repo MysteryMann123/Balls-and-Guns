@@ -77,6 +77,10 @@ const hornet = {
     SPREAD_ANGLE:                spreadAngle,
     INITIAL_FORM:                initialForm,
 
+    images: {
+        rifle:   'assets/EGOWeaponHornet.png',
+        shotgun: 'assets/Lobotomy_E.G.O_Hornet_Alteration_Shotgun_Sprite.png',
+    },
     CONFIG: {
         maxAmmo: rifleAmmo,
         reloadTimeMs: reloadMs,

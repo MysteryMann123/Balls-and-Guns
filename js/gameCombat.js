@@ -1,49 +1,6 @@
-import {
-    EGO_MAGIC_BULLET_HOMING_RANGE,
-    EGO_MAGIC_BULLET_HOMING_STRENGTH,
-    EGO_MAGIC_BULLET_TRACER_DURATION_MS,
-    EGO_MAGIC_BULLET_TRACER_RANGE,
-    FORCE_A_NATURE_DAMAGE_MAX,
-    FORCE_A_NATURE_DAMAGE_MIN,
-    FORCE_A_NATURE_HITSCAN_RANGE,
-    MACHINA_TRACER_RANGE,
-    MACHINA_TRACER_DURATION_MS,
-    PINKS_TRACER_RANGE,
-    PINKS_TRACER_DURATION_MS,
-    PINKS_TRACER_COLOR,
-    MAGICIAN_HAT_HOMING_RANGE,
-    MAGICIAN_HAT_HOMING_STRENGTH,
-    MAGICIAN_HAT_TELEPORT_DISTANCE,
-    MAGICIAN_HAT_TELEPORT_SMOKE_DURATION_MS,
-    HORNET_BEE_DAMAGE_MAX,
-    HORNET_BEE_DAMAGE_MIN,
-    HORNET_BEE_HOMING_RANGE,
-    HORNET_BEE_HOMING_STRENGTH,
-    HORNET_BEE_MAX_ACTIVE,
-    HORNET_BEE_SIZE,
-    HORNET_BEE_SPEED,
-    HORNET_RIFLE_AFTERBURN_DAMAGE_MAX,
-    HORNET_RIFLE_AFTERBURN_DAMAGE_MIN,
-    HORNET_RIFLE_AFTERBURN_DURATION_MS,
-    HORNET_RIFLE_AFTERBURN_INTERVAL_MS,
-    HORNET_SHOTGUN_DAMAGE_MAX,
-    HORNET_SHOTGUN_DAMAGE_MIN,
-    HORNET_SHOTGUN_HITSCAN_RANGE,
-    PARADISE_LOST_HOMING_RANGE,
-    PARADISE_LOST_HOMING_STRENGTH,
-    SHOTGUN_DAMAGE_MAX,
-    SHOTGUN_DAMAGE_MIN,
-    SHOTGUN_HITSCAN_RANGE,
-    SHOTGUN_TRACER_DURATION_MS,
-    SODA_POPPER_DAMAGE_MAX,
-    SODA_POPPER_DAMAGE_MIN,
-    SODA_POPPER_HITSCAN_RANGE,
-    WIDOWMAKER_DAMAGE_MAX,
-    WIDOWMAKER_DAMAGE_MIN,
-    WIDOWMAKER_HITSCAN_RANGE
-} from './constants.js';
 import { Projectile } from './projectile.js';
 import { Vector } from './vector.js';
+import * as W from './weapons/index.js';
 
 function trySpawnHornetBee(game, victim, attacker, now) {
     if (!victim || !attacker) return;
@@ -52,9 +9,9 @@ function trySpawnHornetBee(game, victim, attacker, now) {
     if (!game.areEnemies(victim, attacker)) return;
 
     const activeBeeCount = game.projectiles.filter(projectile => projectile.type === 'hornetbee' && projectile.ownerId === victim.id).length;
-    if (activeBeeCount >= HORNET_BEE_MAX_ACTIVE) return;
+    if (activeBeeCount >= W.hornet.BEE_MAX_ACTIVE) return;
 
-    const damage = Math.floor(Math.random() * (HORNET_BEE_DAMAGE_MAX - HORNET_BEE_DAMAGE_MIN + 1)) + HORNET_BEE_DAMAGE_MIN;
+    const damage = Math.floor(Math.random() * (W.hornet.BEE_DAMAGE_MAX - W.hornet.BEE_DAMAGE_MIN + 1)) + W.hornet.BEE_DAMAGE_MIN;
 
     game.projectiles.push(
         new Projectile({
@@ -62,20 +19,20 @@ function trySpawnHornetBee(game, victim, attacker, now) {
             y: victim.pos.y,
             targetX: attacker.pos.x,
             targetY: attacker.pos.y,
-            speed: HORNET_BEE_SPEED,
+            speed: W.hornet.BEE_SPEED,
             damage,
             color: '#ffd84a',
-            size: HORNET_BEE_SIZE,
+            size: W.hornet.BEE_SIZE,
             ownerId: victim.id,
             type: 'hornetbee',
             sourceWeaponType: 'hornet',
             hornetTargetId: attacker.id,
-            hornetHomingStrength: HORNET_BEE_HOMING_STRENGTH,
-            hornetHomingRange: HORNET_BEE_HOMING_RANGE,
-            afterburnMin: HORNET_RIFLE_AFTERBURN_DAMAGE_MIN,
-            afterburnMax: HORNET_RIFLE_AFTERBURN_DAMAGE_MAX,
-            afterburnDuration: HORNET_RIFLE_AFTERBURN_DURATION_MS,
-            afterburnInterval: HORNET_RIFLE_AFTERBURN_INTERVAL_MS,
+            hornetHomingStrength: W.hornet.BEE_HOMING_STRENGTH,
+            hornetHomingRange: W.hornet.BEE_HOMING_RANGE,
+            afterburnMin: W.hornet.RIFLE_AFTERBURN_DAMAGE_MIN,
+            afterburnMax: W.hornet.RIFLE_AFTERBURN_DAMAGE_MAX,
+            afterburnDuration: W.hornet.RIFLE_AFTERBURN_DURATION_MS,
+            afterburnInterval: W.hornet.RIFLE_AFTERBURN_INTERVAL_MS,
             expiresAt: now + 3500
         })
     );
@@ -87,7 +44,7 @@ export function fireShotgunRay(game, shooter, angle, now, damageMultiplier = 1) 
     const dirX = Math.cos(angle);
     const dirY = Math.sin(angle);
 
-    let closestHitDistance = SHOTGUN_HITSCAN_RANGE;
+    let closestHitDistance = W.shotgun.HITSCAN_RANGE;
     let hitBall = null;
 
     for (const target of game.balls) {
@@ -103,7 +60,7 @@ export function fireShotgunRay(game, shooter, angle, now, damageMultiplier = 1) 
             target.pos.x,
             target.pos.y,
             target.radius,
-            SHOTGUN_HITSCAN_RANGE
+            W.shotgun.HITSCAN_RANGE
         );
 
         if (hitDistance !== null && hitDistance < closestHitDistance) {
@@ -113,9 +70,9 @@ export function fireShotgunRay(game, shooter, angle, now, damageMultiplier = 1) 
     }
 
     if (hitBall && !hitBall.isUberActive(now)) {
-        const damageMin = typeof shooter.weapon.damageMin === 'number' ? shooter.weapon.damageMin : SHOTGUN_DAMAGE_MIN;
-        const damageMax = typeof shooter.weapon.damageMax === 'number' ? shooter.weapon.damageMax : SHOTGUN_DAMAGE_MAX;
-        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / SHOTGUN_HITSCAN_RANGE));
+        const damageMin = typeof shooter.weapon.damageMin === 'number' ? shooter.weapon.damageMin : W.shotgun.DAMAGE_MIN;
+        const damageMax = typeof shooter.weapon.damageMax === 'number' ? shooter.weapon.damageMax : W.shotgun.DAMAGE_MAX;
+        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / W.shotgun.HITSCAN_RANGE));
         const baseDamage = damageMax - (damageMax - damageMin) * falloffRatio;
         hitBall.takeDamage(baseDamage * damageMultiplier);
         trySpawnHornetBee(game, hitBall, shooter, now);
@@ -139,7 +96,7 @@ export function fireShotgunRay(game, shooter, angle, now, damageMultiplier = 1) 
             endX,
             endY,
             tracerWidth: 2.8,
-            expiresAt: now + SHOTGUN_TRACER_DURATION_MS
+            expiresAt: now + W.shotgun.TRACER_DURATION_MS
         })
     );
 }
@@ -150,7 +107,7 @@ export function fireHornetShotgunRay(game, shooter, angle, now, damageMultiplier
     const dirX = Math.cos(angle);
     const dirY = Math.sin(angle);
 
-    let closestHitDistance = HORNET_SHOTGUN_HITSCAN_RANGE;
+    let closestHitDistance = W.hornet.W.shotgun.HITSCAN_RANGE;
     let hitBall = null;
 
     for (const target of game.balls) {
@@ -167,7 +124,7 @@ export function fireHornetShotgunRay(game, shooter, angle, now, damageMultiplier
             target.pos.x,
             target.pos.y,
             target.radius,
-            HORNET_SHOTGUN_HITSCAN_RANGE
+            W.hornet.W.shotgun.HITSCAN_RANGE
         );
 
         if (hitDistance !== null && hitDistance < closestHitDistance) {
@@ -177,8 +134,8 @@ export function fireHornetShotgunRay(game, shooter, angle, now, damageMultiplier
     }
 
     if (hitBall && !hitBall.isUberActive(now)) {
-        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / HORNET_SHOTGUN_HITSCAN_RANGE));
-        const baseDamage = HORNET_SHOTGUN_DAMAGE_MAX - (HORNET_SHOTGUN_DAMAGE_MAX - HORNET_SHOTGUN_DAMAGE_MIN) * falloffRatio;
+        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / W.hornet.W.shotgun.HITSCAN_RANGE));
+        const baseDamage = W.hornet.W.shotgun.DAMAGE_MAX - (W.hornet.W.shotgun.DAMAGE_MAX - W.hornet.W.shotgun.DAMAGE_MIN) * falloffRatio;
         hitBall.takeDamage(baseDamage * damageMultiplier, 'generic', 'hornet');
         trySpawnHornetBee(game, hitBall, shooter, now);
     }
@@ -201,7 +158,7 @@ export function fireHornetShotgunRay(game, shooter, angle, now, damageMultiplier
             endX,
             endY,
             tracerWidth: 3.2,
-            expiresAt: now + SHOTGUN_TRACER_DURATION_MS
+            expiresAt: now + W.shotgun.TRACER_DURATION_MS
         })
     );
 }
@@ -212,7 +169,7 @@ export function fireWidowmakerRay(game, shooter, angle, now, damageMultiplier = 
     const dirX = Math.cos(angle);
     const dirY = Math.sin(angle);
 
-    let closestHitDistance = WIDOWMAKER_HITSCAN_RANGE;
+    let closestHitDistance = W.widowmaker.HITSCAN_RANGE;
     let hitBall = null;
 
     for (const target of game.balls) {
@@ -229,7 +186,7 @@ export function fireWidowmakerRay(game, shooter, angle, now, damageMultiplier = 
             target.pos.x,
             target.pos.y,
             target.radius,
-            WIDOWMAKER_HITSCAN_RANGE
+            W.widowmaker.HITSCAN_RANGE
         );
 
         if (hitDistance !== null && hitDistance < closestHitDistance) {
@@ -239,8 +196,8 @@ export function fireWidowmakerRay(game, shooter, angle, now, damageMultiplier = 
     }
 
     if (hitBall && !hitBall.isUberActive(now)) {
-        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / WIDOWMAKER_HITSCAN_RANGE));
-        const baseDamage = WIDOWMAKER_DAMAGE_MAX - (WIDOWMAKER_DAMAGE_MAX - WIDOWMAKER_DAMAGE_MIN) * falloffRatio;
+        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / W.widowmaker.HITSCAN_RANGE));
+        const baseDamage = W.widowmaker.DAMAGE_MAX - (W.widowmaker.DAMAGE_MAX - W.widowmaker.DAMAGE_MIN) * falloffRatio;
         const dealtAttempt = baseDamage * damageMultiplier;
         const beforeHp = hitBall.hp;
         hitBall.takeDamage(dealtAttempt, 'generic');
@@ -267,7 +224,7 @@ export function fireWidowmakerRay(game, shooter, angle, now, damageMultiplier = 
             endX,
             endY,
             tracerWidth: 2.6,
-            expiresAt: now + SHOTGUN_TRACER_DURATION_MS
+            expiresAt: now + W.shotgun.TRACER_DURATION_MS
         })
     );
 }
@@ -278,7 +235,7 @@ export function fireSodaPopperRay(game, shooter, angle, now, damageMultiplier = 
     const dirX = Math.cos(angle);
     const dirY = Math.sin(angle);
 
-    let closestHitDistance = SODA_POPPER_HITSCAN_RANGE;
+    let closestHitDistance = W.sodaPopper.HITSCAN_RANGE;
     let hitBall = null;
 
     for (const target of game.balls) {
@@ -295,7 +252,7 @@ export function fireSodaPopperRay(game, shooter, angle, now, damageMultiplier = 
             target.pos.x,
             target.pos.y,
             target.radius,
-            SODA_POPPER_HITSCAN_RANGE
+            W.sodaPopper.HITSCAN_RANGE
         );
 
         if (hitDistance !== null && hitDistance < closestHitDistance) {
@@ -305,8 +262,8 @@ export function fireSodaPopperRay(game, shooter, angle, now, damageMultiplier = 
     }
 
     if (hitBall && !hitBall.isUberActive(now)) {
-        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / SODA_POPPER_HITSCAN_RANGE));
-        const baseDamage = SODA_POPPER_DAMAGE_MAX - (SODA_POPPER_DAMAGE_MAX - SODA_POPPER_DAMAGE_MIN) * falloffRatio;
+        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / W.sodaPopper.HITSCAN_RANGE));
+        const baseDamage = W.sodaPopper.DAMAGE_MAX - (W.sodaPopper.DAMAGE_MAX - W.sodaPopper.DAMAGE_MIN) * falloffRatio;
         const dealtAttempt = baseDamage * damageMultiplier;
         const beforeHp = hitBall.hp;
         hitBall.takeDamage(dealtAttempt, 'generic');
@@ -333,7 +290,7 @@ export function fireSodaPopperRay(game, shooter, angle, now, damageMultiplier = 
             endX,
             endY,
             tracerWidth: 2.5,
-            expiresAt: now + SHOTGUN_TRACER_DURATION_MS
+            expiresAt: now + W.shotgun.TRACER_DURATION_MS
         })
     );
 }
@@ -349,7 +306,7 @@ export function fireForceANatureRay(game, shooter, angle, now, damageMultiplier 
         shooter.applyImpulse(recoil);
     }
 
-    let closestHitDistance = FORCE_A_NATURE_HITSCAN_RANGE;
+    let closestHitDistance = W.forceANature.HITSCAN_RANGE;
     let hitBall = null;
 
     for (const target of game.balls) {
@@ -366,7 +323,7 @@ export function fireForceANatureRay(game, shooter, angle, now, damageMultiplier 
             target.pos.x,
             target.pos.y,
             target.radius,
-            FORCE_A_NATURE_HITSCAN_RANGE
+            W.forceANature.HITSCAN_RANGE
         );
 
         if (hitDistance !== null && hitDistance < closestHitDistance) {
@@ -376,8 +333,8 @@ export function fireForceANatureRay(game, shooter, angle, now, damageMultiplier 
     }
 
     if (hitBall && !hitBall.isUberActive(now)) {
-        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / FORCE_A_NATURE_HITSCAN_RANGE));
-        const baseDamage = FORCE_A_NATURE_DAMAGE_MAX - (FORCE_A_NATURE_DAMAGE_MAX - FORCE_A_NATURE_DAMAGE_MIN) * falloffRatio;
+        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / W.forceANature.HITSCAN_RANGE));
+        const baseDamage = W.forceANature.DAMAGE_MAX - (W.forceANature.DAMAGE_MAX - W.forceANature.DAMAGE_MIN) * falloffRatio;
         const dealtAttempt = baseDamage * damageMultiplier;
         hitBall.takeDamage(dealtAttempt, 'generic');
         trySpawnHornetBee(game, hitBall, shooter, now);
@@ -407,7 +364,7 @@ export function fireForceANatureRay(game, shooter, angle, now, damageMultiplier 
             endX,
             endY,
             tracerWidth: 2.4,
-            expiresAt: now + SHOTGUN_TRACER_DURATION_MS
+            expiresAt: now + W.shotgun.TRACER_DURATION_MS
         })
     );
 }
@@ -419,7 +376,7 @@ export function teleportMagicianHatShooter(game, shooter, target, now) {
         x: fromX,
         y: fromY,
         createdAt: now,
-        expiresAt: now + MAGICIAN_HAT_TELEPORT_SMOKE_DURATION_MS
+        expiresAt: now + W.magicianHat.TELEPORT_SMOKE_DURATION_MS
     });
 
     const forwardX = Math.cos(shooter.aimAngle);
@@ -427,8 +384,8 @@ export function teleportMagicianHatShooter(game, shooter, target, now) {
     const lateralSign = Math.random() < 0.5 ? -1 : 1;
     const lateralDir = new Vector(-forwardY, forwardX).multiply(lateralSign);
 
-    const destinationX = fromX + lateralDir.x * MAGICIAN_HAT_TELEPORT_DISTANCE;
-    const destinationY = fromY + lateralDir.y * MAGICIAN_HAT_TELEPORT_DISTANCE;
+    const destinationX = fromX + lateralDir.x * W.magicianHat.TELEPORT_DISTANCE;
+    const destinationY = fromY + lateralDir.y * W.magicianHat.TELEPORT_DISTANCE;
 
     shooter.pos.x = Math.max(shooter.radius, Math.min(game.canvas.width - shooter.radius, destinationX));
     shooter.pos.y = Math.max(shooter.radius, Math.min(game.canvas.height - shooter.radius, destinationY));
@@ -437,7 +394,7 @@ export function teleportMagicianHatShooter(game, shooter, target, now) {
         x: shooter.pos.x,
         y: shooter.pos.y,
         createdAt: now,
-        expiresAt: now + MAGICIAN_HAT_TELEPORT_SMOKE_DURATION_MS
+        expiresAt: now + W.magicianHat.TELEPORT_SMOKE_DURATION_MS
     });
 }
 
@@ -449,7 +406,7 @@ export function applyMagicianHatHoming(game, projectile, now) {
     if (!owner) return;
 
     let bestTarget = null;
-    let bestDistance = MAGICIAN_HAT_HOMING_RANGE;
+    let bestDistance = W.magicianHat.HOMING_RANGE;
 
     for (const candidate of game.balls) {
         if (!candidate.isAlive()) continue;
@@ -473,7 +430,7 @@ export function applyMagicianHatHoming(game, projectile, now) {
     desired.normalize();
 
     const current = projectile.vel.clone().normalize();
-    const steer = Math.max(0, Math.min(1, MAGICIAN_HAT_HOMING_STRENGTH));
+    const steer = Math.max(0, Math.min(1, W.magicianHat.HOMING_STRENGTH));
     const blended = new Vector(
         current.x * (1 - steer) + desired.x * steer,
         current.y * (1 - steer) + desired.y * steer
@@ -488,8 +445,8 @@ export function applyMagicianHatHoming(game, projectile, now) {
 export function fireMachinaTracer(game, shooter, angle, now) {
     const originX = shooter.pos.x;
     const originY = shooter.pos.y;
-    const endX = originX + Math.cos(angle) * MACHINA_TRACER_RANGE;
-    const endY = originY + Math.sin(angle) * MACHINA_TRACER_RANGE;
+    const endX = originX + Math.cos(angle) * W.machina.TRACER_RANGE;
+    const endY = originY + Math.sin(angle) * W.machina.TRACER_RANGE;
 
     game.projectiles.push(
         new Projectile({
@@ -506,7 +463,7 @@ export function fireMachinaTracer(game, shooter, angle, now) {
             endX,
             endY,
             tracerWidth: 4.4,
-            expiresAt: now + MACHINA_TRACER_DURATION_MS
+            expiresAt: now + W.machina.TRACER_DURATION_MS
         })
     );
 }
@@ -514,8 +471,8 @@ export function fireMachinaTracer(game, shooter, angle, now) {
 export function firePinksTracer(game, shooter, angle, now) {
     const originX = shooter.pos.x;
     const originY = shooter.pos.y;
-    const endX = originX + Math.cos(angle) * PINKS_TRACER_RANGE;
-    const endY = originY + Math.sin(angle) * PINKS_TRACER_RANGE;
+    const endX = originX + Math.cos(angle) * W.egoPinks.TRACER_RANGE;
+    const endY = originY + Math.sin(angle) * W.egoPinks.TRACER_RANGE;
 
     game.projectiles.push(
         new Projectile({
@@ -525,14 +482,14 @@ export function firePinksTracer(game, shooter, angle, now) {
             targetY: endY,
             speed: 0,
             damage: 0,
-            color: PINKS_TRACER_COLOR,
+            color: W.egoPinks.TRACER_COLOR,
             size: 0,
             ownerId: shooter.id,
             type: 'pinksray',
             endX,
             endY,
             tracerWidth: 4.4,
-            expiresAt: now + PINKS_TRACER_DURATION_MS
+            expiresAt: now + W.egoPinks.TRACER_DURATION_MS
         })
     );
 }
@@ -545,7 +502,7 @@ export function applyEgoMagicBulletHoming(game, projectile, now) {
     if (!owner) return;
 
     let bestTarget = null;
-    let bestDistance = EGO_MAGIC_BULLET_HOMING_RANGE;
+    let bestDistance = W.egoMagicBullet.HOMING_RANGE;
 
     for (const candidate of game.balls) {
         if (!candidate.isAlive()) continue;
@@ -567,7 +524,7 @@ export function applyEgoMagicBulletHoming(game, projectile, now) {
     desired.normalize();
 
     const current = projectile.vel.clone().normalize();
-    const steer = Math.max(0, Math.min(1, EGO_MAGIC_BULLET_HOMING_STRENGTH));
+    const steer = Math.max(0, Math.min(1, W.egoMagicBullet.HOMING_STRENGTH));
     const blended = new Vector(
         current.x * (1 - steer) + desired.x * steer,
         current.y * (1 - steer) + desired.y * steer
@@ -587,7 +544,7 @@ export function applyParadiseLostHoming(game, projectile, now) {
     if (!owner) return;
 
     let bestTarget = null;
-    let bestDistance = PARADISE_LOST_HOMING_RANGE;
+    let bestDistance = W.paradiseLost.HOMING_RANGE;
 
     for (const candidate of game.balls) {
         if (!candidate.isAlive()) continue;
@@ -611,7 +568,7 @@ export function applyParadiseLostHoming(game, projectile, now) {
     desired.normalize();
 
     const current = projectile.vel.clone().normalize();
-    const steer = Math.max(0, Math.min(1, PARADISE_LOST_HOMING_STRENGTH));
+    const steer = Math.max(0, Math.min(1, W.paradiseLost.HOMING_STRENGTH));
     const blended = new Vector(
         current.x * (1 - steer) + desired.x * steer,
         current.y * (1 - steer) + desired.y * steer
@@ -626,8 +583,8 @@ export function applyParadiseLostHoming(game, projectile, now) {
 export function fireEgoMagicTracer(game, shooter, angle, now) {
     const originX = shooter.pos.x;
     const originY = shooter.pos.y;
-    const endX = originX + Math.cos(angle) * EGO_MAGIC_BULLET_TRACER_RANGE;
-    const endY = originY + Math.sin(angle) * EGO_MAGIC_BULLET_TRACER_RANGE;
+    const endX = originX + Math.cos(angle) * W.egoMagicBullet.TRACER_RANGE;
+    const endY = originY + Math.sin(angle) * W.egoMagicBullet.TRACER_RANGE;
 
     game.projectiles.push(
         new Projectile({
@@ -644,7 +601,7 @@ export function fireEgoMagicTracer(game, shooter, angle, now) {
             endX,
             endY,
             tracerWidth: 3.8,
-            expiresAt: now + EGO_MAGIC_BULLET_TRACER_DURATION_MS
+            expiresAt: now + W.egoMagicBullet.TRACER_DURATION_MS
         })
     );
 }
@@ -652,8 +609,8 @@ export function fireEgoMagicTracer(game, shooter, angle, now) {
 export function fireEgoLonelinessTracer(game, shooter, angle, now) {
     const originX = shooter.pos.x;
     const originY = shooter.pos.y;
-    const endX = originX + Math.cos(angle) * MACHINA_TRACER_RANGE;
-    const endY = originY + Math.sin(angle) * MACHINA_TRACER_RANGE;
+    const endX = originX + Math.cos(angle) * W.machina.TRACER_RANGE;
+    const endY = originY + Math.sin(angle) * W.machina.TRACER_RANGE;
 
     game.projectiles.push(
         new Projectile({
@@ -669,7 +626,7 @@ export function fireEgoLonelinessTracer(game, shooter, angle, now) {
             type: 'egoloneliness',
             endX,
             endY,
-            expiresAt: now + MACHINA_TRACER_DURATION_MS
+            expiresAt: now + W.machina.TRACER_DURATION_MS
         })
     );
 }
@@ -710,4 +667,20 @@ export function findNearest(source, candidates) {
     }
 
     return nearest;
+}
+
+export function triggerLaetitiaBlast(game, victim, now) {
+    game.explosionEffects.push({ x: victim.pos.x, y: victim.pos.y, radius: W.laetitia.BLAST_RADIUS, expiresAt: now + 350 });
+    for (const ball of game.balls) {
+        if (!ball.isAlive() || ball.id === victim.id) continue;
+        if (!game.areEnemies(victim, ball)) continue;
+        if (ball.isUntargetable(now)) continue;
+        const dist = Math.hypot(ball.pos.x - victim.pos.x, ball.pos.y - victim.pos.y);
+        if (dist > W.laetitia.BLAST_RADIUS + ball.radius) continue;
+        if (!ball.isUberActive(now)) {
+            const dmgRatio = W.laetitia.BLAST_DAMAGE_MIN_RATIO + Math.random() * (W.laetitia.BLAST_DAMAGE_MAX_RATIO - W.laetitia.BLAST_DAMAGE_MIN_RATIO);
+            ball.takeDamage(ball.maxHP * dmgRatio, 'generic', 'laetitia_blast');
+            ball.applyLaetitiaGiftMark(now, W.laetitia.MARK_DURATION_MS);
+        }
+    }
 }

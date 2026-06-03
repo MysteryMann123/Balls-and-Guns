@@ -52,6 +52,7 @@ const crusadersCrossbow = {
     PROJECTILE_SIZE:  projectileSize,
     PELLETS_PER_SHOT: pelletsPerShot,
     SPREAD_ANGLE:     spreadAngle,
+    image: 'assets/RED_Crusader\'s_Crossbow.png',
     DISPLAY_NAME:     "CRUSADER'S CROSSBOW",
 };
 

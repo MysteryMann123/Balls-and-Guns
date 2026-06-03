@@ -22,59 +22,7 @@ import {
     UBERCHARGE_DURATION_MS,
     UBERCHARGE_HEAL_PER_SEC,
 } from './pickupConstants.js';
-import {
-    ADORATION_SLOW_DURATION_MS,
-    ADORATION_SLOW_MULTIPLIER,
-    ADORATION_AFTERBURN_MULTIPLIER,
-    ADORATION_WIELDER_SPEED_MULTIPLIER,
-    SOUND_OF_STAR_WIELDER_SLOW_PER_STAR,
-    HYPOCRISY_AMMO_REFUND_RATIO,
-    EGO_LONELINESS_SLOW_DURATION_MS,
-    EGO_LONELINESS_SLOW_MULTIPLIER,
-    FLAMETHROWER_AFTERBURN_DAMAGE_MAX,
-    FLAMETHROWER_AFTERBURN_DAMAGE_MIN,
-    FLAMETHROWER_AFTERBURN_DURATION_MS,
-    FLAMETHROWER_AFTERBURN_INTERVAL_MS,
-    MUSKET_BAYONET_BLEED_DAMAGE_MAX,
-    MUSKET_BAYONET_BLEED_DAMAGE_MIN,
-    MUSKET_BAYONET_BLEED_DURATION_MS,
-    MUSKET_BAYONET_BLEED_INTERVAL_MS,
-    MUSKET_BAYONET_HEAL_MULTIPLIER,
-    EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER,
-    EXPLOSIVE_FLASK_PIP_DAMAGE_MULTIPLIER,
-    PENITENCE_KNOCKBACK_RESISTANCE,
-    PENITENCE_MAX_HP_BONUS_RATIO,
-    PENITENCE_PICKUP_HEAL_RATIO,
-    PENITENCE_SPEED_BONUS_RATIO,
-    PENITENCE_SWING_ANIMATION_MS,
-    PARADISE_LOST_ADAPTIVE_INTERVAL_MS,
-    PARADISE_LOST_ADAPTIVE_RESISTANCE,
-    PARADISE_LOST_SELF_DOT_INTERVAL_MS,
-    PARADISE_LOST_SELF_DOT_MAX_RATIO,
-    PARADISE_LOST_SELF_DOT_MIN_RATIO,
-    HARMONY_HASTE_MAX_BONUS,
-    SODA_POPPER_CHARGE_DAMAGE_REQUIRED,
-    SODA_POPPER_HYPE_DAMAGE_MULTIPLIER,
-    SODA_POPPER_HYPE_DURATION_MS,
-    SODA_POPPER_HYPE_SPEED_BOOST,
-    SOLEMN_VOW_FUNERAL_PELLETS_REQUIRED,
-    SOLEMN_VOW_MUZZLE_FLASH_MS,
-    SWORD_SHARPENED_SHARPEN_DAMAGE_BONUS,
-    SWORD_SHARPENED_SHARPEN_MAX_STACKS,
-    SWORD_SHARPENED_SHARPEN_DURATION_MS,
-    SWORD_SHARPENED_SIZE,
-    YELLOW_TARGE_DAMAGE_REDUCTION_ALL,
-    YELLOW_TARGE_DAMAGE_REDUCTION_EXPLOSIVE,
-    CRIMSON_SCAR_SPEED_BONUS,
-    CRIMSON_SCAR_DAMAGE_TAKEN_PENALTY,
-    CRIMSON_SCAR_MARK_DAMAGE_BONUS,
-    CRIMSON_SCAR_MARK_DURATION_MS,
-    CRIMSON_SCAR_BLEED_DAMAGE_MIN,
-    CRIMSON_SCAR_BLEED_DAMAGE_MAX,
-    CRIMSON_SCAR_BLEED_INTERVAL_MS,
-    LAETITIA_MARK_VULN_MULTIPLIER,
-    LAETITIA_MARK_TRIGGER_THRESHOLD_RATIO,
-} from './constants.js';
+import * as W from './weapons/index.js';
 import { PhysicsEngine } from './physics.js';
 import { Vector } from './vector.js';
 import { Weapon } from './weapon.js';
@@ -120,24 +68,24 @@ export class Ball {
         this.afterburn = {
             until: 0,
             nextTickAt: 0,
-            damageMin: FLAMETHROWER_AFTERBURN_DAMAGE_MIN,
-            damageMax: FLAMETHROWER_AFTERBURN_DAMAGE_MAX,
-            intervalMs: FLAMETHROWER_AFTERBURN_INTERVAL_MS
+            damageMin: W.flamethrower.AFTERBURN_DAMAGE_MIN,
+            damageMax: W.flamethrower.AFTERBURN_DAMAGE_MAX,
+            intervalMs: W.flamethrower.AFTERBURN_INTERVAL_MS
         };
         this.bayonetBleed = {
             until: 0,
             nextTickAt: 0,
-            damageMin: MUSKET_BAYONET_BLEED_DAMAGE_MIN,
-            damageMax: MUSKET_BAYONET_BLEED_DAMAGE_MAX,
-            intervalMs: MUSKET_BAYONET_BLEED_INTERVAL_MS,
-            healMultiplier: MUSKET_BAYONET_HEAL_MULTIPLIER
+            damageMin: W.musket.BAYONET_BLEED_DAMAGE_MIN,
+            damageMax: W.musket.BAYONET_BLEED_DAMAGE_MAX,
+            intervalMs: W.musket.BAYONET_BLEED_INTERVAL_MS,
+            healMultiplier: W.musket.BAYONET_HEAL_MULTIPLIER
         };
         this.crimsonScarBleed = {
             until: 0,
             nextTickAt: 0,
-            damageMin: CRIMSON_SCAR_BLEED_DAMAGE_MIN,
-            damageMax: CRIMSON_SCAR_BLEED_DAMAGE_MAX,
-            intervalMs: CRIMSON_SCAR_BLEED_INTERVAL_MS,
+            damageMin: W.crimsonScar.BLEED_DAMAGE_MIN,
+            damageMax: W.crimsonScar.BLEED_DAMAGE_MAX,
+            intervalMs: W.crimsonScar.BLEED_INTERVAL_MS,
         };
         this.crimsonScarMarkUntil = 0;
         this.ammoCrateDoubleShotUntil = 0;
@@ -256,11 +204,11 @@ export class Ball {
         const adorationSlowMult = this.weapon.type === 'paradiselost'
             ? 1
             : (now < this.adorationSlow.slowUntil ? this.adorationSlow.slowMultiplier : 1);
-        const adorationWielderPenalty = this.weapon.type === 'adoration' ? ADORATION_WIELDER_SPEED_MULTIPLIER : 1;
+        const adorationWielderPenalty = this.weapon.type === 'adoration' ? W.adoration.WIELDER_SPEED_MULTIPLIER : 1;
         const soundOfStarPenalty = this.weapon.type === 'soundofstar'
-            ? Math.max(0.1, 1 - this.weapon.ammo * SOUND_OF_STAR_WIELDER_SLOW_PER_STAR)
+            ? Math.max(0.1, 1 - this.weapon.ammo * W.soundOfStar.WIELDER_SLOW_PER_STAR)
             : 1;
-        const crimsonScarSpeedMult = this.weapon.type === 'crimsonscar' ? (1 + CRIMSON_SCAR_SPEED_BONUS) : 1;
+        const crimsonScarSpeedMult = this.weapon.type === 'crimsonscar' ? (1 + W.crimsonScar.SPEED_BONUS) : 1;
         const effectiveHpRatio = this.weapon.type === 'paradiselost'
             ? (0.5 + 0.5 * hpRatio)
             : hpRatio;
@@ -376,7 +324,7 @@ export class Ball {
             this.paradiseLost.nextSelfDotAt = 0;
         } else {
             const now = Date.now();
-            this.paradiseLost.nextSelfDotAt = now + PARADISE_LOST_SELF_DOT_INTERVAL_MS;
+            this.paradiseLost.nextSelfDotAt = now + W.paradiseLost.SELF_DOT_INTERVAL_MS;
             this.paradiseLost.nextAdaptAt = now;
             this.paradiseLost.adaptedDamageType = null;
         }
@@ -393,12 +341,12 @@ export class Ball {
         this.solemnVow.nextFuneralAllowedAt = 0;
 
         if (type === 'penitence') {
-            this.penitence.maxHpBonus = this.maxHP * PENITENCE_MAX_HP_BONUS_RATIO;
+            this.penitence.maxHpBonus = this.maxHP * W.penitence.MAX_HP_BONUS_RATIO;
             this.maxHP += this.penitence.maxHpBonus;
-            this.penitence.speedBonus = this.maxSpeed * PENITENCE_SPEED_BONUS_RATIO;
+            this.penitence.speedBonus = this.maxSpeed * W.penitence.SPEED_BONUS_RATIO;
             this.maxSpeed += this.penitence.speedBonus;
             this.minSpeed += this.penitence.speedBonus * 0.2;
-            this.heal(this.maxHP * PENITENCE_PICKUP_HEAL_RATIO);
+            this.heal(this.maxHP * W.penitence.PICKUP_HEAL_RATIO);
             this.penitence.swingStartedAt = 0;
             this.penitence.swingUntil = 0;
         }
@@ -414,12 +362,12 @@ export class Ball {
         const isLaetitiaBlast = sourceWeaponType === 'laetitia_blast';
 
         if (now < this.explosiveFlask.pickupVulnUntil) {
-            adjusted *= EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER;
+            adjusted *= W.explosiveFlask.PICKUP_DAMAGE_MULTIPLIER;
             damageType = 'explosive';
         }
 
         if (sourceWeaponType === 'piplauncher' && now < this.explosiveFlask.pipVulnUntil) {
-            adjusted *= EXPLOSIVE_FLASK_PIP_DAMAGE_MULTIPLIER;
+            adjusted *= W.explosiveFlask.PIP_DAMAGE_MULTIPLIER;
         }
 
         if (!isParadiseLostAttack && !isHarmonySelfDamage && adjusted > 0 && this.deadRinger.has && now >= this.deadRinger.activeUntil) {
@@ -454,8 +402,8 @@ export class Ball {
 
         if (!isParadiseLostAttack && !isHarmonySelfDamage && this.weapon.type === 'yellowtarge') {
             const reduction = damageType === 'explosive'
-                ? YELLOW_TARGE_DAMAGE_REDUCTION_EXPLOSIVE
-                : YELLOW_TARGE_DAMAGE_REDUCTION_ALL;
+                ? W.yellowTarge.DAMAGE_REDUCTION_EXPLOSIVE
+                : W.yellowTarge.DAMAGE_REDUCTION_ALL;
             adjusted *= (1 - reduction);
         }
 
@@ -464,25 +412,25 @@ export class Ball {
         }
 
         if (sourceWeaponType === 'crimsonscar' && adjusted > 0 && now < this.crimsonScarMarkUntil) {
-            adjusted *= (1 + CRIMSON_SCAR_MARK_DAMAGE_BONUS);
+            adjusted *= (1 + W.crimsonScar.MARK_DAMAGE_BONUS);
         }
 
         if (this.weapon.type === 'crimsonscar' && adjusted > 0 && !isHarmonySelfDamage && !isParadiseLostAttack) {
-            adjusted *= (1 + CRIMSON_SCAR_DAMAGE_TAKEN_PENALTY);
+            adjusted *= (1 + W.crimsonScar.DAMAGE_TAKEN_PENALTY);
         }
 
         if (now < this.laetitiaGiftMark.until && adjusted > 0) {
-            adjusted *= LAETITIA_MARK_VULN_MULTIPLIER;
+            adjusted *= W.laetitia.MARK_VULN_MULTIPLIER;
         }
 
         if (this.weapon.type === 'paradiselost' && adjusted > 0) {
             if (now >= this.paradiseLost.nextAdaptAt) {
                 this.paradiseLost.adaptedDamageType = damageType;
-                this.paradiseLost.nextAdaptAt = now + PARADISE_LOST_ADAPTIVE_INTERVAL_MS;
+                this.paradiseLost.nextAdaptAt = now + W.paradiseLost.ADAPTIVE_INTERVAL_MS;
             }
 
             if (this.paradiseLost.adaptedDamageType && damageType === this.paradiseLost.adaptedDamageType) {
-                adjusted *= (1 - PARADISE_LOST_ADAPTIVE_RESISTANCE);
+                adjusted *= (1 - W.paradiseLost.ADAPTIVE_RESISTANCE);
             }
         }
 
@@ -498,7 +446,7 @@ export class Ball {
 
             if (this.weapon.isReloading) {
                 const remaining = Math.max(0, this.weapon.reloadCompleteAt - now);
-                this.weapon.reloadCompleteAt = now + remaining * (1 - Math.min(HARMONY_HASTE_MAX_BONUS, adjusted / Math.max(1, this.maxHP)));
+                this.weapon.reloadCompleteAt = now + remaining * (1 - Math.min(W.harmony.HASTE_MAX_BONUS, adjusted / Math.max(1, this.maxHP)));
             }
         }
 
@@ -520,13 +468,13 @@ export class Ball {
 
         this.hp = Math.max(0, this.hp - adjusted);
 
-        if (adjusted > 0 && !isLaetitiaBlast && now < this.laetitiaGiftMark.until && adjusted >= this.maxHP * LAETITIA_MARK_TRIGGER_THRESHOLD_RATIO && now >= (this.laetitiaBlastCooldownUntil || 0)) {
+        if (adjusted > 0 && !isLaetitiaBlast && now < this.laetitiaGiftMark.until && adjusted >= this.maxHP * W.laetitia.MARK_TRIGGER_THRESHOLD_RATIO && now >= (this.laetitiaBlastCooldownUntil || 0)) {
             this.laetitiaBlastCooldownUntil = now + 500;
             if (this.game) this.game.triggerLaetitiaBlast(this, now);
         }
 
         if (adjusted > 0 && this.weapon.type === 'hypocrisy') {
-            const refund = Math.floor(this.weapon.maxAmmo * HYPOCRISY_AMMO_REFUND_RATIO);
+            const refund = Math.floor(this.weapon.maxAmmo * W.hypocrisy.AMMO_REFUND_RATIO);
             if (refund > 0) {
                 this.weapon.ammo = Math.min(this.weapon.maxAmmo, this.weapon.ammo + refund);
                 if (this.weapon.isReloading && this.weapon.ammo > 0) {
@@ -536,7 +484,7 @@ export class Ball {
         }
 
         if (sourceWeaponType === 'crimsonscar' && adjusted > 0) {
-            this.crimsonScarMarkUntil = Math.max(this.crimsonScarMarkUntil, now + CRIMSON_SCAR_MARK_DURATION_MS);
+            this.crimsonScarMarkUntil = Math.max(this.crimsonScarMarkUntil, now + W.crimsonScar.MARK_DURATION_MS);
         }
     }
 
@@ -597,14 +545,14 @@ export class Ball {
         }
     }
 
-    applyLonelinessSlow(now, durationMs = EGO_LONELINESS_SLOW_DURATION_MS, slowMultiplier = EGO_LONELINESS_SLOW_MULTIPLIER) {
+    applyLonelinessSlow(now, durationMs = W.egoLoneliness.SLOW_DURATION_MS, slowMultiplier = W.egoLoneliness.SLOW_MULTIPLIER) {
         if (this.weapon.type === 'paradiselost') return;
         const until = now + durationMs;
         this.lonelinessSlow.slowUntil = Math.max(this.lonelinessSlow.slowUntil, until);
         this.lonelinessSlow.slowMultiplier = Math.min(this.lonelinessSlow.slowMultiplier, slowMultiplier);
     }
 
-    applyAdorationSlow(now, durationMs = ADORATION_SLOW_DURATION_MS, slowMultiplier = ADORATION_SLOW_MULTIPLIER) {
+    applyAdorationSlow(now, durationMs = W.adoration.SLOW_DURATION_MS, slowMultiplier = W.adoration.SLOW_MULTIPLIER) {
         if (this.weapon.type === 'paradiselost') return;
         const until = now + durationMs;
         this.adorationSlow.slowUntil = Math.max(this.adorationSlow.slowUntil, until);
@@ -637,7 +585,7 @@ export class Ball {
         return event;
     }
 
-    applyAfterburn(now, durationMs = FLAMETHROWER_AFTERBURN_DURATION_MS, damageMin = FLAMETHROWER_AFTERBURN_DAMAGE_MIN, damageMax = FLAMETHROWER_AFTERBURN_DAMAGE_MAX, intervalMs = FLAMETHROWER_AFTERBURN_INTERVAL_MS) {
+    applyAfterburn(now, durationMs = W.flamethrower.AFTERBURN_DURATION_MS, damageMin = W.flamethrower.AFTERBURN_DAMAGE_MIN, damageMax = W.flamethrower.AFTERBURN_DAMAGE_MAX, intervalMs = W.flamethrower.AFTERBURN_INTERVAL_MS) {
         this.afterburn.until = Math.max(this.afterburn.until, now + durationMs);
         this.afterburn.damageMin = damageMin;
         this.afterburn.damageMax = damageMax;
@@ -647,7 +595,7 @@ export class Ball {
         }
     }
 
-    applyBayonetBleed(now, durationMs = MUSKET_BAYONET_BLEED_DURATION_MS, damageMin = MUSKET_BAYONET_BLEED_DAMAGE_MIN, damageMax = MUSKET_BAYONET_BLEED_DAMAGE_MAX, intervalMs = MUSKET_BAYONET_BLEED_INTERVAL_MS, healMultiplier = MUSKET_BAYONET_HEAL_MULTIPLIER) {
+    applyBayonetBleed(now, durationMs = W.musket.BAYONET_BLEED_DURATION_MS, damageMin = W.musket.BAYONET_BLEED_DAMAGE_MIN, damageMax = W.musket.BAYONET_BLEED_DAMAGE_MAX, intervalMs = W.musket.BAYONET_BLEED_INTERVAL_MS, healMultiplier = W.musket.BAYONET_HEAL_MULTIPLIER) {
         this.bayonetBleed.until = Math.max(this.bayonetBleed.until, now + durationMs);
         this.bayonetBleed.damageMin = damageMin;
         this.bayonetBleed.damageMax = damageMax;
@@ -683,7 +631,7 @@ export class Ball {
     applyImpulse(vector) {
         const impulse = vector.clone();
         if (this.weapon.type === 'penitence') {
-            impulse.multiply(1 - PENITENCE_KNOCKBACK_RESISTANCE);
+            impulse.multiply(1 - W.penitence.KNOCKBACK_RESISTANCE);
         }
         this.impulseVel.add(impulse);
     }
@@ -714,7 +662,7 @@ export class Ball {
         if (this.isShootLocked(now)) return false;
         if (now < this.solemnVow.nextFuneralAllowedAt) return false;
 
-        return this.solemnVow.pelletsShotSinceFuneral >= SOLEMN_VOW_FUNERAL_PELLETS_REQUIRED
+        return this.solemnVow.pelletsShotSinceFuneral >= W.solemnVow.FUNERAL_PELLETS_REQUIRED
             || (this.weapon.isReloading && !this.solemnVow.funeralUsedThisReload);
     }
 
@@ -728,30 +676,30 @@ export class Ball {
         if (dealt <= 0) return;
 
         this.sodaPopper.chargeDamage += dealt;
-        while (this.sodaPopper.chargeDamage >= SODA_POPPER_CHARGE_DAMAGE_REQUIRED) {
-            this.sodaPopper.chargeDamage -= SODA_POPPER_CHARGE_DAMAGE_REQUIRED;
+        while (this.sodaPopper.chargeDamage >= W.sodaPopper.CHARGE_DAMAGE_REQUIRED) {
+            this.sodaPopper.chargeDamage -= W.sodaPopper.CHARGE_DAMAGE_REQUIRED;
             this.activateSodaPopperHype(now);
         }
     }
 
     activateSodaPopperHype(now = Date.now()) {
-        this.sodaPopper.hypeUntil = now + SODA_POPPER_HYPE_DURATION_MS;
+        this.sodaPopper.hypeUntil = now + W.sodaPopper.HYPE_DURATION_MS;
 
         if (this.sodaPopper.speedBoostApplied <= 0) {
-            this.sodaPopper.speedBoostApplied = SODA_POPPER_HYPE_SPEED_BOOST;
-            this.maxSpeed += SODA_POPPER_HYPE_SPEED_BOOST;
-            this.minSpeed += SODA_POPPER_HYPE_SPEED_BOOST * 0.2;
+            this.sodaPopper.speedBoostApplied = W.sodaPopper.HYPE_SPEED_BOOST;
+            this.maxSpeed += W.sodaPopper.HYPE_SPEED_BOOST;
+            this.minSpeed += W.sodaPopper.HYPE_SPEED_BOOST * 0.2;
         }
     }
 
     getDamageMultiplier(now) {
         let multiplier = this.isCriticalActive(now) ? CRITICAL_DAMAGE_MULTIPLIER : 1;
         if (now < this.sodaPopper.hypeUntil) {
-            multiplier *= SODA_POPPER_HYPE_DAMAGE_MULTIPLIER;
+            multiplier *= W.sodaPopper.HYPE_DAMAGE_MULTIPLIER;
         }
         // Apply sword sharpening stacks to wielder damage
         if (now < this.swordSharpenExpiresAt && this.swordSharpenStacks > 0) {
-            multiplier *= (1 + SWORD_SHARPENED_SHARPEN_DAMAGE_BONUS * this.swordSharpenStacks);
+            multiplier *= (1 + W.swordSharpened.SHARPEN_DAMAGE_BONUS * this.swordSharpenStacks);
         }
         return multiplier;
     }
@@ -787,7 +735,7 @@ export class Ball {
         while (this.afterburn.nextTickAt > 0 && this.afterburn.nextTickAt <= now && this.afterburn.nextTickAt <= this.afterburn.until && this.isAlive()) {
             if (!this.isUberActive(now)) {
                 const burnDamage = Math.floor(Math.random() * (this.afterburn.damageMax - this.afterburn.damageMin + 1)) + this.afterburn.damageMin;
-                const adorationBoost = (now < this.adorationSlow.slowUntil) ? ADORATION_AFTERBURN_MULTIPLIER : 1;
+                const adorationBoost = (now < this.adorationSlow.slowUntil) ? W.adoration.AFTERBURN_MULTIPLIER : 1;
                 this.takeDamage(burnDamage * adorationBoost, 'fire');
             }
             this.afterburn.nextTickAt += this.afterburn.intervalMs;
@@ -850,12 +798,12 @@ export class Ball {
 
         if (this.weapon.type === 'paradiselost' && this.isAlive()) {
             while (this.paradiseLost.nextSelfDotAt > 0 && this.paradiseLost.nextSelfDotAt <= now && this.isAlive()) {
-                const ratio = PARADISE_LOST_SELF_DOT_MIN_RATIO + Math.random() * (PARADISE_LOST_SELF_DOT_MAX_RATIO - PARADISE_LOST_SELF_DOT_MIN_RATIO);
+                const ratio = W.paradiseLost.SELF_DOT_MIN_RATIO + Math.random() * (W.paradiseLost.SELF_DOT_MAX_RATIO - W.paradiseLost.SELF_DOT_MIN_RATIO);
                 const selfDamage = this.maxHP * ratio;
                 this.hp = Math.max(0, this.hp - selfDamage);
                 this.lastDamagedAt = now;
                 this.medigunState.selfRegenAnchorHp = this.hp;
-                this.paradiseLost.nextSelfDotAt += PARADISE_LOST_SELF_DOT_INTERVAL_MS;
+                this.paradiseLost.nextSelfDotAt += W.paradiseLost.SELF_DOT_INTERVAL_MS;
             }
         }
     }
@@ -995,7 +943,7 @@ export class Ball {
             const isSwinging = now < this.penitence.swingUntil;
             let swingOffset = 0;
             if (isSwinging) {
-                const progress = Math.max(0, Math.min(1, (now - this.penitence.swingStartedAt) / PENITENCE_SWING_ANIMATION_MS));
+                const progress = Math.max(0, Math.min(1, (now - this.penitence.swingStartedAt) / W.penitence.SWING_ANIMATION_MS));
                 const phase = progress < 0.5 ? (progress / 0.5) : ((1 - progress) / 0.5);
                 const maxArc = Math.PI * 0.36;
                 swingOffset = -maxArc + (phase * 2 * maxArc);
@@ -1086,7 +1034,7 @@ export class Ball {
         }
 
         if (this.weapon.type === 'solemnvow' && this.solemnVow.muzzleFlashUntil && now < this.solemnVow.muzzleFlashUntil) {
-            const flashLifeMs = SOLEMN_VOW_MUZZLE_FLASH_MS;
+            const flashLifeMs = W.solemnVow.MUZZLE_FLASH_MS;
             const flashProgress = 1 - Math.max(0, Math.min(1, (this.solemnVow.muzzleFlashUntil - now) / flashLifeMs));
             const flicker = 0.82 + Math.sin(now / 24) * 0.18;
             const muzzleDistance = 24;
