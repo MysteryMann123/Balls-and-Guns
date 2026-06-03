@@ -1,3 +1,5 @@
+import * as BleedDot from '../mechanics/bleedDot.js';
+
 // --- Ammo & Timing ---
 const ammo                   = 1;
 const reloadMs               = 2500;
@@ -60,6 +62,7 @@ const musket = {
     BAYONET_BLEED_DAMAGE_MAX:  bayonetBleedDamageMax,
     BAYONET_BLEED_INTERVAL_MS: bayonetBleedIntervalMs,
     BAYONET_BLEED_DURATION_MS: bayonetBleedDurationMs,
+    bayonetBleed:              BleedDot.create(bayonetBleedDamageMin, bayonetBleedDamageMax, bayonetBleedIntervalMs, bayonetBleedDurationMs),
     BAYONET_HEAL_MULTIPLIER:   bayonetHealMultiplier,
 
     // Config

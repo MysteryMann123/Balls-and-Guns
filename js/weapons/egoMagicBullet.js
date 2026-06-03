@@ -1,3 +1,8 @@
+import * as Homing    from '../mechanics/homing.js';
+import * as Afterburn from '../mechanics/afterburn.js';
+import * as Tracer    from '../mechanics/tracer.js';
+import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+
 // --- Ammo & Timing ---
 const ammo                     = 7;
 const reloadMs                 = 6666.666;
@@ -63,12 +68,15 @@ const egoMagicBullet = {
     // Homing
     HOMING_STRENGTH:             homingStrength,
     HOMING_RANGE:                homingRange,
+    homing:                      Homing.create(homingStrength, homingRange),
+    teamAwareHit:                TeamAwareHit.create(),
 
     // Afterburn
     AFTERBURN_DAMAGE_MIN:        afterburnDamageMin,
     AFTERBURN_DAMAGE_MAX:        afterburnDamageMax,
     AFTERBURN_INTERVAL_MS:       afterburnIntervalMs,
     AFTERBURN_DURATION_MS:       afterburnDurationMs,
+    afterburn:                   Afterburn.create(afterburnDamageMin, afterburnDamageMax, afterburnIntervalMs, afterburnDurationMs),
 
     // Curse
     CURSE_CYCLE:                 curseCycle,
@@ -78,6 +86,7 @@ const egoMagicBullet = {
     // Tracer
     TRACER_RANGE:                tracerRange,
     TRACER_DURATION_MS:          tracerDurationMs,
+    tracer:                      Tracer.create(tracerRange, tracerDurationMs),
 
     // Config
     COLOR:                       color,

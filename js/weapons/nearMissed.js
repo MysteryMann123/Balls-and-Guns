@@ -1,3 +1,5 @@
+import * as SplashAoe from '../mechanics/splashAoe.js';
+
 // --- Derived from rocketLauncher and directHit base values ---
 const ammo              = 4;                        // matches directHit AMMO (4)
 const damage            = Math.round(100 * 0.72);  // 72% of rocketLauncher DIRECT_DAMAGE (100)
@@ -34,6 +36,7 @@ const nearMissed = {
     DAMAGE:                damage,
     SPEED:                 speed,
     SPLASH_RADIUS:         splashRadius,
+    splashAoe:             SplashAoe.create(splashRadius),
 
     // Conditional Bonus
     VS_SLOWER_MULTIPLIER:  vsSlowerMultiplier,

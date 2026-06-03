@@ -1,3 +1,5 @@
+import * as SplashAoe from '../mechanics/splashAoe.js';
+
 // --- Ammo & Timing ---
 const ammo         = 4;
 const reloadMs     = 3800;
@@ -38,6 +40,7 @@ const beggersBasooka = {
     DAMAGE:           damage,
     SPEED:            speed,
     SPLASH_RADIUS:    splashRadius,
+    splashAoe:        SplashAoe.create(splashRadius),
 
     // Config
     COLOR:            color,

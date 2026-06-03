@@ -1,3 +1,5 @@
+import * as Tracer from '../mechanics/tracer.js';
+
 // --- Config ---
 const maxAmmo        = 1;
 const reloadMs       = 2500;
@@ -49,6 +51,7 @@ const egoPinks = {
     TRACER_RANGE:       tracerRange,
     TRACER_DURATION_MS: tracerDurationMs,
     TRACER_COLOR:       tracerColor,
+    tracer:             Tracer.create(tracerRange, tracerDurationMs, tracerColor),
     image: 'assets/EGOWeaponPinks.webp',
     DISPLAY_NAME:       'EGO WEAPON PINKS',
 };

@@ -1,3 +1,10 @@
+import * as Homing from '../mechanics/homing.js';
+import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
+import * as LifeSteal from '../mechanics/lifesteal.js';
+import * as AllyHeal from '../mechanics/allyHeal.js';
+import * as SelfDamage from '../mechanics/selfDamage.js';
+import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+
 // --- Ammo & Timing ---
 const ammo                = 1;
 const reloadMs            = 1666;
@@ -59,16 +66,21 @@ const paradiseLost = {
     DAMAGE_MAX:              damageMax,
     MAX_HP_DAMAGE_MIN_RATIO: maxHpDamageMinRatio,
     MAX_HP_DAMAGE_MAX_RATIO: maxHpDamageMaxRatio,
+    maxHpDamage:             MaxHpDamage.create(maxHpDamageMinRatio, maxHpDamageMaxRatio),
     SPEED:                   speed,
 
     // Homing
     HOMING_STRENGTH:         homingStrength,
     HOMING_RANGE:            homingRange,
+    homing:                  Homing.create(homingStrength, homingRange),
+    teamAwareHit:            TeamAwareHit.create(),
 
     // On-Hit
     LIFESTEAL_RATIO:         lifeStealRatio,
+    lifesteal:               LifeSteal.create(lifeStealRatio),
     ALLY_HEAL_RATIO:         allyHealRatio,
     ALLY_HEAL_RADIUS:        allyHealRadius,
+    allyHeal:                AllyHeal.create(allyHealRatio, allyHealRadius),
 
     // Adaptive Defense
     ADAPTIVE_RESISTANCE:     adaptiveResistance,
@@ -78,6 +90,7 @@ const paradiseLost = {
     SELF_DOT_INTERVAL_MS:    selfDotIntervalMs,
     SELF_DOT_MIN_RATIO:      selfDotMinRatio,
     SELF_DOT_MAX_RATIO:      selfDotMaxRatio,
+    selfDamage:              SelfDamage.create(selfDotMinRatio, selfDotMaxRatio, selfDotIntervalMs),
 
     // Config
     COLOR:                   color,

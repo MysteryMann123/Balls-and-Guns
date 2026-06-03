@@ -1,3 +1,5 @@
+import * as Slow from '../mechanics/slow.js';
+
 // --- Derived from revolver base values ---
 const damage           = Math.round(55 * 0.8); // 80% of revolver DAMAGE (55)
 
@@ -43,6 +45,7 @@ const egoLoneliness = {
     // On-Hit Effects
     SLOW_DURATION_MS:   slowDurationMs,
     SLOW_MULTIPLIER:    slowMultiplier,
+    slow:               Slow.create(slowDurationMs, slowMultiplier),
     AMMO_REFUND_CHANCE: ammoRefundChance,
 
     // Config

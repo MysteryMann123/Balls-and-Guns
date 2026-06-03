@@ -1,3 +1,5 @@
+import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
+
 // --- Config ---
 const maxAmmo        = 12;
 const reloadMs       = 1500;
@@ -72,6 +74,7 @@ const egoSoda = {
     PURPLE_DAMAGE_MAX:      purpleDamageMax,
     PURPLE_MAX_HP_PCT_MIN:  purpleMaxHpPctMin,
     PURPLE_MAX_HP_PCT_MAX:  purpleMaxHpPctMax,
+    purpleMaxHpDamage:      MaxHpDamage.create(purpleMaxHpPctMin, purpleMaxHpPctMax),
     PURPLE_COLOR:           purpleColor,
 
     // Config

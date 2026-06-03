@@ -1,3 +1,6 @@
+import * as Afterburn from '../mechanics/afterburn.js';
+import * as Pierce from '../mechanics/pierce.js';
+
 // --- Ammo & Timing ---
 const ammo                = 200;
 const fireRate            = 1;
@@ -55,12 +58,14 @@ const flamethrower = {
     PARTICLE_LIFETIME_MS:  particleLifetimeMs,
     HITSCAN_RANGE:         hitscanRange,
     PIERCE_COUNT:          pierceCount,
+    pierce:                Pierce.create(pierceCount),
 
     // Afterburn
     AFTERBURN_DAMAGE_MIN:  afterburnDamageMin,
     AFTERBURN_DAMAGE_MAX:  afterburnDamageMax,
     AFTERBURN_INTERVAL_MS: afterburnIntervalMs,
     AFTERBURN_DURATION_MS: afterburnDurationMs,
+    afterburn:             Afterburn.create(afterburnDamageMin, afterburnDamageMax, afterburnIntervalMs, afterburnDurationMs),
 
     // Airblast
     AIRBLAST_COOLDOWN_MS:  airblastCooldownMs,

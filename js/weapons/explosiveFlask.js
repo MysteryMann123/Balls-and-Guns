@@ -1,3 +1,6 @@
+import * as Slow from '../mechanics/slow.js';
+import * as SplashAoe from '../mechanics/splashAoe.js';
+
 // --- Timing ---
 const cooldownMs             = 4000;
 
@@ -18,10 +21,12 @@ const explosiveFlask = {
     // Projectile
     SPEED:                    speed,
     SPLASH_RADIUS:            splashRadius,
+    splashAoe:                SplashAoe.create(splashRadius),
 
     // Debuff
     EFFECT_DURATION_MS:       effectDurationMs,
     SLOW_MULTIPLIER:          slowMultiplier,
+    slow:                     Slow.create(effectDurationMs, slowMultiplier),
     PIP_DAMAGE_MULTIPLIER:    pipDamageMultiplier,
     image: 'assets/Explosive_Flask.png',
     PICKUP_DAMAGE_MULTIPLIER: pickupDamageMultiplier,

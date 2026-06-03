@@ -1,3 +1,7 @@
+import * as Knockback from '../mechanics/knockback.js';
+import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as MeleeAttack from '../mechanics/meleeAttack.js';
+
 // --- Ammo ---
 const ammo                = 4;
 
@@ -42,7 +46,9 @@ const rocketJumper = {
     // Projectile
     SPEED:                  speed,
     SPLASH_RADIUS:          splashRadius,
+    splashAoe:              SplashAoe.create(splashRadius),
     KNOCKBACK:              knockback,
+    knockback:              Knockback.create(selfBlastImpulse, knockback),
     SELF_BLAST_IMPULSE:     selfBlastImpulse,
 
     // Melee
@@ -50,6 +56,7 @@ const rocketJumper = {
     MELEE_MIN_DAMAGE:       meleeMinDamage,
     MELEE_MAX_DAMAGE:       meleeMaxDamage,
     MELEE_COOLDOWN_MS:      meleeCooldownMs,
+    meleeAttack:            MeleeAttack.create(100, 120, 400),
 
     // Config
     RELOAD_MS:              reloadMs,

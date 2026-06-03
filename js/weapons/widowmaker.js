@@ -1,3 +1,6 @@
+import * as Hitscan from '../mechanics/hitscan.js';
+import * as ConditionalReload from '../mechanics/conditionalReload.js';
+
 // --- Ammo & Timing ---
 const ammo             = 200;
 const ammoPerShot      = 30;
@@ -38,6 +41,7 @@ const widowmaker = {
     FIRE_RATE:          fireRate,
     RELOAD_MS:          reloadMs,
     LOW_AMMO_RELOAD_MS: lowAmmoReloadMs,
+    conditionalReload:  ConditionalReload.create(reloadMs),
 
     // Projectile
     PELLETS_PER_SHOT:   pelletsPerShot,
@@ -45,6 +49,7 @@ const widowmaker = {
     DAMAGE_MAX:         damageMax,
     SPREAD_ANGLE:       spreadAngle,
     HITSCAN_RANGE:      hitscanRange,
+    hitscan:            Hitscan.create(hitscanRange),
 
     // Config
     SPEED:              speed,

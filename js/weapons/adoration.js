@@ -1,3 +1,6 @@
+import * as Slow from '../mechanics/slow.js';
+import * as Pierce from '../mechanics/pierce.js';
+
 // --- Ammo & Timing ---
 const ammo                   = 1;
 const fireRate               = 800;
@@ -49,10 +52,12 @@ const adoration = {
     SPEED:                    speed,
     PROJECTILE_SIZE:          projectileSize,
     PIERCE_COUNT:             pierceCount,
+    pierce:                   Pierce.create(pierceCount),
 
     // On-Hit Effects
     SLOW_DURATION_MS:         slowDurationMs,
     SLOW_MULTIPLIER:          slowMultiplier,
+    slow:                     Slow.create(slowDurationMs, slowMultiplier),
     AFTERBURN_MULTIPLIER:     afterburnMultiplier,
 
     // Wielder

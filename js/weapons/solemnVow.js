@@ -1,3 +1,6 @@
+import * as Afterburn from '../mechanics/afterburn.js';
+import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
+
 // --- Ammo & Timing ---
 const ammo                      = 8;
 const reloadMs                  = 2400;
@@ -59,6 +62,7 @@ const solemnVow = {
     BLACK_PROJECTILE_SIZE:         blackProjectileSize,
     BLACK_MAX_HP_DAMAGE_MIN_RATIO: blackMaxHpDamageMinRatio,
     BLACK_MAX_HP_DAMAGE_MAX_RATIO: blackMaxHpDamageMaxRatio,
+    blackMaxHpDamage:              MaxHpDamage.create(blackMaxHpDamageMinRatio, blackMaxHpDamageMaxRatio),
 
     // White Shot
     WHITE_PELLETS_PER_SHOT:        whitePelletsPerShot,
@@ -69,6 +73,7 @@ const solemnVow = {
     WHITE_AFTERBURN_DAMAGE_MAX:    whiteAfterBurnDamageMax,
     WHITE_AFTERBURN_INTERVAL_MS:   whiteAfterBurnIntervalMs,
     WHITE_AFTERBURN_DURATION_MS:   whiteAfterBurnDurationMs,
+    whiteAfterburn:                Afterburn.create(whiteAfterBurnDamageMin, whiteAfterBurnDamageMax, whiteAfterBurnIntervalMs, whiteAfterBurnDurationMs),
 
     // Funeral Portrait
     FUNERAL_PELLETS_REQUIRED:      funeralPelletsRequired,

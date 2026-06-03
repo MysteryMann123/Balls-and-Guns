@@ -1,3 +1,8 @@
+import * as BleedDot from '../mechanics/bleedDot.js';
+import * as Mark from '../mechanics/mark.js';
+import * as DualForm from '../mechanics/dualForm.js';
+import * as MeleeAttack from '../mechanics/meleeAttack.js';
+
 // --- General ---
 const rangeSwitchDistance    = 100;
 const reloadMs               = 1800;
@@ -40,6 +45,7 @@ const spreadAngle    = 0.04;
 const crimsonScar = {
     // General
     RANGE_SWITCH_DISTANCE:    rangeSwitchDistance,
+    dualForm:                 DualForm.create(rangeSwitchDistance),
     RELOAD_MS:                reloadMs,
     SPEED_BONUS:              speedBonus,
     DAMAGE_TAKEN_PENALTY:     damageTakenPenalty,
@@ -61,16 +67,19 @@ const crimsonScar = {
     BLADE_RANGE:              bladeRange,
     BLADE_SWING_ARC_DEGREES:  bladeSwingArcDegrees,
     BLADE_SWING_ANIMATION_MS: bladeSwingAnimationMs,
+    bladeMeleeAttack:         MeleeAttack.create(bladeRange, bladeSwingArcDegrees, bladeSwingAnimationMs),
 
     // Bleed
     BLEED_DAMAGE_MIN:         bleedDamageMin,
     BLEED_DAMAGE_MAX:         bleedDamageMax,
     BLEED_INTERVAL_MS:        bleedIntervalMs,
     BLEED_DURATION_MS:        bleedDurationMs,
+    bleed:                    BleedDot.create(bleedDamageMin, bleedDamageMax, bleedIntervalMs, bleedDurationMs),
 
     // Mark
     MARK_DURATION_MS:         markDurationMs,
     MARK_DAMAGE_BONUS:        markDamageBonus,
+    mark:                     Mark.create(markDurationMs, markDamageBonus),
 
     // Config
     COLOR:                    color,

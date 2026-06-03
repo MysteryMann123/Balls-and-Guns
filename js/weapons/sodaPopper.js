@@ -1,3 +1,5 @@
+import * as Hitscan from '../mechanics/hitscan.js';
+
 // --- Ammo & Timing ---
 const ammo                   = 2;
 const reloadMs               = 1500;
@@ -47,6 +49,7 @@ const sodaPopper = {
     DAMAGE_MAX:             damageMax,
     SPREAD_ANGLE:           spreadAngle,
     HITSCAN_RANGE:          hitscanRange,
+    hitscan:                Hitscan.create(hitscanRange),
 
     // Hype Meter
     CHARGE_DAMAGE_REQUIRED: chargeDamageRequired,

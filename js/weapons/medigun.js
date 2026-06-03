@@ -1,3 +1,6 @@
+import * as LifeSteal from '../mechanics/lifesteal.js';
+import * as AllyHeal from '../mechanics/allyHeal.js';
+
 // --- Ammo & Timing ---
 const ammo                 = 1;
 const reloadMs             = 1000;
@@ -48,8 +51,10 @@ const medigun = {
     // Beam
     BEAM_RANGE:              beamRange,
     ALLY_HEAL_PER_SEC:       allyHealPerSec,
+    allyHeal:                AllyHeal.create(allyHealPerSec, beamRange),
     ENEMY_DAMAGE_PER_SEC:    enemyDamagePerSec,
     ENEMY_LIFESTEAL_PER_SEC: enemyLifestealPerSec,
+    lifesteal:               LifeSteal.create(enemyLifestealPerSec),
 
     // Self Regen
     SELF_REGEN_PER_SEC:      selfRegenPerSec,

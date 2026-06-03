@@ -1,3 +1,5 @@
+import * as Pierce from '../mechanics/pierce.js';
+
 // --- Config ---
 const maxAmmo        = 1;
 const reloadMs       = 1250;
@@ -53,6 +55,7 @@ const faintAroma = {
     SPEED:               speed,
     PROJECTILE_SIZE:     projectileSize,
     PIERCE_COUNT:        pierceCount,
+    pierce:              Pierce.create(pierceCount),
 
     // Poison DOT
     DOT_DAMAGE_MIN:      dotDamageMin,

@@ -1,3 +1,6 @@
+import * as Homing from '../mechanics/homing.js';
+import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+
 // --- Ammo & Timing ---
 const ammo                    = 1;
 const reloadMs                = 1200;
@@ -51,6 +54,8 @@ const magicianHat = {
     // Homing
     HOMING_STRENGTH:            homingStrength,
     HOMING_RANGE:               homingRange,
+    homing:                     Homing.create(homingStrength, homingRange),
+    teamAwareHit:               TeamAwareHit.create(),
 
     // Teleport
     TELEPORT_DISTANCE:          teleportDistance,

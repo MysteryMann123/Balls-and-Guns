@@ -1,3 +1,6 @@
+import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as Tracer from '../mechanics/tracer.js';
+
 // --- Ammo & Timing ---
 const ammo             = 6;
 const reloadMs         = 3500;
@@ -45,7 +48,9 @@ const pipLauncher = {
     DAMAGE_MAX:         damageMax,
     SPEED:              speed,
     SPLASH_RADIUS:      splashRadius,
+    splashAoe:          SplashAoe.create(splashRadius),
     TRACER_DURATION_MS: tracerDurationMs,
+    tracer:             Tracer.create(splashRadius, tracerDurationMs),
 
     // Ally Splash Heal
     ALLY_HEAL_MIN:      allyHealMin,

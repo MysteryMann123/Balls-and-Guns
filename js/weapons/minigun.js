@@ -1,3 +1,5 @@
+import * as FireRateRamp from '../mechanics/fireRateRamp.js';
+
 // --- Config ---
 const maxAmmo             = 200;
 const reloadMs            = 8000;
@@ -56,6 +58,7 @@ const minigun = {
     MIN_FIRE_RATE:        minFireRate,
     RAMP_PER_SHOT:        rampPerShot,
     RAMP_RESET_DELAY_MS:  rampResetDelayMs,
+    fireRateRamp:         FireRateRamp.create(fireRate, initialFireRate, minFireRate, rampPerShot, rampResetDelayMs),
     image: 'assets/Minigun_IMG.png',
     DISPLAY_NAME:         'MINIGUN',
 

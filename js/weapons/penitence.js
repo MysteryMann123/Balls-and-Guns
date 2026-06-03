@@ -1,3 +1,5 @@
+import * as MeleeAttack from '../mechanics/meleeAttack.js';
+
 // --- Config (melee — no projectile) ---
 const maxAmmo        = Infinity;
 const reloadMs       = 0;
@@ -54,6 +56,7 @@ const penitence = {
     DAMAGE_MAX:            damageMax,
     SWING_ARC_DEGREES:     swingArcDegrees,
     MELEE_RANGE:           meleeRange,
+    meleeAttack:           MeleeAttack.create(meleeRange, swingArcDegrees, swingAnimationMs),
     FIRE_RATE:             fireRate,
     SWING_ANIMATION_MS:    swingAnimationMs,
 

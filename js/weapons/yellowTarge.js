@@ -1,3 +1,5 @@
+import * as Knockback from '../mechanics/knockback.js';
+
 // --- Charge ---
 const chargeReloadMs        = 2500;
 const chargeTriggerRange    = 1000;
@@ -44,6 +46,7 @@ const yellowTarge = {
     CHARGE_DAMAGE_MAX:          chargeDamageMax,
     DAMAGE_PER_DISTANCE:        damagePerDistance,
     KNOCKBACK:                  knockback,
+    knockbackMech:              Knockback.create(chargeImpulse, knockback),
 
     // Damage Reduction
     DAMAGE_REDUCTION_ALL:       damageReductionAll,

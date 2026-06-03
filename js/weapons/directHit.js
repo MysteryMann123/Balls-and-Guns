@@ -1,3 +1,5 @@
+import * as SplashAoe from '../mechanics/splashAoe.js';
+
 // --- Ammo ---
 const ammo               = 4;
 
@@ -38,6 +40,7 @@ const directHit = {
     DAMAGE:               damage,
     SPEED:                speed,
     SPLASH_RADIUS:        splashRadius,
+    splashAoe:            SplashAoe.create(splashRadius),
 
     // Conditional Bonus
     VS_FASTER_MULTIPLIER: vsFasterMultiplier,

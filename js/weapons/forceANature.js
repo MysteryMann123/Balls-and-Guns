@@ -1,3 +1,6 @@
+import * as Hitscan from '../mechanics/hitscan.js';
+import * as Knockback from '../mechanics/knockback.js';
+
 // --- Ammo & Timing ---
 const ammo           = 2;
 const reloadMs       = 1600;
@@ -47,10 +50,12 @@ const forceANature = {
     DAMAGE_MAX:       damageMax,
     SPREAD_ANGLE:     spreadAngle,
     HITSCAN_RANGE:    hitscanRange,
+    hitscan:          Hitscan.create(hitscanRange),
 
     // Knockback
     SELF_KNOCKBACK:   selfKnockback,
     ENEMY_KNOCKBACK:  enemyKnockback,
+    knockback:        Knockback.create(selfKnockback, enemyKnockback),
 
     // Config
     SPEED:            speed,

@@ -1,3 +1,5 @@
+import * as SplashAoe from '../mechanics/splashAoe.js';
+
 // --- Ammo ---
 const ammo            = 6;
 
@@ -39,6 +41,7 @@ const grenadeLauncher = {
     DIRECT_DAMAGE:     directDamage,
     SPEED:             speed,
     SPLASH_RADIUS:     splashRadius,
+    splashAoe:         SplashAoe.create(splashRadius),
     SPLASH_MAX_DAMAGE: splashMaxDamage,
     EXPLODE_DELAY_MS:  explodeDelayMs,
 

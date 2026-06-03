@@ -1,3 +1,6 @@
+import * as Afterburn from '../mechanics/afterburn.js';
+import * as DualForm from '../mechanics/dualForm.js';
+
 // --- General ---
 const reloadMs                  = 2200;
 const fireRate                  = 800;
@@ -42,6 +45,7 @@ const hornet = {
     RELOAD_MS:                   reloadMs,
     FIRE_RATE:                   fireRate,
     RANGE_SWITCH_DISTANCE:       rangeSwitchDistance,
+    dualForm:                    DualForm.create(rangeSwitchDistance),
 
     // Shotgun Form
     SHOTGUN_AMMO:                shotgunAmmo,
@@ -61,6 +65,7 @@ const hornet = {
     RIFLE_AFTERBURN_DAMAGE_MAX:  rifleAfterBurnDamageMax,
     RIFLE_AFTERBURN_INTERVAL_MS: rifleAfterBurnIntervalMs,
     RIFLE_AFTERBURN_DURATION_MS: rifleAfterBurnDurationMs,
+    rifleAfterburn:              Afterburn.create(rifleAfterBurnDamageMin, rifleAfterBurnDamageMax, rifleAfterBurnIntervalMs, rifleAfterBurnDurationMs),
 
     // Bees
     BEE_DAMAGE_MIN:              beeDamageMin,

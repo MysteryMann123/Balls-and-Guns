@@ -1,3 +1,5 @@
+import * as SplashAoe from '../mechanics/splashAoe.js';
+
 // --- Ammo ---
 const ammo         = 4;
 
@@ -35,6 +37,7 @@ const rocketLauncher = {
     DIRECT_DAMAGE:    directDamage,
     SPEED:            speed,
     SPLASH_RADIUS:    splashRadius,
+    splashAoe:        SplashAoe.create(splashRadius),
 
     // Config
     RELOAD_MS:        reloadMs,

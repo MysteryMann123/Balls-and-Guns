@@ -1,3 +1,5 @@
+import * as Hitscan from '../mechanics/hitscan.js';
+
 // --- Derived from shotgun base values ---
 const damageMin      = Math.round(4 * 0.75);  // 75% of shotgun DAMAGE_MIN (4)
 const damageMax      = Math.round(25 * 0.75); // 75% of shotgun DAMAGE_MAX (25)
@@ -42,6 +44,7 @@ const familyBusiness = {
     DAMAGE_MIN:       damageMin,
     DAMAGE_MAX:       damageMax,
     HITSCAN_RANGE:    hitscanRange,
+    hitscan:          Hitscan.create(hitscanRange),
     SPREAD_ANGLE:     spreadAngle,
 
     // Config
