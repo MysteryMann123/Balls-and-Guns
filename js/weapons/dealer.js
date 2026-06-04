@@ -43,6 +43,7 @@ const dealer = {
     SPREAD_ANGLE:      spreadAngle,
     image: 'assets/Poker.jpg',
     DISPLAY_NAME:      'DEALER',
+    riskClass:         'TAV',
 
     description: (w) => [
         'Auto-draw card weapon: damage output scales with poker hand strength (infinite ammo).',

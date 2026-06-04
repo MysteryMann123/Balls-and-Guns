@@ -1083,6 +1083,46 @@ canvas {
 }
 .detail-full-panel[data-risk="ALEPH"] .detail-header { border-left-color: #f03333; }
 
+.detail-full-panel[data-risk="TAV"] {
+    --glow-color: rgba(255, 215, 0, 0.8);
+    --glow-soft:  rgba(255, 215, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.7);
+}
+.detail-full-panel[data-risk="TAV"] .detail-header { border-left-color: #ffd700; }
+
+/* TAV Rainbow animation - makes ALEPH look boring */
+@keyframes rainbowShift {
+    0% { filter: hue-rotate(0deg) brightness(1.1); }
+    25% { filter: hue-rotate(90deg) brightness(1.15); }
+    50% { filter: hue-rotate(180deg) brightness(1.1); }
+    75% { filter: hue-rotate(270deg) brightness(1.15); }
+    100% { filter: hue-rotate(360deg) brightness(1.1); }
+}
+
+@keyframes rainbowGlow {
+    0%, 100% {
+        text-shadow: 0 0 8px #ffd700, 0 0 16px rgba(255, 215, 0, 0.6);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 16px #ff1493, 0 0 32px rgba(255, 20, 147, 0.8), 0 0 48px rgba(0, 255, 255, 0.4);
+        transform: scale(1.08);
+    }
+}
+
+.stat-chip-tav-rainbow {
+    animation: rainbowShift 4s infinite linear !important,
+               rainbowGlow 3s infinite ease-in-out !important;
+    border-color: #ffd700 !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5), inset 0 0 12px rgba(255, 215, 0, 0.1);
+}
+
+.stat-chip-tav-rainbow .chip-label {
+    color: #ffd700 !important;
+    text-shadow: 0 0 4px rgba(255, 215, 0, 0.8);
+}
+
 @media (max-width: 700px) {
     .detail-header { flex-direction: column; align-items: flex-start; }
     .detail-img-wrap { width: 100px; height: 100px; min-width: 100px; }

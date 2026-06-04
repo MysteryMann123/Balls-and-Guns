@@ -100,6 +100,11 @@ function renderWeaponDetail(type) {
             chip.innerHTML = `<span class="chip-label">${chipLabel}</span><span class="chip-value"${chipColor ? ` style="color: ${chipColor};"` : ''}>${chipValue}</span>`;
         } else if (typeof chipData === 'object' && chipData) {
             chip.innerHTML = `<span class="chip-label">${chipData.label}</span><span class="chip-value" style="color: ${chipData.valueColor || '#fff'};">${chipData.value}</span>`;
+
+            // Apply special TAV rainbow animation
+            if (chipData.special === 'rainbow') {
+                chip.classList.add('stat-chip-tav-rainbow');
+            }
         }
         chipsEl.appendChild(chip);
     }
