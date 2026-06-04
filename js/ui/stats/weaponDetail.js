@@ -20,8 +20,14 @@ const containerSelectors = {
 function renderWeaponDetail(type) {
     const weapon = new Weapon(type);
 
-    // Get weapon module (e.g., Weapons.pistol)
-    const weaponModule = Weapons[type];
+    // Get weapon module (e.g., Weapons.pistol), handling camelCase variations
+    let weaponModule = Weapons[type];
+    if (!weaponModule) {
+        // Try camelCase version (e.g., 'soundofstar' → 'soundOfStar')
+        const camelCased = type.split(/[-_]/).reduce((acc, word, i) =>
+            acc + (i === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)), '');
+        weaponModule = Weapons[camelCased];
+    }
 
     // Get DOM elements
     const titleEl = document.querySelector(containerSelectors.title);
