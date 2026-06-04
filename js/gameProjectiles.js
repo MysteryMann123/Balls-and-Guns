@@ -38,6 +38,54 @@ function trySpawnHornetBee(game, victim, attacker, now) {
     );
 }
 
+// Handle weapon-specific boundary behaviors (out of bounds)
+function handleBoundaryBehavior(game, projectile, now) {
+    const isOutOfBounds = projectile.pos.x <= 0 || projectile.pos.x >= game.canvas.width ||
+                          projectile.pos.y <= 0 || projectile.pos.y >= game.canvas.height;
+
+    if (!isOutOfBounds) return false;
+
+    switch (projectile.type) {
+        case 'scrumpybottle':
+            game.spawnScrumpyPuddle(projectile.pos.x, projectile.pos.y, projectile.ownerId, now, projectile.puddleDamageType || 'chemical');
+            return true;
+
+        case 'explosiveflask':
+        case 'pickupexplosiveflask':
+            game.triggerExplosiveFlask(projectile.pos.x, projectile.pos.y, projectile.ownerId, now, projectile.type === 'pickupexplosiveflask');
+            return true;
+
+        case 'piplauncher':
+            game.triggerPipExplosion(
+                projectile.pos.x,
+                projectile.pos.y,
+                projectile.splashRadius || W.pipLauncher.SPLASH_RADIUS,
+                projectile.damage,
+                projectile.ownerId,
+                now
+            );
+            return true;
+
+        case 'rocketlauncher':
+        case 'beggersbazooka':
+        case 'directhit':
+        case 'rocketjumper':
+            game.triggerExplosion(
+                projectile.pos.x,
+                projectile.pos.y,
+                projectile.splashRadius || W.rocketLauncher.SPLASH_RADIUS,
+                projectile.damage,
+                projectile.ownerId,
+                now,
+                null,
+                projectile.knockbackStrength || 0,
+                projectile.type === 'beggersbazooka'
+            );
+            return true;
+    }
+    return false;
+}
+
 export function updateProjectiles(game, now) {
     for (let i = game.projectiles.length - 1; i >= 0; i--) {
         const projectile = game.projectiles[i];
@@ -176,58 +224,7 @@ export function updateProjectiles(game, now) {
         }
 
         // Hairspray: slow cloud that stops at max range and deals zone-based tick damage
-        if (projectile.type === 'hairspray') {
-            if (projectile.originX === undefined) {
-                projectile.originX = projectile.pos.x;
-                projectile.originY = projectile.pos.y;
-            }
-            const distFromOrigin = Math.hypot(
-                projectile.pos.x - projectile.originX,
-                projectile.pos.y - projectile.originY
-            );
-            if (distFromOrigin >= W.hairspray.MAX_RANGE) {
-                if (!projectile.lingerUntil) {
-                    projectile.lingerUntil = now + W.hairspray.LINGER_MS;
-                }
-                projectile.vel.x = 0;
-                projectile.vel.y = 0;
-                if (now >= projectile.lingerUntil) {
-                    game.projectiles.splice(i, 1);
-                    continue;
-                }
-            }
-            if (!projectile.cloudTickCounts) projectile.cloudTickCounts = {};
-            if (!projectile.cloudLastTickAt) projectile.cloudLastTickAt = {};
-            const cloudOwner = game.balls.find(b => b.id === projectile.ownerId);
-            for (const ball of game.balls) {
-                if (!ball.isAlive() || ball.isUntargetable(now)) continue;
-                if (cloudOwner && !game.areEnemies(cloudOwner, ball)) continue;
-                if (ball.isUberActive(now)) continue;
-                if (Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y) > W.hairspray.CLOUD_RADIUS + ball.radius) continue;
-                const distToBall = Math.hypot(ball.pos.x - projectile.originX, ball.pos.y - projectile.originY);
-                let maxTicks;
-                if (distToBall < W.hairspray.NEAR_ZONE_END) {
-                    maxTicks = W.hairspray.NEAR_MAX_TICKS;
-                } else if (distToBall < W.hairspray.MID_ZONE_END) {
-                    maxTicks = W.hairspray.MID_MAX_TICKS;
-                } else {
-                    maxTicks = W.hairspray.FAR_MAX_TICKS;
-                }
-                const tickCount = projectile.cloudTickCounts[ball.id] || 0;
-                if (tickCount >= maxTicks) continue;
-                const lastTick = projectile.cloudLastTickAt[ball.id] || 0;
-                if (now - lastTick < W.hairspray.TICK_INTERVAL_MS) continue;
-                projectile.cloudLastTickAt[ball.id] = now;
-                projectile.cloudTickCounts[ball.id] = tickCount + 1;
-                const dmg = Math.round(
-                    (W.hairspray.TICK_DAMAGE_MIN + Math.random() * (W.hairspray.TICK_DAMAGE_MAX - W.hairspray.TICK_DAMAGE_MIN))
-                    * (cloudOwner ? cloudOwner.getDamageMultiplier(now) : 1)
-                );
-                ball.takeDamage(dmg, 'chemical');
-            }
-        }
-
-        if (projectile.expiresAt && now >= projectile.expiresAt) {
+if (projectile.expiresAt && now >= projectile.expiresAt) {
             if (projectile.type === 'explosiveflask' || projectile.type === 'pickupexplosiveflask') {
                 game.triggerExplosiveFlask(projectile.pos.x, projectile.pos.y, projectile.ownerId, now, projectile.type === 'pickupexplosiveflask');
             }
@@ -241,49 +238,10 @@ export function updateProjectiles(game, now) {
             continue;
         }
 
-        if (projectile.type === 'scrumpybottle') {
-            if (projectile.pos.x <= 0 || projectile.pos.x >= game.canvas.width || projectile.pos.y <= 0 || projectile.pos.y >= game.canvas.height) {
-                game.spawnScrumpyPuddle(projectile.pos.x, projectile.pos.y, projectile.ownerId, now, projectile.puddleDamageType || 'chemical');
-                game.projectiles.splice(i, 1);
-                continue;
-            }
-        }
-
-        if (projectile.type === 'explosiveflask' || projectile.type === 'pickupexplosiveflask') {
-            if (projectile.pos.x <= 0 || projectile.pos.x >= game.canvas.width || projectile.pos.y <= 0 || projectile.pos.y >= game.canvas.height) {
-                game.triggerExplosiveFlask(projectile.pos.x, projectile.pos.y, projectile.ownerId, now, projectile.type === 'pickupexplosiveflask');
-                game.projectiles.splice(i, 1);
-                continue;
-            }
-        }
-
-        if (projectile.type === 'rocketlauncher' || projectile.type === 'piplauncher' || projectile.type === 'beggersbazooka' || projectile.type === 'directhit' || projectile.type === 'rocketjumper') {
-            if (projectile.pos.x <= 0 || projectile.pos.x >= game.canvas.width || projectile.pos.y <= 0 || projectile.pos.y >= game.canvas.height) {
-                if (projectile.type === 'piplauncher') {
-                    game.triggerPipExplosion(
-                        projectile.pos.x,
-                        projectile.pos.y,
-                        projectile.splashRadius || W.pipLauncher.SPLASH_RADIUS,
-                        projectile.damage,
-                        projectile.ownerId,
-                        now
-                    );
-                } else {
-                    game.triggerExplosion(
-                        projectile.pos.x,
-                        projectile.pos.y,
-                        projectile.splashRadius || W.rocketLauncher.SPLASH_RADIUS,
-                        projectile.damage,
-                        projectile.ownerId,
-                        now,
-                        null,
-                        projectile.knockbackStrength || 0,
-                        projectile.type === 'beggersbazooka'
-                    );
-                }
-                game.projectiles.splice(i, 1);
-                continue;
-            }
+        // Check boundary-specific behaviors first (scrumpybottle, explosiveflask, rockets)
+        if (handleBoundaryBehavior(game, projectile, now)) {
+            game.projectiles.splice(i, 1);
+            continue;
         }
 
         if (projectile.type !== 'grenadelauncher' && projectile.isOffScreen(game.canvas.width, game.canvas.height)) {
