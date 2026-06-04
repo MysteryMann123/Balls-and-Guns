@@ -16,4 +16,9 @@ export const scrumpyBottle = {
 
     // Resistance
     DAMAGE_REDUCTION: 0.1,
+
+    description: (u) => [
+        'Auto-thrown at the nearest enemy when picked up.',
+        'Spills an expanding damage puddle that lasts the full duration.'
+    ],
 };

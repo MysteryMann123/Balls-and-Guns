@@ -10,4 +10,9 @@ export const deadRinger = {
     // Decoy mechanics
     DECOY_DURATION_MS: 950,
     DECOY_SPEED: 16,
+
+    description: (u) => [
+        'Arms one charge per ball and shows icon above the ball.',
+        'On trigger: damage cut, heal burst, speed boost, untargetable invis, and decoy fly-out.'
+    ],
 };

@@ -1,3 +1,4 @@
+import * as Utilities from '../../utilities/items/index.js';
 import { UTILITY_STATS, TYPE_IMAGES } from './utility.js';
 
 const containerSelectors = {
@@ -66,9 +67,22 @@ function renderUtilityDetail(type) {
         chipsEl.appendChild(chip);
     }
 
-    // Render notes
+    // Render notes from utility item description or fallback to hardcoded notes
     notesEl.innerHTML = '';
-    for (const note of (utilityData.notes || [])) {
+    let notes = [];
+
+    const utilityModule = Utilities[type];
+    if (utilityModule?.description) {
+        if (typeof utilityModule.description === 'function') {
+            notes = utilityModule.description(utilityModule);
+        } else if (Array.isArray(utilityModule.description)) {
+            notes = utilityModule.description;
+        }
+    } else {
+        notes = utilityData.notes || [];
+    }
+
+    for (const note of notes) {
         const noteEl = document.createElement('li');
         noteEl.textContent = note;
         notesEl.appendChild(noteEl);

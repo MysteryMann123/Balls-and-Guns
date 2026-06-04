@@ -3,4 +3,8 @@ export const ubercharge = {
 
     DURATION_MS: 5000,
     HEAL_PER_SEC: 20,
+
+    description: (u) => [
+        'Grants invulnerability and healing over time while active.'
+    ],
 };
