@@ -9,6 +9,9 @@ export function create() {
         },
 
         onUpdate(projectile, deltaMs, game, now) {
+            // Guard against undefined game
+            if (!game || !game.balls) return;
+
             // Initialize origin on first update
             if (projectile.originX === undefined) {
                 projectile.originX = projectile.pos.x;

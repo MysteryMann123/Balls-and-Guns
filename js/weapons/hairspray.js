@@ -1,5 +1,3 @@
-import * as HairsprayMechanic from '../mechanics/unique/hairspray.js';
-
 // --- Ammo & Timing ---
 const ammo           = 3;
 const fireRate       = 800;
@@ -72,10 +70,6 @@ const hairspray = {
     SPREAD_ANGLE:     spreadAngle,
     image: 'assets/Emz_hairspray.jpg',
     DISPLAY_NAME:     'HAIRSPRAY',
-
-    mechanics: [
-        HairsprayMechanic.create(),
-    ],
 
     riskClass: 'ZAYIN',
 

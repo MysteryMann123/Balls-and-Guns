@@ -160,6 +160,58 @@ export function updateProjectiles(game, now) {
             game.applyParadiseLostHoming(projectile, now);
         }
 
+        // Hairspray cloud damage (kept in main loop for reliability)
+        if (projectile.type === 'hairspray') {
+            if (projectile.originX === undefined) {
+                projectile.originX = projectile.pos.x;
+                projectile.originY = projectile.pos.y;
+            }
+            const distFromOrigin = Math.hypot(
+                projectile.pos.x - projectile.originX,
+                projectile.pos.y - projectile.originY
+            );
+            if (distFromOrigin >= W.hairspray.MAX_RANGE) {
+                if (!projectile.lingerUntil) {
+                    projectile.lingerUntil = now + W.hairspray.LINGER_MS;
+                }
+                projectile.vel.x = 0;
+                projectile.vel.y = 0;
+                if (now >= projectile.lingerUntil) {
+                    game.projectiles.splice(i, 1);
+                    continue;
+                }
+            }
+            if (!projectile.cloudTickCounts) projectile.cloudTickCounts = {};
+            if (!projectile.cloudLastTickAt) projectile.cloudLastTickAt = {};
+            const cloudOwner = game.balls.find(b => b.id === projectile.ownerId);
+            for (const ball of game.balls) {
+                if (!ball.isAlive() || ball.isUntargetable(now)) continue;
+                if (cloudOwner && !game.areEnemies(cloudOwner, ball)) continue;
+                if (ball.isUberActive(now)) continue;
+                if (Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y) > W.hairspray.CLOUD_RADIUS + ball.radius) continue;
+                const distToBall = Math.hypot(ball.pos.x - projectile.originX, ball.pos.y - projectile.originY);
+                let maxTicks;
+                if (distToBall < W.hairspray.NEAR_ZONE_END) {
+                    maxTicks = W.hairspray.NEAR_MAX_TICKS;
+                } else if (distToBall < W.hairspray.MID_ZONE_END) {
+                    maxTicks = W.hairspray.MID_MAX_TICKS;
+                } else {
+                    maxTicks = W.hairspray.FAR_MAX_TICKS;
+                }
+                const tickCount = projectile.cloudTickCounts[ball.id] || 0;
+                if (tickCount >= maxTicks) continue;
+                const lastTick = projectile.cloudLastTickAt[ball.id] || 0;
+                if (now - lastTick < W.hairspray.TICK_INTERVAL_MS) continue;
+                projectile.cloudLastTickAt[ball.id] = now;
+                projectile.cloudTickCounts[ball.id] = tickCount + 1;
+                const dmg = Math.round(
+                    (W.hairspray.TICK_DAMAGE_MIN + Math.random() * (W.hairspray.TICK_DAMAGE_MAX - W.hairspray.TICK_DAMAGE_MIN))
+                    * (cloudOwner ? cloudOwner.getDamageMultiplier(now) : 1)
+                );
+                ball.takeDamage(dmg, 'chemical');
+            }
+        }
+
         if (projectile.type === 'grenadelauncher') {
             const bounceDamping = 0.78;
 
