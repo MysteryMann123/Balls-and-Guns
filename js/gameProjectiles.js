@@ -295,11 +295,14 @@ if (projectile.expiresAt && now >= projectile.expiresAt) {
         }
 
         let collided = false;
-        for (const ball of game.balls) {
-            if (!ball.isAlive()) continue;
-            if (projectile.ownerId === ball.id) continue;
-            if (projectile.justDeflectedBy === ball.id && now < (projectile.deflectIgnoreUntil || 0)) continue;
-            if (ball.isUntargetable(now)) continue;
+
+        // Skip collision detection for stuck projectiles (e.g., huntsman, swordsharpened)
+        if (!projectile.stuckToBallId) {
+            for (const ball of game.balls) {
+                if (!ball.isAlive()) continue;
+                if (projectile.ownerId === ball.id) continue;
+                if (projectile.justDeflectedBy === ball.id && now < (projectile.deflectIgnoreUntil || 0)) continue;
+                if (ball.isUntargetable(now)) continue;
 
             const shooter = game.balls.find(candidate => candidate.id === projectile.ownerId);
             if (projectile.type !== 'crusaderscrossbow' && projectile.type !== 'egomagicbullet' && projectile.type !== 'egolovehate' && shooter && !game.areEnemies(shooter, ball)) {
@@ -863,6 +866,7 @@ if (projectile.expiresAt && now >= projectile.expiresAt) {
                 collided = true;
                 break;
             }
+        }
         }
 
         if (collided) continue;
