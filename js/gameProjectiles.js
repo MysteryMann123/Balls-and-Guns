@@ -103,42 +103,7 @@ export function updateProjectiles(game, now) {
             continue;
         }
 
-        if (projectile.type === 'huntsman' && projectile.stuckToBallId) {
-            const stuckBall = game.balls.find(candidate => candidate.id === projectile.stuckToBallId && candidate.isAlive());
-            if (!stuckBall || now >= (projectile.stickExpiresAt || 0)) {
-                game.projectiles.splice(i, 1);
-                continue;
-            }
-
-            projectile.pos.x = stuckBall.pos.x + (projectile.stickOffsetX || 0);
-            projectile.pos.y = stuckBall.pos.y + (projectile.stickOffsetY || 0);
-            continue;
-        }
-
-        if (projectile.type === 'swordsharpened' && projectile.stuckToBallId) {
-            const stuckBall = game.balls.find(candidate => candidate.id === projectile.stuckToBallId && candidate.isAlive());
-            if (!stuckBall || now >= (projectile.stickExpiresAt || 0)) {
-                game.projectiles.splice(i, 1);
-                continue;
-            }
-
-            projectile.pos.x = stuckBall.pos.x + (projectile.stickOffsetX || 0);
-            projectile.pos.y = stuckBall.pos.y + (projectile.stickOffsetY || 0);
-            
-            // Keep applying sharpening buff to thrower while sword is stuck
-            const shooter = game.balls.find(b => b.id === projectile.ownerId);
-            if (shooter && projectile.sharpenStacks > 0 && now < (projectile.sharpenExpiresAt || 0)) {
-                shooter.swordSharpenStacks = projectile.sharpenStacks;
-                shooter.swordSharpenExpiresAt = projectile.sharpenExpiresAt;
-                if (shooter.weapon && shooter.weapon.type === 'swordsharpened') {
-                    shooter.weapon.swordSharpenStacks = projectile.sharpenStacks;
-                    shooter.weapon.swordSharpenExpiresAt = projectile.sharpenExpiresAt;
-                }
-            }
-            continue;
-        }
-
-        projectile.update();
+projectile.update();
 
         // Call mechanic onUpdate hooks
         const deltaMs = 16.67; // Approximate frame delta

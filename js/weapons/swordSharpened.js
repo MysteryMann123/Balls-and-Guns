@@ -1,3 +1,5 @@
+import * as Sticking from '../mechanics/patterns/sticking.js';
+
 // --- Ammo & Timing ---
 const ammo                      = 1;
 const reloadMs                  = 1500;
@@ -85,6 +87,10 @@ const swordSharpened = {
         shield: 'assets/KnightOfDespairBlessingShield.png',
     },
     DISPLAY_NAME:                 'EGO SWORD SHARPENED BY TEARS',
+
+    mechanics: [
+        Sticking.create(),
+    ],
 
     riskClass: 'WAW',
 

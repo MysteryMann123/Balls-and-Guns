@@ -1,3 +1,5 @@
+import * as Sticking from '../mechanics/patterns/sticking.js';
+
 // --- Config ---
 const maxAmmo        = 1;
 const reloadMs       = 1000;
@@ -48,6 +50,10 @@ const huntsman = {
     STICK_DURATION_MS: stickDurationMs,
     image: 'assets/Huntsman.png',
     DISPLAY_NAME:      'HUNTSMAN',
+
+    mechanics: [
+        Sticking.create(),
+    ],
 
     description: (w) => [
         `Arrow projectile with slight wobble and stick duration ${(w.STICK_DURATION_MS / 1000).toFixed(1)}s.`,
