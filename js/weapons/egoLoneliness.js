@@ -56,6 +56,8 @@ const egoLoneliness = {
     image: 'assets/EGOWeaponLoneliness.webp',
     DISPLAY_NAME:       'EGO WEAPON LONELINESS',
 
+    riskClass: 'TETH',
+
     description: (w) => [
         'Revolver variant with a colder shot profile and light tracer feedback.',
         `Damage per shot: ${w.DAMAGE} (${Math.round((1 - (w.DAMAGE / 55)) * 100)}% lower than Revolver).`,

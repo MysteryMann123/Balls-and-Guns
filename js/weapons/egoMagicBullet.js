@@ -97,6 +97,8 @@ const egoMagicBullet = {
     },
     DISPLAY_NAME:                'EGO MAGIC BULLET',
 
+    riskClass: 'WAW',
+
     description: (w) => [
         'Cursed magic weapon with infinite pierce, fast projectile speed, and slight homing.',
         `Damage per shot: ${Math.round(w.DAMAGE_MIN)}-${Math.round(w.DAMAGE_MAX)}.`,
