@@ -44,6 +44,12 @@ export function updateProjectiles(game, now) {
 
         if (projectile.type === 'shotgunray' || projectile.type === 'hornetshotgunray' || projectile.type === 'machinaray' || projectile.type === 'pinksray') {
             if (now >= (projectile.expiresAt || 0)) {
+                // Call mechanic onExpire hooks
+                for (const mechanic of projectile.mechanics) {
+                    if (mechanic.onExpire) {
+                        mechanic.onExpire(projectile);
+                    }
+                }
                 game.projectiles.splice(i, 1);
             }
             continue;
@@ -86,6 +92,14 @@ export function updateProjectiles(game, now) {
 
         projectile.update();
 
+        // Call mechanic onUpdate hooks
+        const deltaMs = 16.67; // Approximate frame delta
+        for (const mechanic of projectile.mechanics) {
+            if (mechanic.onUpdate) {
+                mechanic.onUpdate(projectile, deltaMs, game, now);
+            }
+        }
+
         if (projectile.type === 'magicianhat') {
             game.applyMagicianHatHoming(projectile, now);
         }
@@ -96,83 +110,6 @@ export function updateProjectiles(game, now) {
 
         if (projectile.type === 'paradiselost') {
             game.applyParadiseLostHoming(projectile, now);
-        }
-
-        if (projectile.type === 'soundofstar') {
-            projectile.soundStarOrbitAngle = ((projectile.soundStarOrbitAngle || 0) + W.soundOfStar.ORBIT_RATE) % (Math.PI * 2);
-
-            const owner = game.balls.find(b => b.id === projectile.ownerId && b.isAlive());
-            if (owner && projectile.vel.magnitude() > 0.001) {
-                let closestEnemy = null;
-                let closestDist = projectile.soundStarHomingRange ?? W.soundOfStar.HOMING_RANGE;
-                for (const ball of game.balls) {
-                    if (!ball.isAlive() || !game.areEnemies(owner, ball) || ball.isUntargetable(now)) continue;
-                    const d = Math.hypot(ball.pos.x - projectile.pos.x, ball.pos.y - projectile.pos.y);
-                    if (d < closestDist) { closestDist = d; closestEnemy = ball; }
-                }
-
-                const homingStrength = projectile.soundStarHomingStrength ?? W.soundOfStar.HOMING_STRENGTH;
-                const wobble = Math.sin(projectile.soundStarOrbitAngle) * 0.28;
-
-                let targetAngle;
-                if (closestEnemy) {
-                    targetAngle = Math.atan2(closestEnemy.pos.y - projectile.pos.y, closestEnemy.pos.x - projectile.pos.x) + wobble;
-                } else {
-                    targetAngle = Math.atan2(projectile.vel.y, projectile.vel.x) + wobble * 0.12;
-                }
-
-                const desired = new Vector(Math.cos(targetAngle), Math.sin(targetAngle));
-                const currentDir = projectile.vel.clone().normalize();
-                const newDir = currentDir.multiply(1 - homingStrength).add(desired.multiply(homingStrength));
-                const mag = newDir.magnitude();
-                if (mag > 0.001) {
-                    projectile.vel = newDir.multiply(W.soundOfStar.SPEED / mag);
-                }
-                projectile.rotation = Math.atan2(projectile.vel.y, projectile.vel.x);
-            }
-        }
-
-        if (projectile.type === 'hornetbee') {
-            const owner = game.balls.find(candidate => candidate.id === projectile.ownerId && candidate.isAlive());
-            if (!owner) {
-                game.projectiles.splice(i, 1);
-                continue;
-            }
-
-            let target = game.balls.find(candidate => candidate.id === projectile.hornetTargetId && candidate.isAlive());
-            if (!target || !game.areEnemies(owner, target) || target.isUntargetable(now)) {
-                target = null;
-                let bestDistance = projectile.hornetHomingRange || W.hornet.BEE_HOMING_RANGE;
-                for (const candidate of game.balls) {
-                    if (!candidate.isAlive()) continue;
-                    if (!game.areEnemies(owner, candidate)) continue;
-                    if (candidate.isUntargetable(now)) continue;
-                    const dx = candidate.pos.x - projectile.pos.x;
-                    const dy = candidate.pos.y - projectile.pos.y;
-                    const distance = Math.hypot(dx, dy);
-                    if (distance < bestDistance) {
-                        bestDistance = distance;
-                        target = candidate;
-                    }
-                }
-                if (target) projectile.hornetTargetId = target.id;
-            }
-
-            if (target) {
-                const desired = new Vector(target.pos.x - projectile.pos.x, target.pos.y - projectile.pos.y);
-                if (desired.magnitude() > 0.001) {
-                    const steering = desired.normalize();
-                    const currentDir = projectile.vel.magnitude() > 0.001
-                        ? projectile.vel.clone().normalize()
-                        : steering.clone();
-                    const blend = Math.max(0, Math.min(1, projectile.hornetHomingStrength || W.hornet.BEE_HOMING_STRENGTH));
-                    const newDir = currentDir.multiply(1 - blend).add(steering.multiply(blend));
-                    projectile.vel = newDir.normalize().multiply(W.hornet.BEE_SPEED);
-                    projectile.rotation = Math.atan2(projectile.vel.y, projectile.vel.x);
-                }
-            } else if (projectile.vel.magnitude() < 0.001) {
-                projectile.vel = new Vector(Math.cos(owner.aimAngle), Math.sin(owner.aimAngle)).multiply(W.hornet.BEE_SPEED);
-            }
         }
 
         if (projectile.type === 'grenadelauncher') {
@@ -194,6 +131,13 @@ export function updateProjectiles(game, now) {
                 projectile.pos.y = game.canvas.height - projectile.size;
                 projectile.vel.y = -Math.abs(projectile.vel.y) * bounceDamping;
             }
+        }
+
+        // Mechanic-driven explosions (e.g., fuseTimer)
+        if (projectile.shouldExplode) {
+            game.triggerExplosion(projectile.pos.x, projectile.pos.y, projectile.splashRadius || 80, projectile.splashMaxDamage || projectile.damage, projectile.ownerId, now, null, projectile.knockbackStrength || 0);
+            game.projectiles.splice(i, 1);
+            continue;
         }
 
         if (projectile.type === 'grenadelauncher' && now >= (projectile.explodeAt || 0)) {
@@ -287,6 +231,12 @@ export function updateProjectiles(game, now) {
             if (projectile.type === 'explosiveflask' || projectile.type === 'pickupexplosiveflask') {
                 game.triggerExplosiveFlask(projectile.pos.x, projectile.pos.y, projectile.ownerId, now, projectile.type === 'pickupexplosiveflask');
             }
+            // Call mechanic onExpire hooks
+            for (const mechanic of projectile.mechanics) {
+                if (mechanic.onExpire) {
+                    mechanic.onExpire(projectile);
+                }
+            }
             game.projectiles.splice(i, 1);
             continue;
         }
@@ -348,6 +298,12 @@ export function updateProjectiles(game, now) {
             if (projectile.type === 'explosiveflask' || projectile.type === 'pickupexplosiveflask') {
                 game.triggerExplosiveFlask(projectile.pos.x, projectile.pos.y, projectile.ownerId, now, projectile.type === 'pickupexplosiveflask');
             }
+            // Call mechanic onExpire hooks
+            for (const mechanic of projectile.mechanics) {
+                if (mechanic.onExpire) {
+                    mechanic.onExpire(projectile);
+                }
+            }
             game.projectiles.splice(i, 1);
             continue;
         }
@@ -369,6 +325,13 @@ export function updateProjectiles(game, now) {
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < ball.radius + projectile.size) {
+                // Call mechanic onHit hooks
+                for (const mechanic of projectile.mechanics) {
+                    if (mechanic.onHit) {
+                        mechanic.onHit(projectile, ball);
+                    }
+                }
+
                 if (shooter && game.areEnemies(shooter, ball) && projectile.type !== 'hornetbee') {
                     trySpawnHornetBee(game, ball, shooter, now);
                 }

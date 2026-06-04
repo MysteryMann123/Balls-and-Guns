@@ -915,6 +915,7 @@ export function ballShooting(game, now) {
                 drag: (shooter.weapon.type === 'grenadelauncher' || shooter.weapon.type === 'lochnload') ? 0.996 : 1,
                 angularVelocity: (shooter.weapon.type === 'grenadelauncher' || shooter.weapon.type === 'lochnload') ? (Math.random() * 0.3 + 0.15) * (Math.random() < 0.5 ? -1 : 1) : 0,
                 aoeRadius: shooter.weapon.type === 'faintaroma' ? W.faintAroma.AOE_RADIUS : undefined,
+                mechanics: shooter.weapon.mechanics || [],
             };
             game.projectiles.push(new Projectile(_projParams));
 

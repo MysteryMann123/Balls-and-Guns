@@ -123,6 +123,13 @@ export function draw(game) {
 
     for (const projectile of game.projectiles) {
         projectile.draw(ctx, game.pistolProjectileImage, game.syringeAmmoImage, game.rocketAmmoImage, game.grenadeAmmoImage, game.arrowProjectileImage, game.crusadersCrossbowProjectileImage, game.explosiveFlaskImage, game.scrumpyBottleImage, game.bunnyProjectileImage, game.magicBulletProjectileImage, game.appleProjectileImage, game.funeralDeadButterfliesPortraitImage, game.sporeImage, game.sporeRoundImage, game.swordSharpenedImage);
+
+        // Call mechanic onDraw hooks
+        for (const mechanic of projectile.mechanics) {
+            if (mechanic.onDraw) {
+                mechanic.onDraw(ctx, projectile);
+            }
+        }
     }
 
     // Aim indicator lines — rendered before balls so ball circle sits on top

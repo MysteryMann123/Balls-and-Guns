@@ -4,7 +4,7 @@ const _meltingLoveHeartImage = new Image();
 _meltingLoveHeartImage.src = 'assets/MeltingLoveHeart.webp';
 
 export class Projectile {
-    constructor({ x, y, targetX, targetY, speed, damage, color, size, ownerId, type = 'bullet', label = '', ...extra }) {
+    constructor({ x, y, targetX, targetY, speed, damage, color, size, ownerId, type = 'bullet', label = '', mechanics = [], ...extra }) {
         this.pos = new Vector(x, y);
         this.damage = damage;
         this.color = color;
@@ -13,6 +13,7 @@ export class Projectile {
         this.type = type;
         this.label = label;
         this.distanceTraveled = 0;
+        this.mechanics = mechanics;
         Object.assign(this, extra);
 
         const dx = targetX - x;
@@ -29,6 +30,13 @@ export class Projectile {
 
         if (!this.maxTravelDistance) {
             this.maxTravelDistance = Math.max(1, distance);
+        }
+
+        // Initialize mechanics
+        for (const mechanic of this.mechanics) {
+            if (mechanic.onSpawn) {
+                mechanic.onSpawn(this);
+            }
         }
     }
 

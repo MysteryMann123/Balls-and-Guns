@@ -1,5 +1,6 @@
 import * as Afterburn from '../mechanics/shared/afterburn.js';
 import * as DualForm from '../mechanics/patterns/dualForm.js';
+import * as HornetMechanic from '../mechanics/unique/hornet.js';
 
 // --- General ---
 const reloadMs                  = 2200;
@@ -109,6 +110,10 @@ const hornet = {
         pelletsPerShot,
         spreadAngle,
     },
+
+    mechanics: [
+        HornetMechanic.create(),
+    ],
 
     getInfo(weaponInstance, now) {
         const form = weaponInstance.hornetForm || 'rifle';

@@ -1,3 +1,5 @@
+import * as SoundOfStarMechanic from '../mechanics/unique/soundOfStar.js';
+
 // --- Ammo & Timing ---
 const maxAmmo                  = 6;
 const chargeMs                 = 400;
@@ -91,6 +93,10 @@ const soundOfStar = {
         pelletsPerShot,
         spreadAngle,
     },
+
+    mechanics: [
+        SoundOfStarMechanic.create(),
+    ],
 
     getInfo(weaponInstance, now) {
         const chargesText = `${weaponInstance.ammo}/${weaponInstance.maxAmmo}`;

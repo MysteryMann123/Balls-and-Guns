@@ -74,6 +74,12 @@ const looseCannon = {
     knockback:              Knockback.create(knockbackStrength),
     fuseTimer:              FuseTimer.create(fuseTimeMs, minFuseMs),
     doubledonk:             Doubledonk.create(doubledonkWindowMs),
+    mechanics: [
+        SplashAoe.create(splashRadius),
+        Knockback.create(knockbackStrength),
+        FuseTimer.create(fuseTimeMs, minFuseMs),
+        Doubledonk.create(doubledonkWindowMs),
+    ],
 
     // Config
     COLOR:                  color,

@@ -107,7 +107,7 @@ export function fireHornetShotgunRay(game, shooter, angle, now, damageMultiplier
     const dirX = Math.cos(angle);
     const dirY = Math.sin(angle);
 
-    let closestHitDistance = W.hornet.W.shotgun.HITSCAN_RANGE;
+    let closestHitDistance = W.hornet.SHOTGUN_HITSCAN_RANGE;
     let hitBall = null;
 
     for (const target of game.balls) {
@@ -124,7 +124,7 @@ export function fireHornetShotgunRay(game, shooter, angle, now, damageMultiplier
             target.pos.x,
             target.pos.y,
             target.radius,
-            W.hornet.W.shotgun.HITSCAN_RANGE
+            W.hornet.SHOTGUN_HITSCAN_RANGE
         );
 
         if (hitDistance !== null && hitDistance < closestHitDistance) {
@@ -134,8 +134,8 @@ export function fireHornetShotgunRay(game, shooter, angle, now, damageMultiplier
     }
 
     if (hitBall && !hitBall.isUberActive(now)) {
-        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / W.hornet.W.shotgun.HITSCAN_RANGE));
-        const baseDamage = W.hornet.W.shotgun.DAMAGE_MAX - (W.hornet.W.shotgun.DAMAGE_MAX - W.hornet.W.shotgun.DAMAGE_MIN) * falloffRatio;
+        const falloffRatio = Math.max(0, Math.min(1, closestHitDistance / W.hornet.SHOTGUN_HITSCAN_RANGE));
+        const baseDamage = W.hornet.SHOTGUN_DAMAGE_MAX - (W.hornet.SHOTGUN_DAMAGE_MAX - W.hornet.SHOTGUN_DAMAGE_MIN) * falloffRatio;
         hitBall.takeDamage(baseDamage * damageMultiplier, 'generic', 'hornet');
         trySpawnHornetBee(game, hitBall, shooter, now);
     }

@@ -7,16 +7,16 @@ export function create(baseTimeMs, minTimeMs = 200) {
         minTimeMs,
 
         // Initialize fuse on projectile creation
-        initFuse(projectile) {
+        onSpawn(projectile) {
             projectile.fuseStartTime = performance.now();
             projectile.fuseTimeMs = baseTimeMs;
             projectile.fuseRemaining = baseTimeMs;
             projectile.hasDetonated = false;
-            projectile.fusePercent = 1.0; // 1.0 = full, 0.0 = depleted
+            projectile.fusePercent = 1.0;
         },
 
         // Update fuse countdown each frame
-        updateFuse(projectile, deltaMs) {
+        onUpdate(projectile, deltaMs, game, now) {
             if (projectile.hasDetonated) return;
 
             const elapsed = performance.now() - projectile.fuseStartTime;
@@ -31,28 +31,39 @@ export function create(baseTimeMs, minTimeMs = 200) {
         },
 
         // Mark projectile for explosion on impact
-        onImpact(projectile) {
+        onHit(projectile, target) {
             projectile.hasDetonated = true;
             projectile.shouldExplode = true;
         },
 
-        // Cooking: reduce fuse time by holding fire
-        cookFuse(reduceByMs) {
-            baseTimeMs = Math.max(minTimeMs, baseTimeMs - reduceByMs);
+        // Cleanup on projectile destruction
+        onExpire(projectile) {
+            projectile.hasDetonated = true;
+            projectile.shouldExplode = true;
         },
 
-        // Reset to base time
-        resetFuse() {
-            baseTimeMs = arguments[0] || baseTimeMs;
-        },
+        // Draw fuse countdown visual
+        onDraw(ctx, projectile) {
+            if (!projectile.fusePercent) return;
 
-        // Get fuse info for rendering
-        getFuseInfo(projectile) {
-            return {
-                remaining: projectile.fuseRemaining,
-                percent: projectile.fusePercent,
-                isDetonating: projectile.hasDetonated,
-            };
+            const percent = projectile.fusePercent;
+            const color = percent > 0.5 ? '#00ff00' : percent > 0.25 ? '#ffff00' : '#ff0000';
+
+            // Draw countdown circle
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(projectile.pos.x, projectile.pos.y - 15, 5, 0, Math.PI * 2 * percent);
+            ctx.stroke();
+
+            // Draw fuse time text
+            ctx.fillStyle = color;
+            ctx.font = '10px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${Math.ceil(projectile.fuseRemaining / 100) / 10}s`, projectile.pos.x, projectile.pos.y - 20);
+            ctx.restore();
         },
     };
 }
