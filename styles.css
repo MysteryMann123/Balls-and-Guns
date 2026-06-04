@@ -1090,37 +1090,62 @@ canvas {
 }
 .detail-full-panel[data-risk="TAV"] .detail-header { border-left-color: #ffd700; }
 
-/* TAV Rainbow animation - makes ALEPH look boring */
-@keyframes rainbowShift {
-    0% { filter: hue-rotate(0deg) brightness(1.1); }
-    25% { filter: hue-rotate(90deg) brightness(1.15); }
-    50% { filter: hue-rotate(180deg) brightness(1.1); }
-    75% { filter: hue-rotate(270deg) brightness(1.15); }
-    100% { filter: hue-rotate(360deg) brightness(1.1); }
+/* TAV Rainbow animation - cycles through spectrum */
+@keyframes rainbowBorder {
+    0% { border-color: #ff0000; box-shadow: 0 0 12px #ff0000, inset 0 0 8px rgba(255, 0, 0, 0.2); }
+    16.67% { border-color: #ff7f00; box-shadow: 0 0 12px #ff7f00, inset 0 0 8px rgba(255, 127, 0, 0.2); }
+    33.33% { border-color: #ffff00; box-shadow: 0 0 12px #ffff00, inset 0 0 8px rgba(255, 255, 0, 0.2); }
+    50% { border-color: #00ff00; box-shadow: 0 0 12px #00ff00, inset 0 0 8px rgba(0, 255, 0, 0.2); }
+    66.67% { border-color: #0000ff; box-shadow: 0 0 12px #0000ff, inset 0 0 8px rgba(0, 0, 255, 0.2); }
+    83.33% { border-color: #9400d3; box-shadow: 0 0 12px #9400d3, inset 0 0 8px rgba(148, 0, 211, 0.2); }
+    100% { border-color: #ff0000; box-shadow: 0 0 12px #ff0000, inset 0 0 8px rgba(255, 0, 0, 0.2); }
 }
 
-@keyframes rainbowGlow {
-    0%, 100% {
-        text-shadow: 0 0 8px #ffd700, 0 0 16px rgba(255, 215, 0, 0.6);
-        transform: scale(1);
+@keyframes rainbowTextGlow {
+    0% {
+        color: #ff0000;
+        text-shadow: 0 0 8px #ff0000, 0 0 16px rgba(255, 0, 0, 0.6);
+    }
+    16.67% {
+        color: #ff7f00;
+        text-shadow: 0 0 8px #ff7f00, 0 0 16px rgba(255, 127, 0, 0.6);
+    }
+    33.33% {
+        color: #ffff00;
+        text-shadow: 0 0 8px #ffff00, 0 0 16px rgba(255, 255, 0, 0.6);
     }
     50% {
-        text-shadow: 0 0 16px #ff1493, 0 0 32px rgba(255, 20, 147, 0.8), 0 0 48px rgba(0, 255, 255, 0.4);
-        transform: scale(1.08);
+        color: #00ff00;
+        text-shadow: 0 0 8px #00ff00, 0 0 16px rgba(0, 255, 0, 0.6);
     }
+    66.67% {
+        color: #0000ff;
+        text-shadow: 0 0 8px #0000ff, 0 0 16px rgba(0, 0, 255, 0.6);
+    }
+    83.33% {
+        color: #9400d3;
+        text-shadow: 0 0 8px #9400d3, 0 0 16px rgba(148, 0, 211, 0.6);
+    }
+    100% {
+        color: #ff0000;
+        text-shadow: 0 0 8px #ff0000, 0 0 16px rgba(255, 0, 0, 0.6);
+    }
+}
+
+@keyframes rainbowPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
 }
 
 .stat-chip-tav-rainbow {
-    animation: rainbowShift 4s infinite linear !important,
-               rainbowGlow 3s infinite ease-in-out !important;
-    border-color: #ffd700 !important;
+    animation: rainbowBorder 4s infinite linear,
+               rainbowTextGlow 4s infinite linear,
+               rainbowPulse 2.5s infinite ease-in-out !important;
     border-width: 2px !important;
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5), inset 0 0 12px rgba(255, 215, 0, 0.1);
 }
 
 .stat-chip-tav-rainbow .chip-label {
-    color: #ffd700 !important;
-    text-shadow: 0 0 4px rgba(255, 215, 0, 0.8);
+    animation: rainbowTextGlow 4s infinite linear;
 }
 
 @media (max-width: 700px) {
