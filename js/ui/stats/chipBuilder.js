@@ -11,8 +11,10 @@ export function buildWeaponChips(weapon) {
     const chips = [];
 
     // Base chips - only if property exists
-    if (weapon.MAX_AMMO !== undefined) {
-        chips.push(['Ammo', weapon.MAX_AMMO === Infinity ? '∞' : `${weapon.MAX_AMMO}`]);
+    // Handle both AMMO and MAX_AMMO naming conventions
+    const ammo = weapon.MAX_AMMO !== undefined ? weapon.MAX_AMMO : weapon.AMMO;
+    if (ammo !== undefined) {
+        chips.push(['Ammo', ammo === Infinity ? '∞' : `${ammo}`]);
     }
 
     if (weapon.RELOAD_MS !== undefined && weapon.RELOAD_MS > 0) {
@@ -25,6 +27,7 @@ export function buildWeaponChips(weapon) {
         chips.push(['Fire Interval', `${weapon.FIRE_RATE} ms`]);
     }
 
+    // Handle both DAMAGE_MIN/MAX and single DAMAGE naming conventions
     if (weapon.DAMAGE_MIN !== undefined && weapon.DAMAGE_MAX !== undefined) {
         chips.push(['Damage', `${weapon.DAMAGE_MIN} - ${weapon.DAMAGE_MAX}`]);
     } else if (weapon.DAMAGE !== undefined) {
@@ -39,8 +42,10 @@ export function buildWeaponChips(weapon) {
         chips.push(['Pellets/Shot', `${weapon.PELLETS_PER_SHOT}`]);
     }
 
-    if (weapon.SPREAD_ANGLE !== undefined) {
-        chips.push(['Spread', `${weapon.SPREAD_ANGLE}`]);
+    // Handle both SPREAD_ANGLE and DEVIATION naming conventions
+    const spread = weapon.SPREAD_ANGLE !== undefined ? weapon.SPREAD_ANGLE : weapon.DEVIATION;
+    if (spread !== undefined) {
+        chips.push(['Spread', `${spread}`]);
     }
 
     if (weapon.SPLASH_RADIUS !== undefined) {
