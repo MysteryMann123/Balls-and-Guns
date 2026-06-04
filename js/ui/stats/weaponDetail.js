@@ -17,17 +17,43 @@ const containerSelectors = {
     detailPanel: '.detail-full-panel'
 };
 
+// Map lowercase weapon types (from gameConfig) to camelCase export names (from weapons/index.js)
+const WEAPON_NAME_MAP = {
+    'familybusiness': 'familyBusiness',
+    'sodapopper': 'sodaPopper',
+    'forceanature': 'forceANature',
+    'magicianhat': 'magicianHat',
+    'crusaderscrossbow': 'crusadersCrossbow',
+    'egomagicbullet': 'egoMagicBullet',
+    'egoloneliness': 'egoLoneliness',
+    'paradiselost': 'paradiseLost',
+    'solemnvow': 'solemnVow',
+    'swordsharpened': 'swordSharpened',
+    'egolovehate': 'egoLoveHate',
+    'soundofstar': 'soundOfStar',
+    'tommygun': 'tommyGun',
+    'shortcircuit': 'shortCircuit',
+    'yellowtarge': 'yellowTarge',
+    'rocketlauncher': 'rocketLauncher',
+    'piplauncher': 'pipLauncher',
+    'grenadelauncher': 'grenadeLauncher',
+    'lochnload': 'lochNLoad',
+    'beggersbazooka': 'beggarsBazooka',
+    'directhit': 'directHit',
+    'nearmissed': 'nearMissed',
+    'rocketjumper': 'rocketJumper',
+    'crimsonscar': 'crimsonScar',
+    'egopinks': 'egoPinks',
+    'egosoda': 'egoSoda',
+    'faintaroma': 'faintAroma'
+};
+
 function renderWeaponDetail(type) {
     const weapon = new Weapon(type);
 
-    // Get weapon module (e.g., Weapons.pistol), handling camelCase variations
-    let weaponModule = Weapons[type];
-    if (!weaponModule) {
-        // Try camelCase version (e.g., 'soundofstar' → 'soundOfStar')
-        const camelCased = type.split(/[-_]/).reduce((acc, word, i) =>
-            acc + (i === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)), '');
-        weaponModule = Weapons[camelCased];
-    }
+    // Get weapon module, using name mapping for camelCase exports
+    const exportName = WEAPON_NAME_MAP[type] || type;
+    const weaponModule = Weapons[exportName];
 
     // Get DOM elements
     const titleEl = document.querySelector(containerSelectors.title);
