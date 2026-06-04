@@ -36,7 +36,7 @@ const WEAPON_NAME_MAP = {
     'piplauncher': 'pipLauncher',
     'grenadelauncher': 'grenadeLauncher',
     'lochnload': 'lochNLoad',
-    'beggersbazooka': 'beggarsBazooka',
+    'beggersbazooka': 'beggersBasooka',
     'directhit': 'directHit',
     'nearmissed': 'nearMissed',
     'rocketjumper': 'rocketJumper',
