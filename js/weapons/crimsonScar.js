@@ -95,11 +95,11 @@ const crimsonScar = {
 
     riskClass: 'WAW',
 
-    description: [
-        'WAW E.G.O weapon — switches between gun and blade depending on distance (threshold: 100px). Grants +40% move speed but takes +45% damage.',
-        'Gun mode: fires 3 bullets in rapid burst (80ms between shots, 1000ms between bursts). 50–60 damage per bullet. 6 shots total, reloads in 1.8s.',
-        'Blade mode (melee, unlimited): 70–100 damage per swing. Inflicts bleed: 20–25 damage every 500ms for 3s.',
-        'Hits with this weapon mark the target (shown as a red target icon) for 20s. CrimsonScar wielders deal +50% damage to marked targets.',
+    description: (w) => [
+        `WAW E.G.O weapon — switches between gun and blade depending on distance (threshold: ${w.RANGE_SWITCH_DISTANCE}px). Grants +${Math.round(w.SPEED_BONUS * 100)}% move speed but takes +${Math.round(w.DAMAGE_TAKEN_PENALTY * 100)}% damage.`,
+        `Gun mode: fires ${w.BURST_COUNT} bullets in rapid burst (${w.BURST_INTERVAL_MS}ms between shots, ${w.FIRE_RATE}ms between bursts). ${w.GUN_DAMAGE_MIN}–${w.GUN_DAMAGE_MAX} damage per bullet. ${w.GUN_AMMO} shots total, reloads in ${(w.RELOAD_MS / 1000).toFixed(1)}s.`,
+        `Blade mode (melee, unlimited): ${w.BLADE_DAMAGE_MIN}–${w.BLADE_DAMAGE_MAX} damage per swing. Inflicts bleed: ${w.BLEED_DAMAGE_MIN}–${w.BLEED_DAMAGE_MAX} damage every ${(w.BLEED_INTERVAL_MS / 1000).toFixed(0)}s for ${(w.BLEED_DURATION_MS / 1000).toFixed(0)}s.`,
+        `Hits with this weapon mark the target (shown as a red target icon) for ${(w.MARK_DURATION_MS / 1000).toFixed(0)}s. CrimsonScar wielders deal +${Math.round(w.MARK_DAMAGE_BONUS * 100)}% damage to marked targets.`,
         'Speed advantage and burst damage reward aggressive play; the damage penalty punishes passive positioning.'
     ],
 

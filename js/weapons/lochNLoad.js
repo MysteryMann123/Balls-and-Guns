@@ -60,12 +60,12 @@ const lochNLoad = {
     image: 'assets/LochnLoad.png',
     DISPLAY_NAME:      'LOCH-N-LOAD',
 
-    description: [
+    description: (w) => [
         'Arcing grenades that explode ONLY on direct hit — no bounce, no timer detonation.',
-        'Direct impact damage: 125 (same as Grenade Launcher).',
-        '+25% bonus damage to targets moving faster than 50% of their max speed.',
-        'Faster projectile speed (14 vs 10) and quicker reload.',
-        'Smaller splash radius: 66px (vs 88px).',
+        `Direct impact damage: ${w.DIRECT_DAMAGE} (same as Grenade Launcher).`,
+        `+${Math.round(w.FAST_MOVE_BONUS * 100)}% bonus damage to targets moving faster than ${Math.round(w.FAST_SPEED_RATIO * 100)}% of their max speed.`,
+        `Faster projectile speed (${w.SPEED} vs 10) and quicker reload.`,
+        `Smaller splash radius: ${w.SPLASH_RADIUS}px (vs 88px).`,
         'Missing the target destroys the grenade — no second chances from bouncing.'
     ],
 };

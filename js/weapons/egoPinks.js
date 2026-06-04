@@ -57,9 +57,9 @@ const egoPinks = {
 
     riskClass: 'ALEPH',
 
-    description: [
+    description: (w) => [
         'ALEPH E.G.O weapon — a reskinned Machina that fires piercing rounds with signature hot-pink tracer rays instead of team-colored tracers.',
-        'Damage per shot: 175–250. Pierces through multiple targets; ignores repeated hits on the same ball.',
+        `Damage per shot: ${w.DAMAGE_MIN}–${w.DAMAGE_MAX}. Pierces through multiple targets; ignores repeated hits on the same ball.`,
         'The tracer color is always pink regardless of team — a deliberate stylistic distinction from the standard Machina.'
     ],
 };

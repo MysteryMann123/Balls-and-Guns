@@ -73,12 +73,12 @@ const hairspray = {
 
     riskClass: 'ZAYIN',
 
-    description: [
+    description: (w) => [
         'Fires a slow cloud of hairspray that drifts forward and lingers at max range.',
-        'Each tick deals 60–100 damage. Tick interval: 300ms.',
-        'Near zone (0–92px): 1 tick max. Middle zone (–184px): 3 ticks max. Far zone: 2 ticks max.',
+        `Each tick deals ${w.TICK_DAMAGE_MIN}–${w.TICK_DAMAGE_MAX} damage. Tick interval: ${w.TICK_INTERVAL_MS}ms.`,
+        `Near zone (0–${w.NEAR_ZONE_END}px): ${w.NEAR_MAX_TICKS} tick max. Middle zone (–${w.MID_ZONE_END}px): ${w.MID_MAX_TICKS} ticks max. Far zone: ${w.FAR_MAX_TICKS} ticks max.`,
         'The cloud can hit multiple enemies simultaneously as it passes through.',
-        'Cloud radius: 50px. Max range: 280px. Lingers at end for 600ms.'
+        `Cloud radius: ${w.CLOUD_RADIUS}px. Max range: ${w.MAX_RANGE}px. Lingers at end for ${w.LINGER_MS}ms.`
     ],
 };
 

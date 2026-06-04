@@ -55,11 +55,11 @@ const grenadeLauncher = {
     image: 'assets/Grenade_Launcher.png',
     DISPLAY_NAME:      'GRENADE',
 
-    description: [
+    description: (w) => [
         'Arcing grenades that bounce and explode after delay or manual impact.',
-        'Direct impact damage: 125.',
-        'Splash radius: 88px with falloff.',
-        'Auto-detonation timer: 1.25s.',
+        `Direct impact damage: ${w.DIRECT_DAMAGE}.`,
+        `Splash radius: ${w.SPLASH_RADIUS}px with falloff.`,
+        `Auto-detonation timer: ${(w.EXPLODE_DELAY_MS / 1000).toFixed(2)}s.`,
         'Bounces and loses momentum while traveling, then detonates on timer or impact.',
         'Can self-damage from own splash if standing in blast area.'
     ],

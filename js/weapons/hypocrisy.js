@@ -53,11 +53,11 @@ const hypocrisy = {
 
     riskClass: 'WAW',
 
-    description: [
-        'WAW E.G.O weapon — fires an arrow that starts slow (1150ms) and ramps down to 50ms with continuous fire (100ms per second reduction). Resets after 4s idle.',
-        'Damage per shot: 23–30. Ammo: 50 shots, reloads in 2.5s.',
-        'Damage is multiplied by up to x2 at the slowest fire rate, scaling linearly down to x1 at the fastest (50ms).',
-        'When the wielder takes damage, 8% of max ammo (4 arrows) is refunded. If reloading, the reload is cancelled.',
+    description: (w) => [
+        `WAW E.G.O weapon — fires an arrow that starts slow (${w.FIRE_RATE_BASE}ms) and ramps down to ${w.FIRE_RATE_MIN}ms with continuous fire (${w.RAMP_RATE_MS_PER_SEC}ms per second reduction). Resets after ${(w.IDLE_RESET_MS / 1000).toFixed(0)}s idle.`,
+        `Damage per shot: ${w.DAMAGE_MIN}–${w.DAMAGE_MAX}. Ammo: ${w.AMMO} shots, reloads in ${(w.RELOAD_MS / 1000).toFixed(1)}s.`,
+        `Damage is multiplied by up to x${w.DAMAGE_MULTIPLIER_MAX} at the slowest fire rate, scaling linearly down to x1 at the fastest (${w.FIRE_RATE_MIN}ms).`,
+        `When the wielder takes damage, ${Math.round(w.AMMO_REFUND_RATIO * 100)}% of max ammo (${Math.floor(w.AMMO * w.AMMO_REFUND_RATIO)} arrows) is refunded. If reloading, the reload is cancelled.`,
         'Rewards patience and aggression simultaneously: slow deliberate fire hits hardest, but sustained fire and tanking shots keeps ammo flowing.'
     ],
 
