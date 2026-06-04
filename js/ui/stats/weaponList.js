@@ -1,4 +1,4 @@
-import { START_WEAPON_OPTIONS } from '../gameConfig.js';
+import { START_WEAPON_OPTIONS } from '../../gameConfig.js';
 import { renderWeaponDetail } from './weaponDetail.js';
 import { formatLabel, TYPE_IMAGES } from './utility.js';
 

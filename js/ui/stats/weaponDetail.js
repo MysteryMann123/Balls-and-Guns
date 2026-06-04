@@ -1,6 +1,6 @@
-import * as Weapons from '../weapons/index.js';
-import { Weapon } from '../weapon.js';
-import * as C from '../constants.js';
+import * as Weapons from '../../weapons/index.js';
+import { Weapon } from '../../weapon.js';
+import * as C from '../../constants.js';
 import { buildWeaponChips } from './chipBuilder.js';
 import { TYPE_IMAGES } from './utility.js';
 

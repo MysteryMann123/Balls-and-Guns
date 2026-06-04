@@ -1,4 +1,4 @@
-import * as C from '../constants.js';
+import * as C from '../../constants.js';
 
 function formatLabel(value) {
     if (value === 'yellowtarge') return "Chargin' Targe";

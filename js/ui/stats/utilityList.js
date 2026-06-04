@@ -1,4 +1,4 @@
-import { DROP_UTILITY_TYPES } from '../gameConfig.js';
+import { DROP_UTILITY_TYPES } from '../../gameConfig.js';
 import { renderUtilityDetail } from './utilityDetail.js';
 import { formatLabel, TYPE_IMAGES } from './utility.js';
 

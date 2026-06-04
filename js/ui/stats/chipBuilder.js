@@ -1,5 +1,5 @@
-import { Weapon } from '../weapon.js';
-import * as C from '../constants.js';
+import { Weapon } from '../../weapon.js';
+import * as C from '../../constants.js';
 import { toMsText } from './utility.js';
 import { makeChip } from './riskClass.js';
 
