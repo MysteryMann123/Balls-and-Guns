@@ -131,11 +131,11 @@ const UTILITY_STATS = {
         subtitle: 'Utility Drop',
         chips: [
             ['Effect', 'Refill + Double Shot'],
-            ['Double Shot Duration', `${(C.AMMO_CRATE_DOUBLE_SHOT_MS / 1000).toFixed(0)}s`]
+            ['Double Shot Duration', `${(ammoico.DOUBLE_SHOT_MS / 1000).toFixed(0)}s`]
         ],
         notes: [
             'Fully restores ammo for the active weapon on pickup.',
-            `For ${C.AMMO_CRATE_DOUBLE_SHOT_MS / 1000}s after pickup, every shot fires a second projectile at a slight spread angle.`,
+            `For ${ammoico.DOUBLE_SHOT_MS / 1000}s after pickup, every shot fires a second projectile at a slight spread angle.`,
             'Works for all projectile weapons. Hitscan weapons (shotgun, widowmaker, etc.) also fire a duplicate ray.'
         ]
     },
@@ -143,13 +143,13 @@ const UTILITY_STATS = {
         title: 'Health Pack',
         subtitle: 'Utility Drop',
         chips: [
-            ['Instant Heal', `${C.HEALTHICO_HEAL} HP`],
-            ['Regen', `+${C.HEALTHICO_REGEN_PER_TICK} HP / ${C.HEALTHICO_REGEN_INTERVAL_MS / 1000}s`],
-            ['Regen Duration', `${C.HEALTHICO_REGEN_DURATION_MS / 1000}s`],
+            ['Instant Heal', `${healthico.HEAL} HP`],
+            ['Regen', `+${healthico.REGEN_PER_TICK} HP / ${healthico.REGEN_INTERVAL_MS / 1000}s`],
+            ['Regen Duration', `${healthico.REGEN_DURATION_MS / 1000}s`],
         ],
         notes: [
-            `Instantly heals ${C.HEALTHICO_HEAL} HP on pickup.`,
-            `Then regenerates +${C.HEALTHICO_REGEN_PER_TICK} HP every ${C.HEALTHICO_REGEN_INTERVAL_MS / 1000}s for ${C.HEALTHICO_REGEN_DURATION_MS / 1000}s (${C.HEALTHICO_REGEN_PER_TICK * (C.HEALTHICO_REGEN_DURATION_MS / C.HEALTHICO_REGEN_INTERVAL_MS)} HP total).`,
+            `Instantly heals ${healthico.HEAL} HP on pickup.`,
+            `Then regenerates +${healthico.REGEN_PER_TICK} HP every ${healthico.REGEN_INTERVAL_MS / 1000}s for ${healthico.REGEN_DURATION_MS / 1000}s (${healthico.REGEN_PER_TICK * (healthico.REGEN_DURATION_MS / healthico.REGEN_INTERVAL_MS)} HP total).`,
         ]
     },
     ubercharge: {
@@ -184,10 +184,10 @@ const UTILITY_STATS = {
         title: 'Explosive Flask',
         subtitle: 'Utility Drop (Consumable)',
         chips: [
-            ['Splash Radius', `${C.EXPLOSIVE_FLASK_SPLASH_RADIUS}`],
-            ['Debuff Duration', `${(C.EXPLOSIVE_FLASK_EFFECT_DURATION_MS / 1000).toFixed(1)}s`],
-            ['Slow', `x${C.EXPLOSIVE_FLASK_SLOW_MULTIPLIER.toFixed(2)} move speed`],
-            ['Vulnerability', `x${C.EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER.toFixed(2)} explosive damage received`]
+            ['Splash Radius', `${explosiveFlask.SPLASH_RADIUS}`],
+            ['Debuff Duration', `${(explosiveFlask.EFFECT_DURATION_MS / 1000).toFixed(1)}s`],
+            ['Slow', `x${explosiveFlask.SLOW_MULTIPLIER.toFixed(2)} move speed`],
+            ['Vulnerability', `x${explosiveFlask.PICKUP_DAMAGE_MULTIPLIER.toFixed(2)} explosive damage received`]
         ],
         notes: [
             'Auto-thrown at the nearest enemy when picked up.',
@@ -198,10 +198,10 @@ const UTILITY_STATS = {
         title: 'Scrumpy Bottle',
         subtitle: 'Utility Drop (Consumable)',
         chips: [
-            ['Throw Damage', `${C.SCRUMPY_BOTTLE_THROW_DAMAGE_MIN} - ${C.SCRUMPY_BOTTLE_THROW_DAMAGE_MAX}`],
-            ['Puddle Damage/Tick', `${C.SCRUMPY_PUDDLE_DAMAGE_MIN} - ${C.SCRUMPY_PUDDLE_DAMAGE_MAX}`],
-            ['Puddle Duration', `${(C.SCRUMPY_PUDDLE_DURATION_MS / 1000).toFixed(1)}s`],
-            ['Resistance', `${Math.round(C.SCRUMPY_DAMAGE_REDUCTION * 100)}% reduced incoming damage`]
+            ['Throw Damage', `${scrumpyBottle.THROW_DAMAGE_MIN} - ${scrumpyBottle.THROW_DAMAGE_MAX}`],
+            ['Puddle Damage/Tick', `${scrumpyBottle.PUDDLE_DAMAGE_MIN} - ${scrumpyBottle.PUDDLE_DAMAGE_MAX}`],
+            ['Puddle Duration', `${(scrumpyBottle.PUDDLE_DURATION_MS / 1000).toFixed(1)}s`],
+            ['Resistance', `${Math.round(scrumpyBottle.DAMAGE_REDUCTION * 100)}% reduced incoming damage`]
         ],
         notes: [
             'Auto-thrown at the nearest enemy when picked up.',
@@ -212,7 +212,7 @@ const UTILITY_STATS = {
         title: 'Bombanomicron',
         subtitle: 'Utility Drop (Consumable)',
         chips: [
-            ['Projectile Count', `${C.BOMBANOMICRON_PROJECTILE_MIN} - ${C.BOMBANOMICRON_PROJECTILE_MAX}`],
+            ['Projectile Count', `${bombanomicron.PROJECTILE_MIN} - ${bombanomicron.PROJECTILE_MAX}`],
             ['Payload Mix', 'Scrumpy, grenades, rockets'],
             ['Targeting', 'Enemy cluster area'],
             ['Damage Type', 'Explosive']
