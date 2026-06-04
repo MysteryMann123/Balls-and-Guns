@@ -53,7 +53,6 @@ export const START_WEAPON_OPTIONS = [
     'yellowtarge',
     'grenadelauncher',
     'lochnload',
-    'loosecannon',
     'faintaroma',
     'hairspray',
     'adoration',
