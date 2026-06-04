@@ -8,6 +8,12 @@ function renderWeaponList(listEl) {
     for (const type of START_WEAPON_OPTIONS) {
         const button = document.createElement('button');
         button.className = 'list-item';
+
+        // Mark Dealer card for TAV rainbow animation
+        if (type === 'dealer') {
+            button.classList.add('list-item-tav');
+        }
+
         const label = formatLabel(type);
 
         // Add thumbnail and label

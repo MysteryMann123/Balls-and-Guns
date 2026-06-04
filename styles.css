@@ -825,6 +825,22 @@ canvas {
     filter: none;
 }
 
+/* TAV rainbow effect on Dealer card */
+.list-item-tav {
+    animation: rainbowBorder 4s infinite linear !important;
+    border-width: 3px !important;
+}
+
+.list-item-tav:hover {
+    animation: rainbowBorder 4s infinite linear;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.75), 0 0 0 2px currentColor !important;
+}
+
+.list-item-tav.active {
+    animation: rainbowBorder 4s infinite linear !important;
+    box-shadow: 0 0 20px currentColor, 0 0 40px rgba(255, 0, 0, 0.5) !important;
+}
+
 .list-thumb-wrap {
     width: 66px;
     height: 66px;
@@ -1083,12 +1099,24 @@ canvas {
 }
 .detail-full-panel[data-risk="ALEPH"] .detail-header { border-left-color: #f03333; }
 
-.detail-full-panel[data-risk="TAV"] {
-    --glow-color: rgba(255, 215, 0, 0.8);
-    --glow-soft:  rgba(255, 215, 0, 0.3);
-    border-color: rgba(255, 215, 0, 0.7);
+@keyframes rainbowPanelBorder {
+    0% { border-color: #ff0000; box-shadow: inset 0 0 0 1px #ff0000, 0 0 20px #ff0000; }
+    16.67% { border-color: #ff7f00; box-shadow: inset 0 0 0 1px #ff7f00, 0 0 20px #ff7f00; }
+    33.33% { border-color: #ffff00; box-shadow: inset 0 0 0 1px #ffff00, 0 0 20px #ffff00; }
+    50% { border-color: #00ff00; box-shadow: inset 0 0 0 1px #00ff00, 0 0 20px #00ff00; }
+    66.67% { border-color: #0000ff; box-shadow: inset 0 0 0 1px #0000ff, 0 0 20px #0000ff; }
+    83.33% { border-color: #9400d3; box-shadow: inset 0 0 0 1px #9400d3, 0 0 20px #9400d3; }
+    100% { border-color: #ff0000; box-shadow: inset 0 0 0 1px #ff0000, 0 0 20px #ff0000; }
 }
-.detail-full-panel[data-risk="TAV"] .detail-header { border-left-color: #ffd700; }
+
+.detail-full-panel[data-risk="TAV"] {
+    animation: rainbowPanelBorder 4s infinite linear, ego-glow-pulse 2.8s ease-in-out infinite !important;
+    border: 2px solid;
+}
+.detail-full-panel[data-risk="TAV"] .detail-header {
+    animation: rainbowBorder 4s infinite linear;
+    border-left: 3px solid;
+}
 
 /* TAV Rainbow animation - cycles through spectrum */
 @keyframes rainbowBorder {
