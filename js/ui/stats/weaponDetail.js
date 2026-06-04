@@ -2,6 +2,7 @@ import * as Weapons from '../../weapons/index.js';
 import { Weapon } from '../../weapon.js';
 import * as C from '../../constants.js';
 import { buildWeaponChips } from './chipBuilder.js';
+import { makeChip } from './riskClass.js';
 import { TYPE_IMAGES } from './utility.js';
 
 const containerSelectors = {
@@ -56,6 +57,12 @@ function renderWeaponDetail(type) {
 
     // Build and render chips
     const statChips = buildWeaponChips(type);
+
+    // Add risk class chip if weapon has riskClass
+    if (weaponModule?.riskClass) {
+        statChips.push(makeChip(weaponModule.riskClass));
+    }
+
     chipsEl.innerHTML = '';
     for (const chipData of statChips) {
         const chip = document.createElement('div');
@@ -75,7 +82,7 @@ function renderWeaponDetail(type) {
 
     if (weaponModule?.description) {
         if (typeof weaponModule.description === 'function') {
-            description = weaponModule.description(weapon);
+            description = weaponModule.description(weaponModule);
         } else if (Array.isArray(weaponModule.description)) {
             description = weaponModule.description;
         }

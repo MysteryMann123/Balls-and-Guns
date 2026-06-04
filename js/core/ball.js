@@ -4,24 +4,15 @@ import {
     BALL_MIN_SPEED,
     REACTION_DELAY_MS,
 } from '../gameConfig.js';
+import { PICKUP_DELAY_MS } from '../utilities/constants.js';
 import {
-    CRITICAL_DAMAGE_MULTIPLIER,
-    CRITICAL_DURATION_MS,
-    CRITICAL_HEAL_PER_SEC,
-    DEAD_RINGER_DAMAGE_REDUCTION,
-    DEAD_RINGER_DURATION_MS,
-    DEAD_RINGER_HEAL_MAX_HP_RATIO,
-    DEAD_RINGER_PICKUP_COOLDOWN_MS,
-    DEAD_RINGER_SPEED_BOOST,
-    HEALTHICO_REGEN_PER_TICK,
-    HEALTHICO_REGEN_INTERVAL_MS,
-    HEALTHICO_REGEN_DURATION_MS,
-    PICKUP_DELAY_MS,
-    SCRUMPY_DAMAGE_REDUCTION,
-    SPEED_BOOST_PERMANENT,
-    UBERCHARGE_DURATION_MS,
-    UBERCHARGE_HEAL_PER_SEC,
-} from '../pickupConstants.js';
+    critical,
+    deadRinger,
+    healthico,
+    scrumpyBottle,
+    speed,
+    ubercharge,
+} from '../utilities/items/index.js';
 import * as W from '../weapons/index.js';
 import { PhysicsEngine } from './physics.js';
 import { Vector } from './vector.js';
@@ -92,8 +83,8 @@ export class Ball {
         this.healthRegen = {
             until: 0,
             nextTickAt: 0,
-            perTick: HEALTHICO_REGEN_PER_TICK,
-            intervalMs: HEALTHICO_REGEN_INTERVAL_MS
+            perTick: healthico.REGEN_PER_TICK,
+            intervalMs: healthico.REGEN_INTERVAL_MS
         };
         this.sodaHoTs = [];
         this.laetitiaGiftMark = { until: 0 };
@@ -372,13 +363,13 @@ export class Ball {
 
         if (!isParadiseLostAttack && !isHarmonySelfDamage && adjusted > 0 && this.deadRinger.has && now >= this.deadRinger.activeUntil) {
             this.deadRinger.has = false;
-            this.deadRinger.activeUntil = now + DEAD_RINGER_DURATION_MS;
-            this.deadRinger.pickupAvailableAt = now + DEAD_RINGER_PICKUP_COOLDOWN_MS;
-            this.heal(this.maxHP * DEAD_RINGER_HEAL_MAX_HP_RATIO);
+            this.deadRinger.activeUntil = now + deadRinger.DURATION_MS;
+            this.deadRinger.pickupAvailableAt = now + deadRinger.PICKUP_COOLDOWN_MS;
+            this.heal(this.maxHP * deadRinger.HEAL_MAX_HP_RATIO);
             if (this.deadRinger.speedBoostApplied <= 0) {
-                this.deadRinger.speedBoostApplied = DEAD_RINGER_SPEED_BOOST;
-                this.maxSpeed += DEAD_RINGER_SPEED_BOOST;
-                this.minSpeed += DEAD_RINGER_SPEED_BOOST * 0.2;
+                this.deadRinger.speedBoostApplied = deadRinger.SPEED_BOOST;
+                this.maxSpeed += deadRinger.SPEED_BOOST;
+                this.minSpeed += deadRinger.SPEED_BOOST * 0.2;
             }
 
             const baseDir = this.vel.magnitude() > 0.001 ? this.vel.clone().normalize() : new Vector(Math.cos(this.aimAngle), Math.sin(this.aimAngle));
@@ -393,7 +384,7 @@ export class Ball {
         }
 
         if (!isParadiseLostAttack && !isHarmonySelfDamage && now < this.deadRinger.activeUntil) {
-            adjusted *= (1 - DEAD_RINGER_DAMAGE_REDUCTION);
+            adjusted *= (1 - deadRinger.DAMAGE_REDUCTION);
         }
 
         if (!isParadiseLostAttack && !isHarmonySelfDamage && !ignoreBlessingShield && now < this.blessingShield.until) {
@@ -408,7 +399,7 @@ export class Ball {
         }
 
         if (!isParadiseLostAttack && !isHarmonySelfDamage && now < this.effectTimers.scrumpyResistUntil) {
-            adjusted *= (1 - SCRUMPY_DAMAGE_REDUCTION);
+            adjusted *= (1 - scrumpyBottle.DAMAGE_REDUCTION);
         }
 
         if (sourceWeaponType === 'crimsonscar' && adjusted > 0 && now < this.crimsonScarMarkUntil) {
@@ -515,17 +506,17 @@ export class Ball {
         }
     }
 
-    applyUbercharge(now, durationMs = UBERCHARGE_DURATION_MS) {
+    applyUbercharge(now, durationMs = ubercharge.DURATION_MS) {
         this.effectTimers.uberUntil = Math.max(this.effectTimers.uberUntil, now + durationMs);
     }
 
     applyCritical(now) {
-        this.effectTimers.critUntil = Math.max(this.effectTimers.critUntil, now + CRITICAL_DURATION_MS);
+        this.effectTimers.critUntil = Math.max(this.effectTimers.critUntil, now + critical.DURATION_MS);
     }
 
     applySpeedBoost() {
-        this.maxSpeed += SPEED_BOOST_PERMANENT;
-        this.minSpeed += SPEED_BOOST_PERMANENT * 0.2;
+        this.maxSpeed += speed.PERMANENT_BOOST;
+        this.minSpeed += speed.PERMANENT_BOOST * 0.2;
     }
 
     applyScrumpyResistance(now, durationMs) {
@@ -606,7 +597,7 @@ export class Ball {
         }
     }
 
-    applyHealthRegen(now, perTick = HEALTHICO_REGEN_PER_TICK, durationMs = HEALTHICO_REGEN_DURATION_MS, intervalMs = HEALTHICO_REGEN_INTERVAL_MS) {
+    applyHealthRegen(now, perTick = healthico.REGEN_PER_TICK, durationMs = HEALTHICO_REGEN_DURATION_MS, intervalMs = healthico.REGEN_INTERVAL_MS) {
         this.healthRegen.until = Math.max(this.healthRegen.until, now + durationMs);
         this.healthRegen.perTick = perTick;
         this.healthRegen.intervalMs = intervalMs;
@@ -693,7 +684,7 @@ export class Ball {
     }
 
     getDamageMultiplier(now) {
-        let multiplier = this.isCriticalActive(now) ? CRITICAL_DAMAGE_MULTIPLIER : 1;
+        let multiplier = this.isCriticalActive(now) ? critical.DAMAGE_MULTIPLIER : 1;
         if (now < this.sodaPopper.hypeUntil) {
             multiplier *= W.sodaPopper.HYPE_DAMAGE_MULTIPLIER;
         }
@@ -708,11 +699,11 @@ export class Ball {
         const deltaSeconds = deltaMs / 1000;
 
         if (this.isUberActive(now)) {
-            this.heal(UBERCHARGE_HEAL_PER_SEC * deltaSeconds);
+            this.heal(ubercharge.HEAL_PER_SEC * deltaSeconds);
         }
 
         if (this.isCriticalActive(now)) {
-            this.heal(CRITICAL_HEAL_PER_SEC * deltaSeconds);
+            this.heal(critical.HEAL_PER_SEC * deltaSeconds);
         }
 
         while (this.healthRegen.nextTickAt > 0 && this.healthRegen.nextTickAt <= now && this.healthRegen.nextTickAt <= this.healthRegen.until && this.isAlive()) {

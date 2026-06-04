@@ -3,11 +3,8 @@ import {
     ARENA_WIDTH,
     START_WEAPON_OPTIONS,
 } from './gameConfig.js';
-import {
-    DEAD_RINGER_DECOY_DURATION_MS,
-    DEAD_RINGER_DECOY_SPEED,
-    PICKUP_SPAWN_RATE_MS,
-} from './pickupConstants.js';
+import { deadRinger } from './utilities/items/index.js';
+import { PICKUP_SPAWN_RATE_MS } from './utilities/constants.js';
 import { Ball } from './core/ball.js';
 import { DealerWeapon } from './weapons/dealer.js';
 import {
@@ -41,7 +38,7 @@ import {
     rollRandomDropType as rollRandomDropTypeImpl,
     spawnPickups as spawnPickupsImpl,
     updatePickups as updatePickupsImpl
-} from './gameDrops.js';
+} from './utilities/drops.js';
 import {
     getEnemyClusterCenter as getEnemyClusterCenterImpl,
     getMedigunTarget as getMedigunTargetImpl,
@@ -213,11 +210,11 @@ export class Game {
                     this.deadRingerDecoys.push({
                         x: decoyEvent.x,
                         y: decoyEvent.y,
-                        vx: decoyEvent.vx * DEAD_RINGER_DECOY_SPEED,
-                        vy: decoyEvent.vy * DEAD_RINGER_DECOY_SPEED,
+                        vx: decoyEvent.vx * deadRinger.DECOY_SPEED,
+                        vy: decoyEvent.vy * deadRinger.DECOY_SPEED,
                         color: decoyEvent.color,
                         createdAt: now,
-                        expiresAt: now + DEAD_RINGER_DECOY_DURATION_MS
+                        expiresAt: now + deadRinger.DECOY_DURATION_MS
                     });
                 }
             }

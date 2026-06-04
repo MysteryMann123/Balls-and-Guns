@@ -1,17 +1,14 @@
 import {
     DROP_UTILITY_TYPES,
     DROP_WEAPON_TYPES,
-} from './gameConfig.js';
+} from '../gameConfig.js';
 import {
-    AMMO_CRATE_DOUBLE_SHOT_MS,
-    DEAD_RINGER_PICKUP_COOLDOWN_MS,
-    HEALTHICO_HEAL,
-    HEALTHICO_REGEN_DURATION_MS,
-    HEALTHICO_REGEN_INTERVAL_MS,
-    HEALTHICO_REGEN_PER_TICK,
-} from './pickupConstants.js';
-import { DealerWeapon } from './weapons/dealer.js';
+    ammoico,
+    deadRinger,
+    healthico,
+} from './items/index.js';
 import { Pickup } from './pickup.js';
+import { DealerWeapon } from '../weapons/dealer.js';
 
 export function updatePickups(game) {
     for (let i = game.pickups.length - 1; i >= 0; i--) {
@@ -28,10 +25,10 @@ export function updatePickups(game) {
                             ball.weapon.currentFireRate = ball.weapon.fireRate;
                         }
                     }
-                    ball.ammoCrateDoubleShotUntil = Date.now() + AMMO_CRATE_DOUBLE_SHOT_MS;
+                    ball.ammoCrateDoubleShotUntil = Date.now() + ammoico.DOUBLE_SHOT_MS;
                 } else if (pickup.weaponType === 'healthico') {
-                    ball.heal(HEALTHICO_HEAL);
-                    ball.applyHealthRegen(Date.now(), HEALTHICO_REGEN_PER_TICK, HEALTHICO_REGEN_DURATION_MS, HEALTHICO_REGEN_INTERVAL_MS);
+                    ball.heal(healthico.HEAL);
+                    ball.applyHealthRegen(Date.now(), healthico.REGEN_PER_TICK, healthico.REGEN_DURATION_MS, healthico.REGEN_INTERVAL_MS);
                 } else if (pickup.weaponType === 'ubercharge') {
                     ball.applyUbercharge(Date.now());
                 } else if (pickup.weaponType === 'critical') {
@@ -57,7 +54,7 @@ export function updatePickups(game) {
                 } else if (pickup.weaponType === 'deadringer') {
                     const pickupNow = Date.now();
                     if (ball.giveDeadRinger(pickupNow)) {
-                        ball.deadRinger.pickupAvailableAt = pickupNow + DEAD_RINGER_PICKUP_COOLDOWN_MS;
+                        ball.deadRinger.pickupAvailableAt = pickupNow + deadRinger.PICKUP_COOLDOWN_MS;
                     } else {
                         continue;
                     }

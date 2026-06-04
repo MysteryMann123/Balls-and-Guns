@@ -1,4 +1,4 @@
-import { PICKUP_SPAWN_RATE_MS } from './pickupConstants.js';
+import { PICKUP_SPAWN_RATE_MS } from './utilities/constants.js';
 
 // --- Arena ---
 export const ARENA_WIDTH  = 800;

@@ -1,7 +1,4 @@
-import {
-    DEAD_RINGER_DECOY_DURATION_MS,
-    SCRUMPY_PUDDLE_DURATION_MS,
-} from './pickupConstants.js';
+import { deadRinger, scrumpyBottle } from './utilities/items/index.js';
 
 const _arenaImage = new Image();
 _arenaImage.src = 'assets/Arena.jpg';
@@ -69,7 +66,7 @@ export function draw(game) {
     }
 
     for (const puddle of game.scrumpyPuddles) {
-        const lifeRatio = Math.max(0, Math.min(1, (Date.now() - puddle.createdAt) / SCRUMPY_PUDDLE_DURATION_MS));
+        const lifeRatio = Math.max(0, Math.min(1, (Date.now() - puddle.createdAt) / scrumpyBottle.PUDDLE_DURATION_MS));
         const radius = puddle.initialRadius + (puddle.finalRadius - puddle.initialRadius) * lifeRatio;
         const alpha = 0.3 * (1 - lifeRatio * 0.55);
 
@@ -89,7 +86,7 @@ export function draw(game) {
     }
 
     for (const decoy of game.deadRingerDecoys) {
-        const lifeRatio = Math.max(0, Math.min(1, (Date.now() - decoy.createdAt) / DEAD_RINGER_DECOY_DURATION_MS));
+        const lifeRatio = Math.max(0, Math.min(1, (Date.now() - decoy.createdAt) / deadRinger.DECOY_DURATION_MS));
         const alpha = Math.max(0, 0.95 - lifeRatio);
         ctx.save();
         ctx.globalAlpha = alpha;

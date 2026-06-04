@@ -127,7 +127,6 @@ function buildWeaponChips(type) {
     }
 
     if (type === 'hairspray') {
-        chips.push(makeChip('ZAYIN'));
         chips.push(['Cloud Radius', `${C.HAIRSPRAY_CLOUD_RADIUS}px`]);
         chips.push(['Max Range', `${C.HAIRSPRAY_MAX_RANGE}px`]);
         chips.push(['Tick Damage', `${C.HAIRSPRAY_TICK_DAMAGE_MIN}–${C.HAIRSPRAY_TICK_DAMAGE_MAX}`]);
@@ -136,7 +135,6 @@ function buildWeaponChips(type) {
 
     // EGO Weapons
     if (type === 'hypocrisy') {
-        chips.push(makeChip('WAW'));
         chips.push(['Fire Rate', `${C.HYPOCRISY_FIRE_RATE_BASE}ms → ${C.HYPOCRISY_FIRE_RATE_MIN}ms`]);
         chips.push(['Ramp Speed', `${C.HYPOCRISY_RAMP_RATE_MS_PER_SEC}ms/s reduction`]);
         chips.push(['Idle Reset', `After ${C.HYPOCRISY_IDLE_RESET_MS}ms`]);
@@ -146,7 +144,6 @@ function buildWeaponChips(type) {
     }
 
     if (type === 'crimsonscar') {
-        chips.push(makeChip('WAW'));
         chips.push(['Range Switch', `${C.CRIMSON_SCAR_RANGE_SWITCH_DISTANCE}px`]);
         chips.push(['Gun Burst', `${C.CRIMSON_SCAR_BURST_COUNT}x ${C.CRIMSON_SCAR_GUN_DAMAGE_MIN}–${C.CRIMSON_SCAR_GUN_DAMAGE_MAX} dmg`]);
         chips.push(['Burst Interval', `${C.CRIMSON_SCAR_BURST_INTERVAL_MS}ms / ${C.CRIMSON_SCAR_FIRE_RATE}ms between`]);
@@ -159,20 +156,17 @@ function buildWeaponChips(type) {
     }
 
     if (type === 'egopinks') {
-        chips.push(makeChip('ALEPH'));
         chips.push(['Piercing', 'Passes through all targets']);
         chips.push(['Tracer', 'Fixed hot-pink (not team color)']);
     }
 
     if (type === 'egosoda') {
-        chips.push(makeChip('ZAYIN'));
         chips.push(['Red', `Heals ${C.EGOSODA_RED_HEAL_MIN}–${C.EGOSODA_RED_HEAL_MAX} HP on hit`]);
         chips.push(['Blue', `HoT ${C.EGOSODA_BLUE_HEAL_MIN}–${C.EGOSODA_BLUE_HEAL_MAX} HP / ${C.EGOSODA_BLUE_HEAL_INTERVAL_MS / 1000}s for ${C.EGOSODA_BLUE_HEAL_DURATION_MS / 1000}s`]);
         chips.push(['Purple (10%)', `+${C.EGOSODA_PURPLE_DAMAGE_MIN}–${C.EGOSODA_PURPLE_DAMAGE_MAX} + 0.5–1% maxHP dmg`]);
     }
 
     if (type === 'laetitia') {
-        chips.push(makeChip('HE'));
         chips.push(['Mark Duration', `${C.LAETITIA_MARK_DURATION_MS / 1000}s`]);
         chips.push(['Vulnerability', `x${C.LAETITIA_MARK_VULN_MULTIPLIER}`]);
         chips.push(['Blast Trigger', `≥${Math.round(C.LAETITIA_MARK_TRIGGER_THRESHOLD_RATIO * 100)}% max HP hit`]);
@@ -181,7 +175,6 @@ function buildWeaponChips(type) {
     }
 
     if (type === 'adoration') {
-        chips.push(makeChip('ALEPH'));
         chips.push(['Pierce', `${C.ADORATION_PIERCE_COUNT} enemies`]);
         chips.push(['Slow on Hit', `${Math.round((1 - C.ADORATION_SLOW_MULTIPLIER) * 100)}% for ${C.ADORATION_SLOW_DURATION_MS / 1000}s`]);
         chips.push(['Afterburn on Slowed', `x${C.ADORATION_AFTERBURN_MULTIPLIER} multiplier`]);
@@ -190,7 +183,6 @@ function buildWeaponChips(type) {
     }
 
     if (type === 'faintaroma') {
-        chips.push(makeChip('WAW'));
         chips.push(['Pierce', `${C.FAINT_AROMA_PIERCE_COUNT} enemies`]);
         chips.push(['DOT', `${C.FAINT_AROMA_DOT_DAMAGE_MIN}–${C.FAINT_AROMA_DOT_DAMAGE_MAX} / ${C.FAINT_AROMA_DOT_INTERVAL_MS}ms`]);
         chips.push(['Heal Reduction', `-${C.FAINT_AROMA_HEAL_REDUCTION * 100}%`]);
@@ -216,7 +208,6 @@ function buildWeaponChips(type) {
         chips.push(['Afterburn Duration', toMsText(C.EGO_MAGIC_BULLET_AFTERBURN_DURATION_MS)]);
         chips.push(['Cursed Shot', `Every ${C.EGO_MAGIC_BULLET_CURSE_CYCLE}th shot self-hits`]);
         chips.push(['Self-Hit Damage', `${Math.round(C.EGO_MAGIC_BULLET_SELF_HIT_MULTIPLIER * 100)}% of shot damage`]);
-        chips.push(makeChip('WAW'));
     }
 
     if (type === 'egoloneliness') {
@@ -225,7 +216,6 @@ function buildWeaponChips(type) {
         chips.push(['Tracer Style', 'Grey huntsman-style trail']);
         chips.push(['Slow on Hit', `${Math.round((1 - C.EGO_LONELINESS_SLOW_MULTIPLIER) * 100)}% for ${toMsText(C.EGO_LONELINESS_SLOW_DURATION_MS)}`]);
         chips.push(['Ammo Refund', `${Math.round(C.EGO_LONELINESS_AMMO_REFUND_CHANCE * 100)}% chance to refund 1 ammo`]);
-        chips.push(makeChip('TETH'));
     }
 
     if (type === 'penitence') {
@@ -237,7 +227,6 @@ function buildWeaponChips(type) {
         chips.push(['Ally Heal', `${Math.round(C.PENITENCE_ALLY_HEAL_FROM_DAMAGE * 100)}% of swing damage`]);
         chips.push(['Speed Bonus', `+${Math.round(C.PENITENCE_SPEED_BONUS_RATIO * 100)}%`]);
         chips.push(['Knockback Resist', `${Math.round(C.PENITENCE_KNOCKBACK_RESISTANCE * 100)}%`]);
-        chips.push(makeChip('ZAYIN'));
     }
 
     if (type === 'paradiselost') {
@@ -248,7 +237,6 @@ function buildWeaponChips(type) {
         chips.push(['Adaptive Resist', `${Math.round(C.PARADISE_LOST_ADAPTIVE_RESISTANCE * 100)}% every ${toMsText(C.PARADISE_LOST_ADAPTIVE_INTERVAL_MS)}`]);
         chips.push(['Self HP Drain', `${(C.PARADISE_LOST_SELF_DOT_MIN_RATIO * 100).toFixed(1)}%-${(C.PARADISE_LOST_SELF_DOT_MAX_RATIO * 100).toFixed(1)}% per ${toMsText(C.PARADISE_LOST_SELF_DOT_INTERVAL_MS)}`]);
         chips.push(['CC Resist', 'Move-slow immunity while equipped']);
-        chips.push(makeChip('ALEPH'));
     }
 
     if (type === 'harmony') {
@@ -258,7 +246,6 @@ function buildWeaponChips(type) {
         chips.push(['Damage Bonus', 'x2 only when HP is spent']);
         chips.push(['Haste Bonus', `Up to ${Math.round(C.HARMONY_HASTE_MAX_BONUS * 100)}% on hit`]);
         chips.push(['Haste Duration', toMsText(C.HARMONY_HASTE_DURATION_MS)]);
-        chips.push(makeChip('HE'));
     }
 
     if (type === 'hornet') {
@@ -274,7 +261,6 @@ function buildWeaponChips(type) {
         chips.push(['Afterburn Duration', toMsText(C.HORNET_RIFLE_AFTERBURN_DURATION_MS)]);
         chips.push(['Bee Damage', `${C.HORNET_BEE_DAMAGE_MIN}-${C.HORNET_BEE_DAMAGE_MAX}`]);
         chips.push(['Max Bees', `${C.HORNET_BEE_MAX_ACTIVE} per wielder`]);
-        chips.push(makeChip('WAW'));
     }
 
     if (type === 'egolovehate') {
@@ -289,7 +275,6 @@ function buildWeaponChips(type) {
         chips.push(['White Burn Duration', `${(C.EGO_LOVE_HATE_WHITE_BURN_DURATION_MS / 1000).toFixed(1)}s every ${(C.EGO_LOVE_HATE_WHITE_BURN_INTERVAL_MS / 1000).toFixed(1)}s`]);
         chips.push(['Pale Damage', `${(C.EGO_LOVE_HATE_PALE_MIN_RATIO * 100).toFixed(0)}%-${(C.EGO_LOVE_HATE_PALE_MAX_RATIO * 100).toFixed(0)}% target max HP (spiritual)`]);
         chips.push(['Ally Hit', 'Heals for 50% of equivalent damage']);
-        chips.push(makeChip('WAW'));
     }
 
     if (type === 'soundofstar') {
@@ -302,7 +287,6 @@ function buildWeaponChips(type) {
         chips.push(['Burn / Tick', `${C.SOUND_OF_STAR_BURN_DAMAGE_MIN}–${C.SOUND_OF_STAR_BURN_DAMAGE_MAX} every ${(C.SOUND_OF_STAR_BURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(C.SOUND_OF_STAR_BURN_DURATION_MS / 1000).toFixed(1)}s`]);
         chips.push(['Wielder Slow', `${C.SOUND_OF_STAR_WIELDER_SLOW_PER_STAR * 100}% per star held (max ${C.SOUND_OF_STAR_MAX_AMMO * C.SOUND_OF_STAR_WIELDER_SLOW_PER_STAR * 100}%)`]);
         chips.push(['Homing', 'Slight — spiraling wobble path']);
-        chips.push(makeChip('ALEPH'));
     }
 
     if (type === 'swordsharpened') {
@@ -320,7 +304,6 @@ function buildWeaponChips(type) {
         chips.push(['Resistance Ignore', `${Math.round(C.SWORD_SHARPENED_RESISTANCE_IGNORE * 100)}%`]);
         chips.push(['Fire Rate', toMsText(C.SWORD_SHARPENED_FIRE_RATE)]);
         chips.push(['Reload', toMsText(C.SWORD_SHARPENED_RELOAD_MS)]);
-        chips.push(makeChip('WAW'));
     }
 
     if (type === 'solemnvow') {
@@ -331,7 +314,6 @@ function buildWeaponChips(type) {
         chips.push(['Afterburn Duration', toMsText(C.SOLEMN_VOW_WHITE_AFTERBURN_DURATION_MS)]);
         chips.push(['Funeral Trigger', `${C.SOLEMN_VOW_FUNERAL_PELLETS_REQUIRED} pellets or reload`]);
         chips.push(['Funeral Lockout', toMsText(C.SOLEMN_VOW_FUNERAL_SHOOT_LOCK_MS)]);
-        chips.push(makeChip('HE'));
     }
 
     if (type === 'minigun') {

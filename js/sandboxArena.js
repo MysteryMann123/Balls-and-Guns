@@ -1,13 +1,10 @@
 import { SandboxGame } from './sandboxGame.js';
 import { loadImages, W } from './bootstrap.js';
 import {
-    AMMO_CRATE_DOUBLE_SHOT_MS,
-    DEAD_RINGER_PICKUP_COOLDOWN_MS,
-    HEALTHICO_HEAL,
-    HEALTHICO_REGEN_DURATION_MS,
-    HEALTHICO_REGEN_INTERVAL_MS,
-    HEALTHICO_REGEN_PER_TICK,
-} from './pickupConstants.js';
+    ammoico,
+    deadRinger,
+    healthico,
+} from './utilities/items/index.js';
 
 // --- Read URL params ---
 const query        = new URLSearchParams(window.location.search);
@@ -138,10 +135,10 @@ function applyUtilityToPlayer(type) {
             player.weapon.ammo = player.weapon.maxAmmo;
             if (player.weapon.type === 'minigun') player.weapon.currentFireRate = player.weapon.fireRate;
         }
-        player.ammoCrateDoubleShotUntil = now + AMMO_CRATE_DOUBLE_SHOT_MS;
+        player.ammoCrateDoubleShotUntil = now + ammoico.DOUBLE_SHOT_MS;
     } else if (type === 'healthico') {
-        player.heal(HEALTHICO_HEAL);
-        player.applyHealthRegen(now, HEALTHICO_REGEN_PER_TICK, HEALTHICO_REGEN_DURATION_MS, HEALTHICO_REGEN_INTERVAL_MS);
+        player.heal(healthico.HEAL);
+        player.applyHealthRegen(now, healthico.REGEN_PER_TICK, healthico.REGEN_DURATION_MS, healthico.REGEN_INTERVAL_MS);
     } else if (type === 'ubercharge') {
         player.applyUbercharge(now);
     } else if (type === 'critical') {

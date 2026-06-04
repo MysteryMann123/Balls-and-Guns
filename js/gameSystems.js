@@ -1,17 +1,4 @@
-import {
-    BOMBANOMICRON_PROJECTILE_MAX,
-    BOMBANOMICRON_PROJECTILE_MIN,
-    BOMBANOMICRON_TARGET_SPREAD,
-    SCRUMPY_BOTTLE_THROW_DAMAGE_MAX,
-    SCRUMPY_BOTTLE_THROW_DAMAGE_MIN,
-    SCRUMPY_PUDDLE_DAMAGE_MAX,
-    SCRUMPY_PUDDLE_DAMAGE_MIN,
-    SCRUMPY_PUDDLE_DURATION_MS,
-    SCRUMPY_PUDDLE_FINAL_RADIUS,
-    SCRUMPY_PUDDLE_INITIAL_RADIUS,
-    SCRUMPY_PUDDLE_TICK_INTERVAL_MS,
-    SCRUMPY_THROW_SPEED,
-} from './pickupConstants.js';
+import { scrumpyBottle, bombanomicron } from './utilities/items/index.js';
 import * as W from './weapons/index.js';
 import { Projectile } from './core/projectile.js';
 import { Vector } from './core/vector.js';
@@ -309,13 +296,13 @@ export function updateScrumpyPuddles(game, now) {
             continue;
         }
 
-        if (now - puddle.lastTickAt < SCRUMPY_PUDDLE_TICK_INTERVAL_MS) {
+        if (now - puddle.lastTickAt < scrumpyBottle.PUDDLE_TICK_INTERVAL_MS) {
             continue;
         }
         puddle.lastTickAt = now;
 
         const owner = game.balls.find(candidate => candidate.id === puddle.ownerId);
-        const lifeRatio = Math.max(0, Math.min(1, (now - puddle.createdAt) / SCRUMPY_PUDDLE_DURATION_MS));
+        const lifeRatio = Math.max(0, Math.min(1, (now - puddle.createdAt) / scrumpyBottle.PUDDLE_DURATION_MS));
         const currentRadius = puddle.initialRadius + (puddle.finalRadius - puddle.initialRadius) * lifeRatio;
 
         for (const ball of game.balls) {
@@ -329,7 +316,7 @@ export function updateScrumpyPuddles(game, now) {
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance > currentRadius + ball.radius) continue;
 
-            const tickDamage = Math.floor(Math.random() * (SCRUMPY_PUDDLE_DAMAGE_MAX - SCRUMPY_PUDDLE_DAMAGE_MIN + 1)) + SCRUMPY_PUDDLE_DAMAGE_MIN;
+            const tickDamage = Math.floor(Math.random() * (scrumpyBottle.PUDDLE_DAMAGE_MAX - scrumpyBottle.PUDDLE_DAMAGE_MIN + 1)) + scrumpyBottle.PUDDLE_DAMAGE_MIN;
             if (!ball.isUberActive(now)) {
                 ball.takeDamage(tickDamage, puddle.damageType || 'chemical');
             }
@@ -344,16 +331,16 @@ export function spawnScrumpyPuddle(game, x, y, ownerId, now, damageType = 'chemi
         y,
         damageType,
         createdAt: now,
-        expiresAt: now + SCRUMPY_PUDDLE_DURATION_MS,
-        initialRadius: SCRUMPY_PUDDLE_INITIAL_RADIUS,
-        finalRadius: SCRUMPY_PUDDLE_FINAL_RADIUS,
+        expiresAt: now + scrumpyBottle.PUDDLE_DURATION_MS,
+        initialRadius: scrumpyBottle.PUDDLE_INITIAL_RADIUS,
+        finalRadius: scrumpyBottle.PUDDLE_FINAL_RADIUS,
         lastTickAt: now
     });
 }
 
 export function throwScrumpyBottle(game, shooter, target, now) {
-    const damage = Math.floor(Math.random() * (SCRUMPY_BOTTLE_THROW_DAMAGE_MAX - SCRUMPY_BOTTLE_THROW_DAMAGE_MIN + 1)) + SCRUMPY_BOTTLE_THROW_DAMAGE_MIN;
-    shooter.applyScrumpyResistance(now, SCRUMPY_PUDDLE_DURATION_MS);
+    const damage = Math.floor(Math.random() * (scrumpyBottle.BOTTLE_THROW_DAMAGE_MAX - scrumpyBottle.BOTTLE_THROW_DAMAGE_MIN + 1)) + scrumpyBottle.BOTTLE_THROW_DAMAGE_MIN;
+    shooter.applyScrumpyResistance(now, scrumpyBottle.PUDDLE_DURATION_MS);
 
     game.projectiles.push(
         new Projectile({
@@ -361,7 +348,7 @@ export function throwScrumpyBottle(game, shooter, target, now) {
             y: shooter.pos.y,
             targetX: target.pos.x,
             targetY: target.pos.y,
-            speed: SCRUMPY_THROW_SPEED,
+            speed: scrumpyBottle.THROW_SPEED,
             damage,
             color: '#f2bf54',
             size: 8,
@@ -410,23 +397,23 @@ export function launchBombanomicron(game, shooter, now) {
     const cluster = getEnemyClusterCenter(game, shooter);
     if (!cluster) return;
 
-    const projectileCount = Math.floor(Math.random() * (BOMBANOMICRON_PROJECTILE_MAX - BOMBANOMICRON_PROJECTILE_MIN + 1)) + BOMBANOMICRON_PROJECTILE_MIN;
+    const projectileCount = Math.floor(Math.random() * (bombanomicron.PROJECTILE_MAX - bombanomicron.PROJECTILE_MIN + 1)) + bombanomicron.PROJECTILE_MIN;
     const payloadTypes = ['scrumpybottle', 'grenadelauncher', 'rocketlauncher', 'directhit'];
 
     for (let i = 0; i < projectileCount; i++) {
         const payloadType = payloadTypes[Math.floor(Math.random() * payloadTypes.length)];
-        const targetX = Math.max(20, Math.min(game.canvas.width - 20, cluster.x + (Math.random() * 2 - 1) * BOMBANOMICRON_TARGET_SPREAD));
-        const targetY = Math.max(20, Math.min(game.canvas.height - 20, cluster.y + (Math.random() * 2 - 1) * BOMBANOMICRON_TARGET_SPREAD));
+        const targetX = Math.max(20, Math.min(game.canvas.width - 20, cluster.x + (Math.random() * 2 - 1) * bombanomicron.TARGET_SPREAD));
+        const targetY = Math.max(20, Math.min(game.canvas.height - 20, cluster.y + (Math.random() * 2 - 1) * bombanomicron.TARGET_SPREAD));
 
         if (payloadType === 'scrumpybottle') {
-            const scrumpyDamage = Math.floor(Math.random() * (SCRUMPY_BOTTLE_THROW_DAMAGE_MAX - SCRUMPY_BOTTLE_THROW_DAMAGE_MIN + 1)) + SCRUMPY_BOTTLE_THROW_DAMAGE_MIN;
+            const scrumpyDamage = Math.floor(Math.random() * (scrumpyBottle.BOTTLE_THROW_DAMAGE_MAX - scrumpyBottle.BOTTLE_THROW_DAMAGE_MIN + 1)) + scrumpyBottle.BOTTLE_THROW_DAMAGE_MIN;
             game.projectiles.push(
                 new Projectile({
                     x: shooter.pos.x,
                     y: shooter.pos.y,
                     targetX,
                     targetY,
-                    speed: SCRUMPY_THROW_SPEED,
+                    speed: scrumpyBottle.THROW_SPEED,
                     damage: scrumpyDamage,
                     color: '#f2bf54',
                     size: 8,

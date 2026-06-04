@@ -72,6 +72,8 @@ const penitence = {
     image: 'assets/EGOWeaponPenitence.webp',
     DISPLAY_NAME:          'EGO WEAPON PENITENCE',
 
+    riskClass: 'ZAYIN',
+
     description: (w) => [
         'True melee E.G.O weapon that swings in a wide frontal arc.',
         `Swing damage: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} in a ${w.SWING_ARC_DEGREES} degree cone at close range.`,
