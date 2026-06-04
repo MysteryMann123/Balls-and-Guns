@@ -201,6 +201,30 @@ export function buildWeaponChips(weapon) {
         ['SWING_ANIMATION_MS', 'Swing Time', (v) => toMsText(v)],
         ['SWING_ARC_DEGREES', 'Swing Arc', (v) => `${v}°`],
 
+        // Black/White/Funeral properties (Solemn Vow)
+        ['BLACK_PELLETS_PER_SHOT', 'Black Pellets/Shot', (v) => `${v}`],
+        ['BLACK_SPREAD_ANGLE', 'Black Spread', (v) => `${v.toFixed(2)} rad`],
+        ['BLACK_PROJECTILE_SPEED', 'Black Speed', (v) => `${v}`],
+        ['BLACK_PROJECTILE_SIZE', 'Black Size', (v) => `${v}px`],
+        ['BLACK_MAX_HP_DAMAGE_MIN_RATIO', 'Black Max HP Min', (v) => `${(v * 100).toFixed(2)}%`],
+        ['BLACK_MAX_HP_DAMAGE_MAX_RATIO', 'Black Max HP Max', (v) => `${(v * 100).toFixed(2)}%`],
+
+        ['WHITE_PELLETS_PER_SHOT', 'White Pellets/Shot', (v) => `${v}`],
+        ['WHITE_SPREAD_ANGLE', 'White Spread', (v) => `${v.toFixed(2)} rad`],
+        ['WHITE_PROJECTILE_SPEED', 'White Speed', (v) => `${v}`],
+        ['WHITE_PROJECTILE_SIZE', 'White Size', (v) => `${v}px`],
+        ['WHITE_AFTERBURN_DAMAGE_MIN', 'White Afterburn Min', (v) => `${v}`],
+        ['WHITE_AFTERBURN_DAMAGE_MAX', 'White Afterburn Max', (v) => `${v}`],
+        ['WHITE_AFTERBURN_INTERVAL_MS', 'Afterburn Interval', (v) => toMsText(v)],
+        ['WHITE_AFTERBURN_DURATION_MS', 'Afterburn Duration', (v) => toMsText(v)],
+
+        ['FUNERAL_PELLETS_REQUIRED', 'Funeral Pellets', (v) => `${v} to trigger`],
+        ['FUNERAL_SHOOT_LOCK_MS', 'Funeral Lock Duration', (v) => toMsText(v)],
+        ['FUNERAL_PROJECTILE_SPEED', 'Funeral Speed', (v) => `${v}`],
+        ['FUNERAL_PROJECTILE_SIZE', 'Funeral Size', (v) => `${v}px`],
+        ['FUNERAL_COOLDOWN_MS', 'Funeral Cooldown', (v) => toMsText(v)],
+        ['MUZZLE_FLASH_MS', 'Muzzle Flash', (v) => toMsText(v)],
+
         // EGO properties
         ['PIERCE_COUNT', 'Pierce', (v) => `${v} enemies`],
         ['SLOW_DURATION_MS', 'Slow Duration', (v) => `${v / 1000}s`],
