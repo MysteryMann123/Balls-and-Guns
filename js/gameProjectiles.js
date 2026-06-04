@@ -188,6 +188,17 @@ export function updateProjectiles(game, now) {
             continue;
         }
 
+        // Mechanic-driven removal (e.g., hairspray linger expiry)
+        if (projectile.shouldRemove) {
+            for (const mechanic of projectile.mechanics) {
+                if (mechanic.onExpire) {
+                    mechanic.onExpire(projectile);
+                }
+            }
+            game.projectiles.splice(i, 1);
+            continue;
+        }
+
         if (projectile.type === 'grenadelauncher' && now >= (projectile.explodeAt || 0)) {
             game.triggerExplosion(projectile.pos.x, projectile.pos.y, projectile.splashRadius || W.grenadeLauncher.SPLASH_RADIUS, projectile.splashMaxDamage || W.grenadeLauncher.SPLASH_MAX_DAMAGE, projectile.ownerId, now);
             game.projectiles.splice(i, 1);

@@ -26,9 +26,9 @@ export function create() {
                 }
                 projectile.vel.x = 0;
                 projectile.vel.y = 0;
+                // Mark for removal by main loop when linger expires
                 if (now >= projectile.lingerUntil) {
-                    const idx = game.projectiles.indexOf(projectile);
-                    if (idx !== -1) game.projectiles.splice(idx, 1);
+                    projectile.shouldRemove = true;
                     return;
                 }
             }
