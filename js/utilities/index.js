@@ -1,6 +1,3 @@
-// Constants
-export * from './constants.js';
-
 // Items
 export * from './items/index.js';
 
