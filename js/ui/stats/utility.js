@@ -1,4 +1,13 @@
 import * as C from '../../constants.js';
+import { healthico } from '../../utilities/items/healthico.js';
+import { ammoico } from '../../utilities/items/ammoico.js';
+import { ubercharge } from '../../utilities/items/ubercharge.js';
+import { critical } from '../../utilities/items/critical.js';
+import { speed } from '../../utilities/items/speed.js';
+import { explosiveFlask } from '../../utilities/items/explosiveFlask.js';
+import { scrumpyBottle } from '../../utilities/items/scrumpyBottle.js';
+import { bombanomicron } from '../../utilities/items/bombanomicron.js';
+import { deadRinger } from '../../utilities/items/deadRinger.js';
 
 function formatLabel(value) {
     if (value === 'yellowtarge') return "Chargin' Targe";
@@ -147,8 +156,8 @@ const UTILITY_STATS = {
         title: 'Ubercharge Canteen',
         subtitle: 'Utility Drop',
         chips: [
-            ['Duration', `${(C.UBERCHARGE_DURATION_MS / 1000).toFixed(1)}s`],
-            ['Heal/sec', `${C.UBERCHARGE_HEAL_PER_SEC}`]
+            ['Duration', `${(ubercharge.DURATION_MS / 1000).toFixed(1)}s`],
+            ['Heal/sec', `${ubercharge.HEAL_PER_SEC}`]
         ],
         notes: ['Grants invulnerability and healing over time while active.']
     },
@@ -156,9 +165,9 @@ const UTILITY_STATS = {
         title: 'Critical Canteen',
         subtitle: 'Utility Drop',
         chips: [
-            ['Duration', `${(C.CRITICAL_DURATION_MS / 1000).toFixed(1)}s`],
-            ['Damage x', `${C.CRITICAL_DAMAGE_MULTIPLIER}`],
-            ['Heal/sec', `${C.CRITICAL_HEAL_PER_SEC}`]
+            ['Duration', `${(critical.DURATION_MS / 1000).toFixed(1)}s`],
+            ['Damage x', `${critical.DAMAGE_MULTIPLIER}`],
+            ['Heal/sec', `${critical.HEAL_PER_SEC}`]
         ],
         notes: ['Boosts outgoing damage and grants light regen.']
     },
@@ -166,8 +175,8 @@ const UTILITY_STATS = {
         title: 'Speed Boost',
         subtitle: 'Utility Drop',
         chips: [
-            ['Max Speed +', `${C.SPEED_BOOST_PERMANENT}`],
-            ['Min Speed +', `${(C.SPEED_BOOST_PERMANENT * 0.2).toFixed(2)}`]
+            ['Max Speed +', `${speed.PERMANENT}`],
+            ['Min Speed +', `${(speed.PERMANENT * 0.2).toFixed(2)}`]
         ],
         notes: ['Permanent movement boost for the ball that picks it up.']
     },
@@ -217,10 +226,10 @@ const UTILITY_STATS = {
         title: 'Dead Ringer',
         subtitle: 'Utility Drop (Special Consumable)',
         chips: [
-            ['Cooldown', `${(C.DEAD_RINGER_PICKUP_COOLDOWN_MS / 1000).toFixed(0)}s`],
-            ['Duration', `${(C.DEAD_RINGER_DURATION_MS / 1000).toFixed(1)}s`],
-            ['Damage Reduction', `${Math.round(C.DEAD_RINGER_DAMAGE_REDUCTION * 100)}%`],
-            ['Heal On Trigger', `${Math.round(C.DEAD_RINGER_HEAL_MAX_HP_RATIO * 100)}% max HP`]
+            ['Cooldown', `${(deadRinger.PICKUP_COOLDOWN_MS / 1000).toFixed(0)}s`],
+            ['Duration', `${(deadRinger.DURATION_MS / 1000).toFixed(1)}s`],
+            ['Damage Reduction', `${Math.round(deadRinger.DAMAGE_REDUCTION * 100)}%`],
+            ['Heal On Trigger', `${Math.round(deadRinger.HEAL_MAX_HP_RATIO * 100)}% max HP`]
         ],
         notes: [
             'Arms one charge per ball and shows icon above the ball.',

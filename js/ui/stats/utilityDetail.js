@@ -7,7 +7,8 @@ const containerSelectors = {
     notes: '#detail-notes',
     imgWrap: '#detail-img-wrap',
     img: '#detail-img',
-    dealerTableWrap: '#dealer-table-wrap'
+    dealerTableWrap: '#dealer-table-wrap',
+    detailPanel: '.detail-full-panel'
 };
 
 function renderUtilityDetail(type) {
@@ -26,6 +27,10 @@ function renderUtilityDetail(type) {
     const imgWrapEl = document.querySelector(containerSelectors.imgWrap);
     const imgEl = document.querySelector(containerSelectors.img);
     const dealerTableWrapEl = document.querySelector(containerSelectors.dealerTableWrap);
+    const detailPanelEl = document.querySelector(containerSelectors.detailPanel);
+
+    // Clear risk class styling (utilities don't have risk classes)
+    delete detailPanelEl.dataset.risk;
 
     // Set title and subtitle
     titleEl.textContent = utilityData.title;
