@@ -1,5 +1,3 @@
-import * as C from '../constants.js';
-
 // --- Config ---
 const maxAmmo        = 6;
 const reloadMs       = 3000;

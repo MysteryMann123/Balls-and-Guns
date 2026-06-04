@@ -1,4 +1,3 @@
-import * as C from '../../constants.js';
 import { healthico } from '../../utilities/items/healthico.js';
 import { ammoico } from '../../utilities/items/ammoico.js';
 import { ubercharge } from '../../utilities/items/ubercharge.js';
@@ -184,10 +183,10 @@ const UTILITY_STATS = {
         title: 'Explosive Flask',
         subtitle: 'Utility Drop (Consumable)',
         chips: [
-            ['Splash Radius', `${C.EXPLOSIVE_FLASK_SPLASH_RADIUS}`],
-            ['Debuff Duration', `${(C.EXPLOSIVE_FLASK_EFFECT_DURATION_MS / 1000).toFixed(1)}s`],
-            ['Slow', `x${C.EXPLOSIVE_FLASK_SLOW_MULTIPLIER.toFixed(2)} move speed`],
-            ['Vulnerability', `x${C.EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER.toFixed(2)} explosive damage received`]
+            ['Splash Radius', `${explosiveFlask.SPLASH_RADIUS}`],
+            ['Debuff Duration', `${(explosiveFlask.EFFECT_DURATION_MS / 1000).toFixed(1)}s`],
+            ['Slow', `x${explosiveFlask.SLOW_MULTIPLIER.toFixed(2)} move speed`],
+            ['Vulnerability', `x${explosiveFlask.PICKUP_DAMAGE_MULTIPLIER.toFixed(2)} explosive damage received`]
         ],
         notes: [
             'Auto-thrown at the nearest enemy when picked up.',

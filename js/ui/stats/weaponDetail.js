@@ -1,6 +1,4 @@
 import * as Weapons from '../../weapons/index.js';
-import { Weapon } from '../../weapon.js';
-import * as C from '../../constants.js';
 import { buildWeaponChips } from './chipBuilder.js';
 import { makeChip } from './riskClass.js';
 import { TYPE_IMAGES } from './utility.js';
@@ -49,8 +47,6 @@ const WEAPON_NAME_MAP = {
 };
 
 function renderWeaponDetail(type) {
-    const weapon = new Weapon(type);
-
     // Get weapon module, using name mapping for camelCase exports
     const exportName = WEAPON_NAME_MAP[type] || type;
     const weaponModule = Weapons[exportName];
@@ -87,8 +83,8 @@ function renderWeaponDetail(type) {
         imgEl.removeAttribute('src');
     }
 
-    // Build and render chips
-    const statChips = buildWeaponChips(type);
+    // Build and render chips from weapon module properties
+    const statChips = buildWeaponChips(weaponModule);
 
     // Add risk class chip if weapon has riskClass
     if (weaponModule?.riskClass) {
@@ -134,21 +130,21 @@ function renderWeaponDetail(type) {
     }
 
     // Render dealer table if needed
-    renderDealerTable(type);
+    renderDealerTable(type, weaponModule);
 }
 
-function renderDealerTable(type) {
+function renderDealerTable(type, weaponModule) {
     const dealerTableWrapEl = document.querySelector(containerSelectors.dealerTableWrap);
     const dealerTableBodyEl = document.querySelector(containerSelectors.dealerTableBody);
 
-    if (type !== 'dealer') {
+    if (type !== 'dealer' || !weaponModule?.HAND_DAMAGE_TABLE) {
         dealerTableWrapEl.classList.add('hidden');
         dealerTableBodyEl.innerHTML = '';
         return;
     }
 
     dealerTableBodyEl.innerHTML = '';
-    const handEntries = Object.entries(C.HAND_DAMAGE_TABLE || {});
+    const handEntries = Object.entries(weaponModule.HAND_DAMAGE_TABLE);
 
     for (const [handName, values] of handEntries) {
         const row = document.createElement('tr');
