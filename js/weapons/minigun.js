@@ -62,11 +62,11 @@ const minigun = {
     image: 'assets/Minigun_IMG.png',
     DISPLAY_NAME:         'MINIGUN',
 
-    description: [
+    description: (w) => [
         'High-capacity heavy weapon with fire-rate ramp-up.',
-        'Magazine: 200 rounds, damage per shot: 6-18 (random roll).',
-        'Fire rate ramps down from 320ms to base 220ms with successive shots.',
-        'Ramp resets after 0.7s of idle.',
+        `Magazine: ${w.MAX_AMMO} rounds, damage per shot: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} (random roll).`,
+        `Fire rate ramps down from ${w.INITIAL_FIRE_RATE}ms to base ${w.FIRE_RATE}ms with successive shots.`,
+        `Ramp resets after ${(w.RAMP_RESET_DELAY_MS / 1000).toFixed(1)}s of idle.`,
         'Damage multiplier applies once ramped up; sustains damage output with continuous fire.'
     ],
 

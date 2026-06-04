@@ -71,12 +71,12 @@ const faintAroma = {
 
     riskClass: 'WAW',
 
-    description: [
+    description: (w) => [
         'WAW E.G.O weapon — a delicate arrow that trails a toxic floral aura.',
-        'Direct hit: 60–85 damage, pierces up to 3 enemies.',
-        'AOE trail around the arrow poisons enemies within 50px.',
-        'Poison ticks 13–15 damage every 400ms for 2.8s.',
-        'Reduces healing received by 30% for the duration of the poison.',
+        `Direct hit: ${w.DAMAGE_MIN}–${w.DAMAGE_MAX} damage, pierces up to ${w.PIERCE_COUNT} enemies.`,
+        `AOE trail around the arrow poisons enemies within ${w.AOE_RADIUS}px.`,
+        `Poison ticks ${w.DOT_DAMAGE_MIN}–${w.DOT_DAMAGE_MAX} damage every ${w.DOT_INTERVAL_MS}ms for ${(w.DOT_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Reduces healing received by ${Math.round(w.HEAL_REDUCTION * 100)}% for the duration of the poison.`,
         'Pink flower particles trail behind the arrow to mark the toxic zone.'
     ],
 };

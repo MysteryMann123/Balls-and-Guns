@@ -67,11 +67,11 @@ const laetitia = {
 
     riskClass: 'HE',
 
-    description: [
-        'HE E.G.O weapon — a single-shot pistol that inflicts the Laetitia Gift Mark on hit, making enemies take 20% more damage from all sources for 5s.',
-        'On-hit damage: 40–50. Single shot per reload (1.5s).',
-        'When a marked enemy takes ≥10% of their max HP in a single hit, a blast triggers at 90px radius.',
-        'Blast deals 3–6% of nearby enemies\' max HP and applies the same mark to them.',
+    description: (w) => [
+        `HE E.G.O weapon — a single-shot pistol that inflicts the Laetitia Gift Mark on hit, making enemies take ${Math.round((w.MARK_VULN_MULTIPLIER - 1) * 100)}% more damage from all sources for ${(w.MARK_DURATION_MS / 1000).toFixed(0)}s.`,
+        `On-hit damage: ${w.DAMAGE_MIN}–${w.DAMAGE_MAX}. Single shot per reload (${(w.RELOAD_MS / 1000).toFixed(1)}s).`,
+        `When a marked enemy takes ≥${Math.round(w.MARK_TRIGGER_THRESHOLD_RATIO * 100)}% of their max HP in a single hit, a blast triggers at ${w.BLAST_RADIUS}px radius.`,
+        `Blast deals ${Math.round(w.BLAST_DAMAGE_MIN_RATIO * 100)}–${Math.round(w.BLAST_DAMAGE_MAX_RATIO * 100)}% of nearby enemies' max HP and applies the same mark to them.`,
         'Blast damage itself does not re-trigger the blast (anti-cascade). A 500ms per-ball cooldown also prevents rapid re-triggering.',
         'Marked enemies are shown with a pulsing pink ring.'
     ],

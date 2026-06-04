@@ -97,11 +97,11 @@ const egoMagicBullet = {
     },
     DISPLAY_NAME:                'EGO MAGIC BULLET',
 
-    description: [
+    description: (w) => [
         'Cursed magic weapon with infinite pierce, fast projectile speed, and slight homing.',
-        'Damage per shot: 267-334.',
-        'Afterburn: 7-17 per 0.5s for 4.5s.',
-        'Every 7th shot always self-hits for 366% shot damage, then applies the same afterburn.',
+        `Damage per shot: ${Math.round(w.DAMAGE_MIN)}-${Math.round(w.DAMAGE_MAX)}.`,
+        `Afterburn: ${Math.round(w.AFTERBURN_DAMAGE_MIN)}-${Math.round(w.AFTERBURN_DAMAGE_MAX)} per ${(w.AFTERBURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(w.AFTERBURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Every ${w.CURSE_CYCLE}th shot always self-hits for ${Math.round(w.SELF_HIT_MULTIPLIER * 100)}% shot damage, then applies the same afterburn.`,
         'The cursed shot spawns behind the wielder and pierces through anyone along its path.'
     ],
 };

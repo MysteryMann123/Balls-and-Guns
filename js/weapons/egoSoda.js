@@ -97,11 +97,11 @@ const egoSoda = {
 
     riskClass: 'ZAYIN',
 
-    description: [
-        'ZAYIN E.G.O weapon — a Pistol reskin that fires one of three colored projectiles each shot: red (45%), blue (45%), or rare purple (10%).',
-        'Red on hit: immediately heals the shooter for 4–8 HP.',
-        'Blue on hit: heals the shooter 1–3 HP every 0.5s for 1.5s.',
-        'Purple on hit: shooter loses 0.5% of their own max HP, but deals an extra 10–12 + 0.8–1.2% of the target\'s max HP as bonus damage.'
+    description: (w) => [
+        `ZAYIN E.G.O weapon — a Pistol reskin that fires one of three colored projectiles each shot: red (${Math.round((1 - w.PURPLE_CHANCE) * 50)}%), blue (${Math.round((1 - w.PURPLE_CHANCE) * 50)}%), or rare purple (${Math.round(w.PURPLE_CHANCE * 100)}%).`,
+        `Red on hit: immediately heals the shooter for ${w.RED_HEAL_MIN}–${w.RED_HEAL_MAX} HP.`,
+        `Blue on hit: heals the shooter ${w.BLUE_HEAL_MIN}–${w.BLUE_HEAL_MAX} HP every ${(500 / 1000).toFixed(1)}s for ${(w.BLUE_HEAL_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Purple on hit: shooter loses ${Math.round(w.PURPLE_SELF_DAMAGE_PCT * 100 * 10) / 10}% of their own max HP, but deals an extra ${w.PURPLE_DAMAGE_MIN}–${w.PURPLE_DAMAGE_MAX} + ${Math.round(w.PURPLE_MAX_HP_PCT_MIN * 100 * 10) / 10}–${Math.round(w.PURPLE_MAX_HP_PCT_MAX * 100 * 10) / 10}% of the target's max HP as bonus damage.`
     ],
 };
 

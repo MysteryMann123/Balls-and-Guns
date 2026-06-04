@@ -91,12 +91,12 @@ const egoLoveHate = {
 
     riskClass: 'WAW',
 
-    description: [
+    description: (w) => [
         'WAW E.G.O weapon — fires a single piercing round every 200 ms with a randomly chosen damage type per shot.',
-        'Red (25%): 70-100 slashing damage.',
-        'Black (25%): 20-60 blunt damage + 10-20 burn every 0.5s for 2s.',
-        'White (25%): 10-20 divine damage + 30-60 burn every 0.5s for 1s.',
-        'Pale (25%): deals 4-6% of the target\'s max HP as spiritual damage.',
+        `Red (25%): ${w.RED_DAMAGE_MIN}-${w.RED_DAMAGE_MAX} slashing damage.`,
+        `Black (25%): ${w.BLACK_DAMAGE_MIN}-${w.BLACK_DAMAGE_MAX} blunt damage + ${w.BLACK_BURN_MIN}-${w.BLACK_BURN_MAX} burn every ${(w.BLACK_BURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(w.BLACK_BURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `White (25%): ${w.WHITE_DAMAGE_MIN}-${w.WHITE_DAMAGE_MAX} divine damage + ${w.WHITE_BURN_MIN}-${w.WHITE_BURN_MAX} burn every ${(w.WHITE_BURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(w.WHITE_BURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Pale (25%): deals ${(w.PALE_MIN_RATIO * 100).toFixed(0)}-${(w.PALE_MAX_RATIO * 100).toFixed(0)}% of the target's max HP as spiritual damage.`,
         'All projectiles pierce through every target — they never stop on collision.',
         'Allied hits heal for half the equivalent damage instead of dealing damage (Pale heals half of its max HP ratio).'
     ],

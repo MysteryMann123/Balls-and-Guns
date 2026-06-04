@@ -88,11 +88,11 @@ const swordSharpened = {
 
     riskClass: 'WAW',
 
-    description: [
+    description: (w) => [
         'WAW E.G.O weapon Sword Sharpened by Tears: throwable melee blade that pierces and sticks to enemies, growing stronger with each hit.',
-        'Blessing Shield: grants 80% damage reduction to nearby ally for 4s or self if no ally in range.',
-        'Base damage: 130-180. On hit, the sword sticks for up to 120s. If it misses, the wielder takes 10% max HP self-damage.',
-        'Sharpening: each hit increases damage (+15%), projectile speed (+20%), and reload speed (+25%) per stack; max 3 stacks lasting 120s each. Ignores 50% resistances.'
+        `Blessing Shield: grants ${(w.BLESSING_SHIELD_DAMAGE_BLOCK * 100).toFixed(0)}% damage reduction to nearby ally for ${(w.BLESSING_SHIELD_DURATION_MS / 1000).toFixed(1)}s or self if no ally in range.`,
+        `Base damage: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX}. On hit, the sword sticks for up to ${(w.PIERCE_STICK_DURATION_MS / 1000).toFixed(0)}s. If it misses, the wielder takes ${(w.PIERCE_DAMAGE_HP_RATIO * 100).toFixed(0)}% max HP self-damage.`,
+        `Sharpening: each hit increases damage (+${(w.SHARPEN_DAMAGE_BONUS * 100).toFixed(0)}%), projectile speed (+${(w.SHARPEN_SPEED_BONUS * 100).toFixed(0)}%), and reload speed (+${(w.SHARPEN_RELOAD_BONUS * 100).toFixed(0)}%) per stack; max ${w.SHARPEN_MAX_STACKS} stacks lasting ${(w.SHARPEN_DURATION_MS / 1000).toFixed(0)}s each. Ignores ${(w.RESISTANCE_IGNORE * 100).toFixed(0)}% resistances.`
     ],
 
     getEffectiveFireRate(weapon, now) {

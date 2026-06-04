@@ -63,11 +63,11 @@ const harmony = {
 
     riskClass: 'HE',
 
-    description: [
+    description: (w) => [
         'HE E.G.O weapon Harmony: a 10-pellet burst that consumes life to amplify damage.',
-        'Each shot fires 10 pellets for 60-120 damage per pellet, then doubles damage only if the user can spend health.',
-        'Firing costs up to 10% max HP, but never drops the wielder below 1 HP; at 1 HP, it still fires without draining health.',
-        'Taking enemy damage boosts reload/attack speed by up to 40% for 5.5s.',
+        `Each shot fires ${w.PELLETS_PER_SHOT} pellets for ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} damage per pellet, then doubles damage only if the user can spend health.`,
+        `Firing costs up to ${Math.round(w.SELF_HP_COST_RATIO * 100)}% max HP, but never drops the wielder below 1 HP; at 1 HP, it still fires without draining health.`,
+        `Taking enemy damage boosts reload/attack speed by up to ${Math.round(w.HASTE_MAX_BONUS * 100)}% for ${(w.HASTE_DURATION_MS / 1000).toFixed(1)}s.`,
         'Quote: "After all, art is a devil\'s gift, born from despair and suffering. Never stop performing until the body crumbles to dust."'
     ],
 

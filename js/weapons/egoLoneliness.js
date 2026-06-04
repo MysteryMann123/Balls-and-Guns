@@ -56,12 +56,12 @@ const egoLoneliness = {
     image: 'assets/EGOWeaponLoneliness.webp',
     DISPLAY_NAME:       'EGO WEAPON LONELINESS',
 
-    description: [
+    description: (w) => [
         'Revolver variant with a colder shot profile and light tracer feedback.',
-        'Damage per shot: 44 (20% lower than Revolver).',
-        'Projectile speed: 18 (slightly faster than the default Revolver shot).',
-        'On hit: applies 70% slow for 2s.',
-        'Ammo refund: 77% chance to refund 1 ammo on hit.',
+        `Damage per shot: ${w.DAMAGE} (${Math.round((1 - (w.DAMAGE / 55)) * 100)}% lower than Revolver).`,
+        `Projectile speed: ${w.SPEED} (slightly faster than the default Revolver shot).`,
+        `On hit: applies ${Math.round((1 - w.SLOW_MULTIPLIER) * 100)}% slow for ${(w.SLOW_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Ammo refund: ${Math.round(w.AMMO_REFUND_CHANCE * 100)}% chance to refund 1 ammo on hit.`,
         'Uses the normal revolver projectile sprite, with a huntsman-style grey trail.'
     ],
 };

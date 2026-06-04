@@ -89,11 +89,11 @@ const hornet = {
 
     riskClass: 'WAW',
 
-    description: [
+    description: (w) => [
         'WAW E.G.O weapon Hornet: hybrid form that swaps between close shotgun and long-range rifle based on enemy distance.',
-        'Close form (<= 320px): 6 hitscan pellets for 3-18 each, with 4 ammo.',
-        'Far form: rifle shot for 60-100 with 6 ammo at 800ms interval; applies afterburn 5-8 every 0.5s for 3s.',
-        'Reactive bees: when hit by enemies, summons a homing bee (4-6 sting) that applies the same afterburn; max 6 bees active per wielder.'
+        `Close form (<= ${w.RANGE_SWITCH_DISTANCE}px): ${w.SHOTGUN_PELLETS_PER_SHOT} hitscan pellets for ${w.SHOTGUN_DAMAGE_MIN}-${w.SHOTGUN_DAMAGE_MAX} each, with ${w.SHOTGUN_AMMO} ammo.`,
+        `Far form: rifle shot for ${w.RIFLE_DAMAGE_MIN}-${w.RIFLE_DAMAGE_MAX} with ${w.RIFLE_AMMO} ammo at ${w.FIRE_RATE}ms interval; applies afterburn ${w.RIFLE_AFTERBURN_DAMAGE_MIN}-${w.RIFLE_AFTERBURN_DAMAGE_MAX} every ${(w.RIFLE_AFTERBURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(w.RIFLE_AFTERBURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Reactive bees: when hit by enemies, summons a homing bee (${w.BEE_DAMAGE_MIN}-${w.BEE_DAMAGE_MAX} sting) that applies the same afterburn; max ${w.BEE_MAX_ACTIVE} bees active per wielder.`
     ],
 
     CONFIG: {

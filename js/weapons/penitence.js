@@ -72,13 +72,13 @@ const penitence = {
     image: 'assets/EGOWeaponPenitence.webp',
     DISPLAY_NAME:          'EGO WEAPON PENITENCE',
 
-    description: [
+    description: (w) => [
         'True melee E.G.O weapon that swings in a wide frontal arc.',
-        'Swing damage: 80-110 in a 120 degree cone at close range.',
-        'Equip bonus: +12% max HP and +5% movement speed.',
-        'Pickup sustain: heals 6% max HP when equipped.',
-        'Team support: heals nearby allies for 80% of swing damage dealt.',
-        'Defensive trait: 20% knockback resistance while equipped.'
+        `Swing damage: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} in a ${w.SWING_ARC_DEGREES} degree cone at close range.`,
+        `Equip bonus: +${Math.round(w.MAX_HP_BONUS_RATIO * 100)}% max HP and +${Math.round(w.SPEED_BONUS_RATIO * 100)}% movement speed.`,
+        `Pickup sustain: heals ${Math.round(w.PICKUP_HEAL_RATIO * 100)}% max HP when equipped.`,
+        `Team support: heals nearby allies for ${Math.round(w.ALLY_HEAL_FROM_DAMAGE * 100)}% of swing damage dealt.`,
+        `Defensive trait: ${Math.round(w.KNOCKBACK_RESISTANCE * 100)}% knockback resistance while equipped.`
     ],
 };
 

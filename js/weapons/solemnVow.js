@@ -96,12 +96,12 @@ const solemnVow = {
 
     riskClass: 'HE',
 
-    description: [
+    description: (w) => [
         'HE E.G.O weapon with dual revolvers and alternating black/white shot rhythm.',
-        'Black shot: 5 pellets, each dealing 0.3-0.39% of enemy max HP.',
-        'White shot: 6 pellets applying 12-20 afterburn every 0.4s for 4s.',
-        'Funeral skill: after 25 pellets (or during reload), fires the portrait projectile to lock enemy shooting for 3s.',
-        'Total ammo: 8 (4 shots per revolver), medium reload.'
+        `Black shot: ${w.BLACK_PELLETS_PER_SHOT} pellets, each dealing ${(w.BLACK_MAX_HP_DAMAGE_MIN_RATIO * 100).toFixed(2)}-${(w.BLACK_MAX_HP_DAMAGE_MAX_RATIO * 100).toFixed(2)}% of enemy max HP.`,
+        `White shot: ${w.WHITE_PELLETS_PER_SHOT} pellets applying ${w.WHITE_AFTERBURN_DAMAGE_MIN}-${w.WHITE_AFTERBURN_DAMAGE_MAX} afterburn every ${(w.WHITE_AFTERBURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(w.WHITE_AFTERBURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Funeral skill: after ${w.FUNERAL_PELLETS_REQUIRED} pellets (or during reload), fires the portrait projectile to lock enemy shooting for ${(w.FUNERAL_SHOOT_LOCK_MS / 1000).toFixed(1)}s.`,
+        `Total ammo: ${w.AMMO} (${w.AMMO / 2} shots per revolver), medium reload.`
     ],
 };
 

@@ -38,11 +38,11 @@ const tommyGun = {
     image: 'assets/TOMMY_GUN.png',
     DISPLAY_NAME:     'TOMMY GUN',
 
-    description: [
-        'SMG variant with 120% more ammo and classic gangland spray style.',
-        'Damage per shot reduced by 10% (18 vs 20).',
-        'Fires faster at 86ms interval (vs 95ms), with speed 12.1 and wider spread 0.045.',
-        'Reload is slower: 2.2s.'
+    description: (w) => [
+        `SMG variant with ${Math.round(((w.AMMO / 25) - 1) * 100)}% more ammo and classic gangland spray style.`,
+        `Damage per shot reduced by ${Math.round((1 - (w.DAMAGE / 20)) * 100)}% (${w.DAMAGE} vs 20).`,
+        `Fires faster at ${w.FIRE_RATE}ms interval (vs 95ms), with speed ${w.SPEED} and wider spread ${w.SPREAD_ANGLE}.`,
+        `Reload is slower: ${(w.RELOAD_MS / 1000).toFixed(1)}s.`
     ],
 };
 

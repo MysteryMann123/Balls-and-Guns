@@ -72,13 +72,13 @@ const adoration = {
 
     riskClass: 'ALEPH',
 
-    description: [
+    description: (w) => [
         'ALEPH E.G.O weapon — a melting heart projectile that pierces and corrupts enemies with overwhelming slow.',
-        'Damage per shot: 60–90, pierces up to 3 enemies.',
-        'On hit: slows enemy to 35% move speed for 2.2s.',
-        'Any afterburn damage dealt to an adoration-slowed target is multiplied by x2.',
+        `Damage per shot: ${w.DAMAGE_MIN}–${w.DAMAGE_MAX}, pierces up to ${w.PIERCE_COUNT} enemies.`,
+        `On hit: slows enemy to ${Math.round(w.SLOW_MULTIPLIER * 100)}% move speed for ${(w.SLOW_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Any afterburn damage dealt to an adoration-slowed target is multiplied by x${w.AFTERBURN_MULTIPLIER}.`,
         'Damage bonus scales with how slowed the target is (any slow source): bonus = 1 + (1 − target slow ratio).',
-        'Wielder is 10% slower while equipped.'
+        `Wielder is ${Math.round((1 - w.WIELDER_SPEED_MULTIPLIER) * 100)}% slower while equipped.`
     ],
 };
 

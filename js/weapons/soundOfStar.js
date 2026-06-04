@@ -69,13 +69,13 @@ const soundOfStar = {
 
     riskClass: 'ALEPH',
 
-    description: [
-        'ALEPH E.G.O weapon — each charge (1 per 400ms) summons a glowing star that physically orbits the wielder at radius 55px.',
-        'Locked from firing until all 6/6 charges are held. Once full, fires one star per fire interval (100ms) toward the nearest enemy (or cursor). Recharges from zero after the burst.',
-        'Fired stars deal 50–75 damage and home toward the nearest enemy in a spiraling wobble path.',
-        'Orbiting stars passively deal 25–38 contact damage to enemies they touch (50% of shot damage, once per 0.5s per star).',
-        'Both fired and contact hits ignite the target: 15-20 burn every 0.5s for 2.5s.',
-        'Wielder slows 3% per star held (up to 18% at full charge) — fully loaded carries maximum cost before the burst.'
+    description: (w) => [
+        `ALEPH E.G.O weapon — each charge (1 per ${w.CHARGE_MS}ms) summons a glowing star that physically orbits the wielder at radius ${w.ORBIT_RADIUS}px.`,
+        `Locked from firing until all ${w.MAX_AMMO}/${w.MAX_AMMO} charges are held. Once full, fires one star per fire interval (100ms) toward the nearest enemy (or cursor). Recharges from zero after the burst.`,
+        `Fired stars deal ${w.DAMAGE_MIN}–${w.DAMAGE_MAX} damage and home toward the nearest enemy in a spiraling wobble path.`,
+        `Orbiting stars passively deal ${Math.round(w.DAMAGE_MIN * w.ORBITAL_CONTACT_MULTIPLIER)}–${Math.round(w.DAMAGE_MAX * w.ORBITAL_CONTACT_MULTIPLIER)} contact damage to enemies they touch (${w.ORBITAL_CONTACT_MULTIPLIER * 100}% of shot damage, once per 0.5s per star).`,
+        `Both fired and contact hits ignite the target: ${w.BURN_DAMAGE_MIN}-${w.BURN_DAMAGE_MAX} burn every ${(w.BURN_INTERVAL_MS / 1000).toFixed(1)}s for ${(w.BURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Wielder slows ${w.WIELDER_SLOW_PER_STAR * 100}% per star held (up to ${w.MAX_AMMO * w.WIELDER_SLOW_PER_STAR * 100}% at full charge) — fully loaded carries maximum cost before the burst.`
     ],
 
     CONFIG: {

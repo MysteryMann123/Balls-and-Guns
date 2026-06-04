@@ -102,14 +102,14 @@ const paradiseLost = {
 
     riskClass: 'ALEPH',
 
-    description: [
+    description: (w) => [
         'ALEPH E.G.O weapon that fires a homing Apple projectile with anti-resistance damage profile.',
-        'Damage per shot: 33-66 plus 5-9.5% of wielder max HP.',
-        'Homing: slight guidance (400px range, strength 0.06).',
-        'On hit lifesteal: restores 35% of actual damage dealt to the wielder.',
-        'Nearby ally support: allies within 170px are healed for 50% of actual damage dealt.',
-        'Adaptive defense: learns incoming damage type and gains 80% resistance to it, refreshing every 5s.',
-        'Self-erosion: loses 1-1.2% max HP every 0.8s while equipped.',
+        `Damage per shot: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} plus ${(w.MAX_HP_DAMAGE_MIN_RATIO * 100).toFixed(1)}-${(w.MAX_HP_DAMAGE_MAX_RATIO * 100).toFixed(1)}% of wielder max HP.`,
+        `Homing: slight guidance (${w.HOMING_RANGE}px range, strength ${w.HOMING_STRENGTH}).`,
+        `On hit lifesteal: restores ${Math.round(w.LIFESTEAL_RATIO * 100)}% of actual damage dealt to the wielder.`,
+        `Nearby ally support: allies within ${w.ALLY_HEAL_RADIUS}px are healed for ${Math.round(w.ALLY_HEAL_RATIO * 100)}% of actual damage dealt.`,
+        `Adaptive defense: learns incoming damage type and gains ${Math.round(w.ADAPTIVE_RESISTANCE * 100)}% resistance to it, refreshing every ${(w.ADAPTIVE_INTERVAL_MS / 1000).toFixed(1)}s.`,
+        `Self-erosion: loses ${(w.SELF_DOT_MIN_RATIO * 100).toFixed(1)}-${(w.SELF_DOT_MAX_RATIO * 100).toFixed(1)}% max HP every ${(w.SELF_DOT_INTERVAL_MS / 1000).toFixed(1)}s while equipped.`,
         'Ignores move-speed slows and suffers a reduced low-HP speed penalty while active.'
     ],
 };
