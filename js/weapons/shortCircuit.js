@@ -54,6 +54,14 @@ const shortCircuit = {
     SPREAD_ANGLE:     spreadAngle,
     image: 'assets/Short_circuit.png',
     DISPLAY_NAME:     'SHORT CIRCUIT',
+
+    description: [
+        'Deploys a moving electric field that damages enemies and cancels incoming projectiles.',
+        'Field radius: 76px, movement speed 2.4.',
+        'Duration: 4.5s on the map.',
+        'DoT damage: 10 per 1s to enemies inside (once per interval per ball).',
+        'Projectiles inside are cancelled and removed (except bullets, medigun beams); incoming rockets/grenades cannot pass through.'
+    ],
 };
 
 export default shortCircuit;

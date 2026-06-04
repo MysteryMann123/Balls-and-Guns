@@ -51,6 +51,16 @@ const hypocrisy = {
     image: 'assets/EGOWeaponHypocrisy.webp',
     DISPLAY_NAME:          'EGO WEAPON HYPOCRISY',
 
+    riskClass: 'WAW',
+
+    description: [
+        'WAW E.G.O weapon — fires an arrow that starts slow (1150ms) and ramps down to 50ms with continuous fire (100ms per second reduction). Resets after 4s idle.',
+        'Damage per shot: 23–30. Ammo: 50 shots, reloads in 2.5s.',
+        'Damage is multiplied by up to x2 at the slowest fire rate, scaling linearly down to x1 at the fastest (50ms).',
+        'When the wielder takes damage, 8% of max ammo (4 arrows) is refunded. If reloading, the reload is cancelled.',
+        'Rewards patience and aggression simultaneously: slow deliberate fire hits hardest, but sustained fire and tanking shots keeps ammo flowing.'
+    ],
+
     CONFIG: {
         maxAmmo: ammo,
         reloadTimeMs: reloadMs,

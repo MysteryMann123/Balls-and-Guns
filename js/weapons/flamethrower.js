@@ -1,5 +1,5 @@
-import * as Afterburn from '../mechanics/afterburn.js';
-import * as Pierce from '../mechanics/pierce.js';
+import * as Afterburn from '../mechanics/shared/afterburn.js';
+import * as Pierce from '../mechanics/shared/pierce.js';
 
 // --- Ammo & Timing ---
 const ammo                = 200;
@@ -77,6 +77,15 @@ const flamethrower = {
     PROJECTILE_SIZE:       projectileSize,
     image: 'assets/RedFlamethrowerpng.png',
     DISPLAY_NAME:          'FLAMETHROWER',
+
+    description: [
+        'Spray-fire weapon with particle spread and afterburn DoT.',
+        'Particles per shot: 4 (spread-based accuracy).',
+        'Fire damage per particle: 2-5.',
+        'Afterburn damage: 5-6 per tick.',
+        'Afterburn interval: 0.5s, duration 3.5s.',
+        'Airblast deflect: costs 20 ammo every 3.5s (reflects projectiles).'
+    ],
 };
 
 export default flamethrower;

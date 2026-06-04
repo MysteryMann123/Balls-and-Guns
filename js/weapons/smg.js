@@ -42,6 +42,13 @@ const smg = {
     PELLETS_PER_SHOT: pelletsPerShot,
     image: 'assets/SMG.png',
     DISPLAY_NAME:     'SMG',
+
+    description: [
+        'Rapid close-range bullet spray with low per-shot damage.',
+        'Damage per shot: 20, fires projectile bullets in spread pattern.',
+        'High spread angle for spray mechanics; effective at short range.',
+        'Best for sustained pressure and cleanup on weakened targets.'
+    ],
 };
 
 export default smg;

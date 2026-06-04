@@ -1,5 +1,5 @@
-import * as Afterburn from '../mechanics/afterburn.js';
-import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
+import * as Afterburn from '../mechanics/shared/afterburn.js';
+import * as MaxHpDamage from '../mechanics/shared/maxHpDamage.js';
 
 // --- Ammo & Timing ---
 const ammo                      = 8;
@@ -93,6 +93,16 @@ const solemnVow = {
         portraitFallback:'assets/ButterfliesSpriteSheet.png',
     },
     DISPLAY_NAME:                  'EGO WEAPON SOLEMN VOW',
+
+    riskClass: 'HE',
+
+    description: [
+        'HE E.G.O weapon with dual revolvers and alternating black/white shot rhythm.',
+        'Black shot: 5 pellets, each dealing 0.3-0.39% of enemy max HP.',
+        'White shot: 6 pellets applying 12-20 afterburn every 0.4s for 4s.',
+        'Funeral skill: after 25 pellets (or during reload), fires the portrait projectile to lock enemy shooting for 3s.',
+        'Total ammo: 8 (4 shots per revolver), medium reload.'
+    ],
 };
 
 export default solemnVow;

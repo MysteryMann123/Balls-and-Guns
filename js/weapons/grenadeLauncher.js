@@ -1,4 +1,4 @@
-import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
 
 // --- Ammo ---
 const ammo            = 6;
@@ -54,6 +54,15 @@ const grenadeLauncher = {
     SPREAD_ANGLE:      spreadAngle,
     image: 'assets/Grenade_Launcher.png',
     DISPLAY_NAME:      'GRENADE',
+
+    description: [
+        'Arcing grenades that bounce and explode after delay or manual impact.',
+        'Direct impact damage: 125.',
+        'Splash radius: 88px with falloff.',
+        'Auto-detonation timer: 1.25s.',
+        'Bounces and loses momentum while traveling, then detonates on timer or impact.',
+        'Can self-damage from own splash if standing in blast area.'
+    ],
 };
 
 export default grenadeLauncher;

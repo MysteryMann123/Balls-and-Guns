@@ -1,4 +1,4 @@
-import * as Pierce from '../mechanics/pierce.js';
+import * as Pierce from '../mechanics/shared/pierce.js';
 
 // --- Config ---
 const maxAmmo        = 1;
@@ -68,6 +68,17 @@ const faintAroma = {
     AOE_HIT_COOLDOWN_MS: aoeHitCooldownMs,
     image: 'assets/EGOWeaponReverberation.webp',
     DISPLAY_NAME:        'FAINT AROMA',
+
+    riskClass: 'WAW',
+
+    description: [
+        'WAW E.G.O weapon — a delicate arrow that trails a toxic floral aura.',
+        'Direct hit: 60–85 damage, pierces up to 3 enemies.',
+        'AOE trail around the arrow poisons enemies within 50px.',
+        'Poison ticks 13–15 damage every 400ms for 2.8s.',
+        'Reduces healing received by 30% for the duration of the poison.',
+        'Pink flower particles trail behind the arrow to mark the toxic zone.'
+    ],
 };
 
 export default faintAroma;

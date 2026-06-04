@@ -1,5 +1,5 @@
-import * as Hitscan from '../mechanics/hitscan.js';
-import * as Knockback from '../mechanics/knockback.js';
+import * as Hitscan from '../mechanics/shared/hitscan.js';
+import * as Knockback from '../mechanics/patterns/knockback.js';
 
 // --- Ammo & Timing ---
 const ammo           = 2;
@@ -63,6 +63,14 @@ const forceANature = {
     PROJECTILE_SIZE:  projectileSize,
     image: 'assets/Force-A-Nature.png',
     DISPLAY_NAME:     'FORCE-A-NATURE',
+
+    description: [
+        'Double-barrel shotgun variant with 2-shell chamber and 1.6s reload.',
+        'Pellet damage range: 3-32 (shotgun-style falloff, higher max damage).',
+        'Slower unload at 380ms between shots compared to Soda Popper\'s 260ms.',
+        'Applies self-recoil (3.2) and enemy knockback (1.1) on hit.',
+        'No Hype meter: pure burst + knockback utility.'
+    ],
 };
 
 export default forceANature;

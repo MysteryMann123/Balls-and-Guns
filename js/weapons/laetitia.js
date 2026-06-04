@@ -64,6 +64,17 @@ const laetitia = {
     BLAST_DAMAGE_MAX_RATIO:        blastDamageMaxRatio,
     image: 'assets/EGOWeaponLaetitia.webp',
     DISPLAY_NAME:                  'EGO WEAPON LAETITIA',
+
+    riskClass: 'HE',
+
+    description: [
+        'HE E.G.O weapon — a single-shot pistol that inflicts the Laetitia Gift Mark on hit, making enemies take 20% more damage from all sources for 5s.',
+        'On-hit damage: 40–50. Single shot per reload (1.5s).',
+        'When a marked enemy takes ≥10% of their max HP in a single hit, a blast triggers at 90px radius.',
+        'Blast deals 3–6% of nearby enemies\' max HP and applies the same mark to them.',
+        'Blast damage itself does not re-trigger the blast (anti-cascade). A 500ms per-ball cooldown also prevents rapid re-triggering.',
+        'Marked enemies are shown with a pulsing pink ring.'
+    ],
 };
 
 export default laetitia;

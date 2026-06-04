@@ -61,6 +61,16 @@ const harmony = {
     image: 'assets/EGOWeaponHarmony.webp',
     DISPLAY_NAME:       'EGO WEAPON HARMONY',
 
+    riskClass: 'HE',
+
+    description: [
+        'HE E.G.O weapon Harmony: a 10-pellet burst that consumes life to amplify damage.',
+        'Each shot fires 10 pellets for 60-120 damage per pellet, then doubles damage only if the user can spend health.',
+        'Firing costs up to 10% max HP, but never drops the wielder below 1 HP; at 1 HP, it still fires without draining health.',
+        'Taking enemy damage boosts reload/attack speed by up to 40% for 5.5s.',
+        'Quote: "After all, art is a devil\'s gift, born from despair and suffering. Never stop performing until the body crumbles to dust."'
+    ],
+
     onAddHaste(weapon, now, damageTaken, maxHp) {
         const bonusGain = Math.min(this.HASTE_MAX_BONUS,
             Math.max(0, damageTaken) / Math.max(1, maxHp));

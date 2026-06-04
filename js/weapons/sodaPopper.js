@@ -1,4 +1,4 @@
-import * as Hitscan from '../mechanics/hitscan.js';
+import * as Hitscan from '../mechanics/shared/hitscan.js';
 
 // --- Ammo & Timing ---
 const ammo                   = 2;
@@ -63,6 +63,12 @@ const sodaPopper = {
     PROJECTILE_SIZE:        projectileSize,
     image: 'assets/250px-Soda_Popper.PNG',
     DISPLAY_NAME:           'SODA POPPER',
+
+    description: [
+        'Fast shotgun variant with 2-shell chamber and 1.5s reload.',
+        'Pellet damage range: 2-25 (shotgun-style falloff).',
+        'Hype meter: deal 400 damage to gain x1.25 damage and speed boost for 4s.'
+    ],
 };
 
 export default sodaPopper;

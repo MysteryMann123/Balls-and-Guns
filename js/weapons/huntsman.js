@@ -48,6 +48,11 @@ const huntsman = {
     STICK_DURATION_MS: stickDurationMs,
     image: 'assets/Huntsman.png',
     DISPLAY_NAME:      'HUNTSMAN',
+
+    description: [
+        'Arrow projectile with slight wobble and stick duration 1.4s.',
+        'Damage roll per shot: 100-180.'
+    ],
 };
 
 

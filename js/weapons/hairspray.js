@@ -70,6 +70,16 @@ const hairspray = {
     SPREAD_ANGLE:     spreadAngle,
     image: 'assets/Emz_hairspray.jpg',
     DISPLAY_NAME:     'HAIRSPRAY',
+
+    riskClass: 'ZAYIN',
+
+    description: [
+        'Fires a slow cloud of hairspray that drifts forward and lingers at max range.',
+        'Each tick deals 60–100 damage. Tick interval: 300ms.',
+        'Near zone (0–92px): 1 tick max. Middle zone (–184px): 3 ticks max. Far zone: 2 ticks max.',
+        'The cloud can hit multiple enemies simultaneously as it passes through.',
+        'Cloud radius: 50px. Max range: 280px. Lingers at end for 600ms.'
+    ],
 };
 
 export default hairspray;

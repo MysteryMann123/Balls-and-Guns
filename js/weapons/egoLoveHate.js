@@ -88,6 +88,18 @@ const egoLoveHate = {
     SPREAD_ANGLE:           spreadAngle,
     image: 'assets/EGOWeaponIntheNameofLoveandHate.webp',
     DISPLAY_NAME:           'EGO: IN THE NAME OF LOVE AND HATE',
+
+    riskClass: 'WAW',
+
+    description: [
+        'WAW E.G.O weapon — fires a single piercing round every 200 ms with a randomly chosen damage type per shot.',
+        'Red (25%): 70-100 slashing damage.',
+        'Black (25%): 20-60 blunt damage + 10-20 burn every 0.5s for 2s.',
+        'White (25%): 10-20 divine damage + 30-60 burn every 0.5s for 1s.',
+        'Pale (25%): deals 4-6% of the target\'s max HP as spiritual damage.',
+        'All projectiles pierce through every target — they never stop on collision.',
+        'Allied hits heal for half the equivalent damage instead of dealing damage (Pale heals half of its max HP ratio).'
+    ],
 };
 
 export default egoLoveHate;

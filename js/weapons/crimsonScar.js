@@ -1,7 +1,7 @@
-import * as BleedDot from '../mechanics/bleedDot.js';
-import * as Mark from '../mechanics/mark.js';
-import * as DualForm from '../mechanics/dualForm.js';
-import * as MeleeAttack from '../mechanics/meleeAttack.js';
+import * as BleedDot from '../mechanics/shared/bleedDot.js';
+import * as Mark from '../mechanics/patterns/mark.js';
+import * as DualForm from '../mechanics/patterns/dualForm.js';
+import * as MeleeAttack from '../mechanics/patterns/meleeAttack.js';
 
 // --- General ---
 const rangeSwitchDistance    = 100;
@@ -92,6 +92,16 @@ const crimsonScar = {
         pickup: 'assets/EGOWeaponCrimsonScar.webp',
     },
     DISPLAY_NAME:             'EGO WEAPON CRIMSONSCAR',
+
+    riskClass: 'WAW',
+
+    description: [
+        'WAW E.G.O weapon — switches between gun and blade depending on distance (threshold: 100px). Grants +40% move speed but takes +45% damage.',
+        'Gun mode: fires 3 bullets in rapid burst (80ms between shots, 1000ms between bursts). 50–60 damage per bullet. 6 shots total, reloads in 1.8s.',
+        'Blade mode (melee, unlimited): 70–100 damage per swing. Inflicts bleed: 20–25 damage every 500ms for 3s.',
+        'Hits with this weapon mark the target (shown as a red target icon) for 20s. CrimsonScar wielders deal +50% damage to marked targets.',
+        'Speed advantage and burst damage reward aggressive play; the damage penalty punishes passive positioning.'
+    ],
 
     CONFIG: {
         maxAmmo: gunAmmo,

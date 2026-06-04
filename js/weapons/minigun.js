@@ -1,4 +1,4 @@
-import * as FireRateRamp from '../mechanics/fireRateRamp.js';
+import * as FireRateRamp from '../mechanics/patterns/fireRateRamp.js';
 
 // --- Config ---
 const maxAmmo             = 200;
@@ -61,6 +61,14 @@ const minigun = {
     fireRateRamp:         FireRateRamp.create(fireRate, initialFireRate, minFireRate, rampPerShot, rampResetDelayMs),
     image: 'assets/Minigun_IMG.png',
     DISPLAY_NAME:         'MINIGUN',
+
+    description: [
+        'High-capacity heavy weapon with fire-rate ramp-up.',
+        'Magazine: 200 rounds, damage per shot: 6-18 (random roll).',
+        'Fire rate ramps down from 320ms to base 220ms with successive shots.',
+        'Ramp resets after 0.7s of idle.',
+        'Damage multiplier applies once ramped up; sustains damage output with continuous fire.'
+    ],
 
     onAfterAmmoReset(weapon, now) {
         weapon.currentFireRate = weapon.fireRate;

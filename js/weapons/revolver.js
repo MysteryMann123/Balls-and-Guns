@@ -38,6 +38,11 @@ const revolver = {
     DAMAGE:        damage,
     image: 'assets/Pistol.png',
     DISPLAY_NAME:  'REVOLVER',
+
+    description: [
+        'Legacy pistol behavior renamed to Revolver.',
+        'Higher damage, slower fire cadence.'
+    ],
 };
 
 export default revolver;

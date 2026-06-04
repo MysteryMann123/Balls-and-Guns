@@ -1,5 +1,5 @@
-import * as Slow from '../mechanics/slow.js';
-import * as Pierce from '../mechanics/pierce.js';
+import * as Slow from '../mechanics/shared/slow.js';
+import * as Pierce from '../mechanics/shared/pierce.js';
 
 // --- Ammo & Timing ---
 const ammo                   = 1;
@@ -69,6 +69,17 @@ const adoration = {
     SPREAD_ANGLE:             spreadAngle,
     image: 'assets/EGOWeaponAdoration.webp',
     DISPLAY_NAME:             'ADORATION',
+
+    riskClass: 'ALEPH',
+
+    description: [
+        'ALEPH E.G.O weapon — a melting heart projectile that pierces and corrupts enemies with overwhelming slow.',
+        'Damage per shot: 60–90, pierces up to 3 enemies.',
+        'On hit: slows enemy to 35% move speed for 2.2s.',
+        'Any afterburn damage dealt to an adoration-slowed target is multiplied by x2.',
+        'Damage bonus scales with how slowed the target is (any slow source): bonus = 1 + (1 − target slow ratio).',
+        'Wielder is 10% slower while equipped.'
+    ],
 };
 
 export default adoration;

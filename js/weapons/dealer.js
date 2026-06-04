@@ -44,6 +44,13 @@ const dealer = {
     image: 'assets/Poker.jpg',
     DISPLAY_NAME:      'DEALER',
 
+    description: [
+        'Auto-draw card weapon: damage output scales with poker hand strength (infinite ammo).',
+        'Each draw (draw time ~500ms) fires a random card projectile.',
+        'Hand strength (high card → royal flush) increases damage multiplier up to ~3x+.',
+        'Targets are selected randomly from nearby enemies; auto-fires when available.'
+    ],
+
     CONFIG: {
         maxAmmo,
         reloadTimeMs: reloadMs,

@@ -1,4 +1,4 @@
-import * as Knockback from '../mechanics/knockback.js';
+import * as Knockback from '../mechanics/patterns/knockback.js';
 
 // --- Charge ---
 const chargeReloadMs        = 2500;
@@ -63,6 +63,14 @@ const yellowTarge = {
     SPREAD_ANGLE:               spreadAngle,
     image: 'assets/YellowTarge.png',
     DISPLAY_NAME:               "CHARGIN' TARGE",
+
+    description: [
+        'Charge weapon: gains damage and knockback while sliding toward enemies.',
+        'Base damage resistances: 20% all sources, 30% explosive.',
+        'Charge damage: scales with distance traveled during charge activation.',
+        'Charge trigger range: 1000px (auto targets nearest enemy).',
+        'Charge impulse: 40 (propels toward target).'
+    ],
 };
 
 

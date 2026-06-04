@@ -1,4 +1,4 @@
-import * as Tracer from '../mechanics/tracer.js';
+import * as Tracer from '../mechanics/shared/tracer.js';
 
 // --- Config ---
 const maxAmmo        = 1;
@@ -54,6 +54,14 @@ const egoPinks = {
     tracer:             Tracer.create(tracerRange, tracerDurationMs, tracerColor),
     image: 'assets/EGOWeaponPinks.webp',
     DISPLAY_NAME:       'EGO WEAPON PINKS',
+
+    riskClass: 'ALEPH',
+
+    description: [
+        'ALEPH E.G.O weapon — a reskinned Machina that fires piercing rounds with signature hot-pink tracer rays instead of team-colored tracers.',
+        'Damage per shot: 175–250. Pierces through multiple targets; ignores repeated hits on the same ball.',
+        'The tracer color is always pink regardless of team — a deliberate stylistic distinction from the standard Machina.'
+    ],
 };
 
 

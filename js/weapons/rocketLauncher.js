@@ -1,4 +1,4 @@
-import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
 
 // --- Ammo ---
 const ammo         = 4;
@@ -48,6 +48,14 @@ const rocketLauncher = {
     SPREAD_ANGLE:     spreadAngle,
     image: 'assets/Rocket_launcher.png',
     DISPLAY_NAME:     'ROCKET',
+
+    description: [
+        'Explosive launcher with knockback splash falloff.',
+        'Direct hit damage: 100.',
+        'Splash radius: 90px with falloff damage.',
+        'Knockback scales by explosion falloff distance.',
+        'Splash is area-of-effect but can self-damage the shooter if standing in own explosion.'
+    ],
 };
 
 export default rocketLauncher;

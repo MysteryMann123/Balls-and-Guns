@@ -38,6 +38,11 @@ const pistol = {
     DAMAGE:        damage,
     image: 'assets/Pistol_True.png',
     DISPLAY_NAME:  'PISTOL',
+
+    description: [
+        'True pistol variant: high fire rate, lower per-shot damage.',
+        'Designed for sustained close-mid pressure.'
+    ],
 };
 
 export default pistol;

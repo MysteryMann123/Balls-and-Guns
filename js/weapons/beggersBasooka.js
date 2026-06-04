@@ -1,4 +1,4 @@
-import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
 
 // --- Ammo & Timing ---
 const ammo         = 4;
@@ -48,6 +48,15 @@ const beggersBasooka = {
     PELLETS_PER_SHOT: pelletsPerShot,
     image: 'assets/Beggar\'s_Bazooka.png',
     DISPLAY_NAME:     "BEGGER'S BAZOOKA",
+
+    description: [
+        'Rapid 4-rocket burst with accuracy spread.',
+        'Fires 4 rockets per activation with 0.15 rad deviation.',
+        'Rocket damage: 80 (-20% vs standard).',
+        'Rocket speed: x1.4 vs standard.',
+        'Splash radius: x0.75 vs standard.',
+        'Can self-damage from own splash if standing in area.'
+    ],
 };
 
 export default beggersBasooka;

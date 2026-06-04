@@ -1,4 +1,4 @@
-import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
+import * as MaxHpDamage from '../mechanics/shared/maxHpDamage.js';
 
 // --- Config ---
 const maxAmmo        = 12;
@@ -94,6 +94,15 @@ const egoSoda = {
     PURPLE_COLOR:           purpleColor,
     image: 'assets/EGOWeaponSoda.webp',
     DISPLAY_NAME:           'EGO WEAPON SODA',
+
+    riskClass: 'ZAYIN',
+
+    description: [
+        'ZAYIN E.G.O weapon — a Pistol reskin that fires one of three colored projectiles each shot: red (45%), blue (45%), or rare purple (10%).',
+        'Red on hit: immediately heals the shooter for 4–8 HP.',
+        'Blue on hit: heals the shooter 1–3 HP every 0.5s for 1.5s.',
+        'Purple on hit: shooter loses 0.5% of their own max HP, but deals an extra 10–12 + 0.8–1.2% of the target\'s max HP as bonus damage.'
+    ],
 };
 
 export default egoSoda;

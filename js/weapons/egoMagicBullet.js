@@ -1,7 +1,7 @@
-import * as Homing    from '../mechanics/homing.js';
-import * as Afterburn from '../mechanics/afterburn.js';
-import * as Tracer    from '../mechanics/tracer.js';
-import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+import * as Homing    from '../mechanics/shared/homing.js';
+import * as Afterburn from '../mechanics/shared/afterburn.js';
+import * as Tracer    from '../mechanics/shared/tracer.js';
+import * as TeamAwareHit from '../mechanics/patterns/teamAwareHit.js';
 
 // --- Ammo & Timing ---
 const ammo                     = 7;
@@ -96,6 +96,14 @@ const egoMagicBullet = {
         portal: 'assets/DerFreischützPortal.png',
     },
     DISPLAY_NAME:                'EGO MAGIC BULLET',
+
+    description: [
+        'Cursed magic weapon with infinite pierce, fast projectile speed, and slight homing.',
+        'Damage per shot: 267-334.',
+        'Afterburn: 7-17 per 0.5s for 4.5s.',
+        'Every 7th shot always self-hits for 366% shot damage, then applies the same afterburn.',
+        'The cursed shot spawns behind the wielder and pierces through anyone along its path.'
+    ],
 };
 
 export default egoMagicBullet;

@@ -1,6 +1,6 @@
-import * as Knockback from '../mechanics/knockback.js';
-import * as SplashAoe from '../mechanics/splashAoe.js';
-import * as MeleeAttack from '../mechanics/meleeAttack.js';
+import * as Knockback from '../mechanics/patterns/knockback.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
+import * as MeleeAttack from '../mechanics/patterns/meleeAttack.js';
 
 // --- Ammo ---
 const ammo                = 4;
@@ -67,6 +67,14 @@ const rocketJumper = {
     SPREAD_ANGLE:           spreadAngle,
     image: 'assets/Rocket_Jumper.png',
     DISPLAY_NAME:           'ROCKET JUMPER',
+
+    description: [
+        'Mobility blast rifle: zero splash damage, pure knockback and close-range melee.',
+        'Self impulse from blast: 28 (away from impact).',
+        'Melee damage scales with current speed: 30-300.',
+        'Melee attack cooldown: 0.65s (triggered on enemy contact).',
+        'Explosion deals zero damage; enemies are only hurt by direct melee contact attacks.'
+    ],
 };
 
 export default rocketJumper;

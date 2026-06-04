@@ -1,3 +1,5 @@
+import * as C from '../constants.js';
+
 // --- Config ---
 const maxAmmo        = 6;
 const reloadMs       = 3000;
@@ -52,6 +54,11 @@ const shotgun = {
     TRACER_DURATION_MS: tracerDurationMs,
     image: 'assets/Shotgun_IMG.png',
     DISPLAY_NAME:       'SHOTGUN',
+
+    description: [
+        `Hitscan pellets with falloff from ${C.SHOTGUN_DAMAGE_MAX} to ${C.SHOTGUN_DAMAGE_MIN}.`,
+        `Range cap around ${C.SHOTGUN_HITSCAN_RANGE}px with short tracers.`
+    ],
 };
 
 export default shotgun;

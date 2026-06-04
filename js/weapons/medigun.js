@@ -1,5 +1,5 @@
-import * as LifeSteal from '../mechanics/lifesteal.js';
-import * as AllyHeal from '../mechanics/allyHeal.js';
+import * as LifeSteal from '../mechanics/patterns/lifesteal.js';
+import * as AllyHeal from '../mechanics/patterns/allyHeal.js';
 
 // --- Ammo & Timing ---
 const ammo                 = 1;
@@ -77,6 +77,15 @@ const medigun = {
     SPREAD_ANGLE:            spreadAngle,
     image: 'assets/RED_Medigun.png',
     DISPLAY_NAME:            'MEDIGUN',
+
+    description: [
+        'Beam attachment weapon: heals allies, damages + lifesteals from enemies.',
+        'Ally overheal cap: 125% max HP (visual: lighter bar color).',
+        'Self HP regen when not healing: 4/sec (after 4s idle).',
+        'Regen cap: 14 HP.',
+        'Uber threshold: build from 800 healing OR 700 damage taken.',
+        'Uber invulnerability duration: 6s (applies to holder and target).'
+    ],
 };
 
 export default medigun;

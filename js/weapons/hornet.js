@@ -1,5 +1,5 @@
-import * as Afterburn from '../mechanics/afterburn.js';
-import * as DualForm from '../mechanics/dualForm.js';
+import * as Afterburn from '../mechanics/shared/afterburn.js';
+import * as DualForm from '../mechanics/patterns/dualForm.js';
 
 // --- General ---
 const reloadMs                  = 2200;
@@ -86,6 +86,16 @@ const hornet = {
         rifle:   'assets/EGOWeaponHornet.png',
         shotgun: 'assets/Lobotomy_E.G.O_Hornet_Alteration_Shotgun_Sprite.png',
     },
+
+    riskClass: 'WAW',
+
+    description: [
+        'WAW E.G.O weapon Hornet: hybrid form that swaps between close shotgun and long-range rifle based on enemy distance.',
+        'Close form (<= 320px): 6 hitscan pellets for 3-18 each, with 4 ammo.',
+        'Far form: rifle shot for 60-100 with 6 ammo at 800ms interval; applies afterburn 5-8 every 0.5s for 3s.',
+        'Reactive bees: when hit by enemies, summons a homing bee (4-6 sting) that applies the same afterburn; max 6 bees active per wielder.'
+    ],
+
     CONFIG: {
         maxAmmo: rifleAmmo,
         reloadTimeMs: reloadMs,

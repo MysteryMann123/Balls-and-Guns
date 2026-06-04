@@ -1,9 +1,9 @@
-import * as Homing from '../mechanics/homing.js';
-import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
-import * as LifeSteal from '../mechanics/lifesteal.js';
-import * as AllyHeal from '../mechanics/allyHeal.js';
-import * as SelfDamage from '../mechanics/selfDamage.js';
-import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+import * as Homing from '../mechanics/shared/homing.js';
+import * as MaxHpDamage from '../mechanics/shared/maxHpDamage.js';
+import * as LifeSteal from '../mechanics/patterns/lifesteal.js';
+import * as AllyHeal from '../mechanics/patterns/allyHeal.js';
+import * as SelfDamage from '../mechanics/patterns/selfDamage.js';
+import * as TeamAwareHit from '../mechanics/patterns/teamAwareHit.js';
 
 // --- Ammo & Timing ---
 const ammo                = 1;
@@ -99,6 +99,19 @@ const paradiseLost = {
     SPREAD_ANGLE:            spreadAngle,
     image: 'assets/EGOWeaponParadiseLost.webp',
     DISPLAY_NAME:            'EGO WEAPON PARADISE LOST',
+
+    riskClass: 'ALEPH',
+
+    description: [
+        'ALEPH E.G.O weapon that fires a homing Apple projectile with anti-resistance damage profile.',
+        'Damage per shot: 33-66 plus 5-9.5% of wielder max HP.',
+        'Homing: slight guidance (400px range, strength 0.06).',
+        'On hit lifesteal: restores 35% of actual damage dealt to the wielder.',
+        'Nearby ally support: allies within 170px are healed for 50% of actual damage dealt.',
+        'Adaptive defense: learns incoming damage type and gains 80% resistance to it, refreshing every 5s.',
+        'Self-erosion: loses 1-1.2% max HP every 0.8s while equipped.',
+        'Ignores move-speed slows and suffers a reduced low-HP speed penalty while active.'
+    ],
 };
 
 export default paradiseLost;

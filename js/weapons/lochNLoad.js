@@ -1,4 +1,4 @@
-import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
 
 // --- Ammo ---
 const ammo            = 4;
@@ -59,6 +59,15 @@ const lochNLoad = {
     SPREAD_ANGLE:      spreadAngle,
     image: 'assets/LochnLoad.png',
     DISPLAY_NAME:      'LOCH-N-LOAD',
+
+    description: [
+        'Arcing grenades that explode ONLY on direct hit — no bounce, no timer detonation.',
+        'Direct impact damage: 125 (same as Grenade Launcher).',
+        '+25% bonus damage to targets moving faster than 50% of their max speed.',
+        'Faster projectile speed (14 vs 10) and quicker reload.',
+        'Smaller splash radius: 66px (vs 88px).',
+        'Missing the target destroys the grenade — no second chances from bouncing.'
+    ],
 };
 
 export default lochNLoad;

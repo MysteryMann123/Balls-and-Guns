@@ -1,5 +1,5 @@
-import * as Hitscan from '../mechanics/hitscan.js';
-import * as ConditionalReload from '../mechanics/conditionalReload.js';
+import * as Hitscan from '../mechanics/shared/hitscan.js';
+import * as ConditionalReload from '../mechanics/patterns/conditionalReload.js';
 
 // --- Ammo & Timing ---
 const ammo             = 200;
@@ -57,6 +57,12 @@ const widowmaker = {
     PROJECTILE_SIZE:    projectileSize,
     image: 'assets/Widowmaker.png',
     DISPLAY_NAME:       'WIDOWMAKER',
+
+    description: [
+        'Consumes 30 ammo per shot and fires 6 pellets.',
+        'Pellet damage range: 5-20 (shotgun-style falloff).',
+        'Refunds ammo equal to damage dealt; reloads for 10s when below 30 ammo.'
+    ],
 
     getAmmoCost(weapon) {
         return this.AMMO_PER_SHOT;

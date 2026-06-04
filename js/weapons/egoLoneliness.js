@@ -1,4 +1,4 @@
-import * as Slow from '../mechanics/slow.js';
+import * as Slow from '../mechanics/shared/slow.js';
 
 // --- Derived from revolver base values ---
 const damage           = Math.round(55 * 0.8); // 80% of revolver DAMAGE (55)
@@ -55,6 +55,15 @@ const egoLoneliness = {
     SPREAD_ANGLE:       spreadAngle,
     image: 'assets/EGOWeaponLoneliness.webp',
     DISPLAY_NAME:       'EGO WEAPON LONELINESS',
+
+    description: [
+        'Revolver variant with a colder shot profile and light tracer feedback.',
+        'Damage per shot: 44 (20% lower than Revolver).',
+        'Projectile speed: 18 (slightly faster than the default Revolver shot).',
+        'On hit: applies 70% slow for 2s.',
+        'Ammo refund: 77% chance to refund 1 ammo on hit.',
+        'Uses the normal revolver projectile sprite, with a huntsman-style grey trail.'
+    ],
 };
 
 export default egoLoneliness;

@@ -50,6 +50,12 @@ const machina = {
     TRACER_DURATION_MS: tracerDurationMs,
     image: 'assets/Machina.png',
     DISPLAY_NAME:       'MACHINA',
+
+    description: [
+        'Piercing rounds with long team-colored tracer rays.',
+        'Damage roll per shot: 150-275.',
+        'Can pass through multiple targets; ignores early shots on same ball.'
+    ],
 };
 
 

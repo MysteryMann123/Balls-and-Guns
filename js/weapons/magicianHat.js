@@ -1,5 +1,5 @@
-import * as Homing from '../mechanics/homing.js';
-import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+import * as Homing from '../mechanics/shared/homing.js';
+import * as TeamAwareHit from '../mechanics/patterns/teamAwareHit.js';
 
 // --- Ammo & Timing ---
 const ammo                    = 1;
@@ -67,6 +67,13 @@ const magicianHat = {
     SPREAD_ANGLE:               spreadAngle,
     image: 'assets/Magic-Hat-PNG-Image-File-3052888691.png',
     DISPLAY_NAME:               'MAGICIAN HAT',
+
+    description: [
+        'Launches bunny projectiles at speed 10 with 60-75 damage rolls.',
+        'Bunny projectile has slight homing toward nearby enemies (range 420px, strength 0.06).',
+        'Single-shot cadence: 1 ammo with 1.2s reload.',
+        'Every attack teleports the wielder by ~160px with smoke vanish/reappear effects.'
+    ],
 };
 
 export default magicianHat;

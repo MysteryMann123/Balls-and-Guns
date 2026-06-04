@@ -1,4 +1,4 @@
-import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
 
 // --- Ammo ---
 const ammo               = 4;
@@ -54,6 +54,13 @@ const directHit = {
     SPREAD_ANGLE:         spreadAngle,
     image: 'assets/Directhittransparent.png',
     DISPLAY_NAME:         'DIRECT HIT',
+
+    description: [
+        'Rocket variant: faster projectile, tighter splash radius, bonus vs faster targets.',
+        'Speed boost: x1.8 vs standard rocket.',
+        'Splash radius penalty: x0.25 vs standard rocket.',
+        'Bonus vs faster target: x1.5 damage if target is faster than shooter.'
+    ],
 };
 
 export default directHit;

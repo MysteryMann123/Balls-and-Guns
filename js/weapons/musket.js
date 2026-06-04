@@ -1,4 +1,4 @@
-import * as BleedDot from '../mechanics/bleedDot.js';
+import * as BleedDot from '../mechanics/shared/bleedDot.js';
 
 // --- Ammo & Timing ---
 const ammo                   = 1;
@@ -71,6 +71,14 @@ const musket = {
     PELLETS_PER_SHOT:          pelletsPerShot,
     image: 'assets/rifle-on-a-transparent-free-png-864369422.png',
     DISPLAY_NAME:              'MUSKET',
+
+    description: [
+        'Smoothbore musket with 1 shot and 2.5s reload.',
+        'Shot damage roll: 400-500.',
+        'Very inaccurate spread (0.38rad) to match smoothbore behavior.',
+        'Bayonet stab: 60-80 damage plus bleed 3-6 per 0.5s for 3s.',
+        'Bleeding targets receive only 50% healing during bleed duration.'
+    ],
 };
 
 export default musket;

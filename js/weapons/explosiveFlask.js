@@ -1,5 +1,5 @@
-import * as Slow from '../mechanics/slow.js';
-import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as Slow from '../mechanics/shared/slow.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
 
 // --- Timing ---
 const cooldownMs             = 4000;

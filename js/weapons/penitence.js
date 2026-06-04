@@ -1,4 +1,4 @@
-import * as MeleeAttack from '../mechanics/meleeAttack.js';
+import * as MeleeAttack from '../mechanics/patterns/meleeAttack.js';
 
 // --- Config (melee — no projectile) ---
 const maxAmmo        = Infinity;
@@ -71,6 +71,15 @@ const penitence = {
     ALLY_HELP_HP_RATIO:    allyHelpHpRatio,
     image: 'assets/EGOWeaponPenitence.webp',
     DISPLAY_NAME:          'EGO WEAPON PENITENCE',
+
+    description: [
+        'True melee E.G.O weapon that swings in a wide frontal arc.',
+        'Swing damage: 80-110 in a 120 degree cone at close range.',
+        'Equip bonus: +12% max HP and +5% movement speed.',
+        'Pickup sustain: heals 6% max HP when equipped.',
+        'Team support: heals nearby allies for 80% of swing damage dealt.',
+        'Defensive trait: 20% knockback resistance while equipped.'
+    ],
 };
 
 export default penitence;

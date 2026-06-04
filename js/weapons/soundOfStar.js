@@ -67,6 +67,17 @@ const soundOfStar = {
     image: 'assets/EGOWeaponSoundofaStar.webp',
     DISPLAY_NAME:               'SOUND OF A STAR',
 
+    riskClass: 'ALEPH',
+
+    description: [
+        'ALEPH E.G.O weapon — each charge (1 per 400ms) summons a glowing star that physically orbits the wielder at radius 55px.',
+        'Locked from firing until all 6/6 charges are held. Once full, fires one star per fire interval (100ms) toward the nearest enemy (or cursor). Recharges from zero after the burst.',
+        'Fired stars deal 50–75 damage and home toward the nearest enemy in a spiraling wobble path.',
+        'Orbiting stars passively deal 25–38 contact damage to enemies they touch (50% of shot damage, once per 0.5s per star).',
+        'Both fired and contact hits ignite the target: 15-20 burn every 0.5s for 2.5s.',
+        'Wielder slows 3% per star held (up to 18% at full charge) — fully loaded carries maximum cost before the burst.'
+    ],
+
     CONFIG: {
         maxAmmo,
         reloadTimeMs: 0,

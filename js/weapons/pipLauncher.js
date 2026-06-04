@@ -1,5 +1,5 @@
-import * as SplashAoe from '../mechanics/splashAoe.js';
-import * as Tracer from '../mechanics/tracer.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
+import * as Tracer from '../mechanics/shared/tracer.js';
 
 // --- Ammo & Timing ---
 const ammo             = 6;
@@ -64,6 +64,13 @@ const pipLauncher = {
     SPREAD_ANGLE:       spreadAngle,
     image: 'assets/Pip_launcher.png',
     DISPLAY_NAME:       'PIP LAUNCHER',
+
+    description: [
+        'Explosive launcher with team-colored projectile trail and splash falloff by distance.',
+        'Automatically throws an Explosive Flask every 1.5s while firing.',
+        'Pip flask debuff: slows enemies to x0.5 and increases pip damage taken by x2 for 3s.',
+        'Nearby allies receive splash healing: 50-80 (falloff scaled).'
+    ],
 };
 
 export default pipLauncher;

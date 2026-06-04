@@ -42,6 +42,12 @@ const sniper = {
     DAMAGE_MAX:   damageMax,
     image: 'assets/Sniper_rifle.png',
     DISPLAY_NAME: 'SNIPER',
+
+    description: [
+        'High-damage rifle that fires slow projectile bullets.',
+        'Damage roll per shot: 150-300.',
+        'Projectile travels at moderate speed; longer reload time for precision.'
+    ],
 };
 
 export default sniper;

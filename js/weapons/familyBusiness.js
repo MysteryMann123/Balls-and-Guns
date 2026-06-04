@@ -1,4 +1,4 @@
-import * as Hitscan from '../mechanics/hitscan.js';
+import * as Hitscan from '../mechanics/shared/hitscan.js';
 
 // --- Derived from shotgun base values ---
 const damageMin      = Math.round(4 * 0.75);  // 75% of shotgun DAMAGE_MIN (4)
@@ -53,6 +53,12 @@ const familyBusiness = {
     PROJECTILE_SIZE:  projectileSize,
     image: 'assets/Familybusiness.PNG',
     DISPLAY_NAME:     'FAMILY BUSINESS',
+
+    description: [
+        'Shotgun variant with faster fire interval than Shotgun.',
+        'Carries 9 shells (~33% more ammo than Shotgun).',
+        'Damage range reduced to 3-19 (~24% lower vs Shotgun).'
+    ],
 };
 
 

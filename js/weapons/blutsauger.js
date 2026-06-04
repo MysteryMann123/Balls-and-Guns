@@ -50,6 +50,13 @@ const blutsauger = {
     HEAL_MAX:     healMax,
     image: 'assets/Blutsauger.png',
     DISPLAY_NAME: 'BLUTSAUGER',
+
+    description: [
+        'Balanced SMG that fires projectile bullets with lifesteal on hits.',
+        'Damage per shot: 15.',
+        'Lifesteal per hit: 6.5-11.',
+        'Lifesteal works against enemy-aligned targets only.'
+    ],
 };
 
 export default blutsauger;
