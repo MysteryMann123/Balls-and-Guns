@@ -1,6 +1,38 @@
 import { START_WEAPON_OPTIONS } from '../../gameConfig.js';
+import * as Weapons from '../../weapons/index.js';
 import { renderWeaponDetail } from './weaponDetail.js';
 import { formatLabel, TYPE_IMAGES } from './utility.js';
+
+// Map lowercase weapon types to camelCase export names
+const WEAPON_NAME_MAP = {
+    'familybusiness': 'familyBusiness',
+    'sodapopper': 'sodaPopper',
+    'forceanature': 'forceANature',
+    'magicianhat': 'magicianHat',
+    'crusaderscrossbow': 'crusadersCrossbow',
+    'egomagicbullet': 'egoMagicBullet',
+    'egoloneliness': 'egoLoneliness',
+    'paradiselost': 'paradiseLost',
+    'solemnvow': 'solemnVow',
+    'swordsharpened': 'swordSharpened',
+    'egolovehate': 'egoLoveHate',
+    'soundofstar': 'soundOfStar',
+    'tommygun': 'tommyGun',
+    'shortcircuit': 'shortCircuit',
+    'yellowtarge': 'yellowTarge',
+    'rocketlauncher': 'rocketLauncher',
+    'piplauncher': 'pipLauncher',
+    'grenadelauncher': 'grenadeLauncher',
+    'lochnload': 'lochNLoad',
+    'beggersbazooka': 'beggersBasooka',
+    'directhit': 'directHit',
+    'nearmissed': 'nearMissed',
+    'rocketjumper': 'rocketJumper',
+    'crimsonscar': 'crimsonScar',
+    'egopinks': 'egoPinks',
+    'egosoda': 'egoSoda',
+    'faintaroma': 'faintAroma'
+};
 
 function renderWeaponList(listEl) {
     listEl.innerHTML = '';
@@ -9,9 +41,16 @@ function renderWeaponList(listEl) {
         const button = document.createElement('button');
         button.className = 'list-item';
 
-        // Mark Dealer card for TAV rainbow animation
-        if (type === 'dealer') {
-            button.classList.add('list-item-tav');
+        // Get weapon module and apply risk class styling
+        const exportName = WEAPON_NAME_MAP[type] || type;
+        const weaponModule = Weapons[exportName];
+
+        if (weaponModule?.riskClass) {
+            if (weaponModule.riskClass === 'TAV') {
+                button.classList.add('list-item-tav');
+            } else {
+                button.dataset.risk = weaponModule.riskClass;
+            }
         }
 
         const label = formatLabel(type);
