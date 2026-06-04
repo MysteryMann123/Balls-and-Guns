@@ -17,6 +17,7 @@ export * as Knockback from './patterns/knockback.js';
 export * as Mark from './patterns/mark.js';
 export * as SplashAoe from './patterns/splashAoe.js';
 export * as DualForm from './patterns/dualForm.js';
+export * as FuseTimer from './patterns/fuseTimer.js';
 
 // Tier 3 Pattern Mechanics
 export * as FireRateRamp from './patterns/fireRateRamp.js';
@@ -32,3 +33,6 @@ export * as Randomizer from './patterns/randomizer.js';
 export * as Zone from './patterns/zone.js';
 export * as Beam from './patterns/beam.js';
 export * as Conditional from './patterns/conditional.js';
+
+// Tier 4 Unique Mechanics (weapon-specific special effects)
+export * as Doubledonk from './unique/doubledonk.js';

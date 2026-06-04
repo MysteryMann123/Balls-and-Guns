@@ -30,6 +30,7 @@ export { default as yellowTarge      } from './yellowTarge.js';
 export { default as shortCircuit     } from './shortCircuit.js';
 export { default as medigun          } from './medigun.js';
 export { default as rocketLauncher   } from './rocketLauncher.js';
+export { default as looseCannon      } from './looseCannon.js';
 export { default as pipLauncher      } from './pipLauncher.js';
 export { default as explosiveFlask   } from './explosiveFlask.js';
 export { default as beggersBasooka   } from './beggersBasooka.js';
