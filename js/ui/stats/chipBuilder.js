@@ -81,16 +81,12 @@ export function buildWeaponChips(weapon) {
         ['TELEPORT_SMOKE_DURATION_MS', 'Smoke Duration', (v) => toMsText(v)],
 
         // Crossbow
-
-        // Pierce count
         ['PIERCING_COUNT', 'Pierce Count', (v) => `${v}`],
 
         // Yellow Targe
         ['CHARGE_RELOAD_MS', 'Charge Reload', (v) => toMsText(v)],
         ['CHARGE_TRIGGER_RANGE', 'Trigger Range', (v) => `${v}`],
         ['CHARGE_IMPULSE', 'Charge Impulse', (v) => `${v}`],
-
-        // Blutsauger
 
         // Short Circuit
         ['FIELD_RADIUS', 'Field Radius', (v) => `${v}px`],
@@ -136,10 +132,73 @@ export function buildWeaponChips(weapon) {
         ['MARK_DURATION_MS', 'Mark Duration', (v) => `${v / 1000}s`],
         ['MARK_DAMAGE_BONUS', 'Mark Bonus', (v) => `+${Math.round(v * 100)}% dmg to marked`],
 
+        // Sword Sharpened
+        ['BLESSING_SHIELD_DURATION_MS', 'Shield Duration', (v) => toMsText(v)],
+        ['BLESSING_SHIELD_DAMAGE_BLOCK', 'Damage Block', (v) => `${Math.round(v * 100)}%`],
+        ['BLESSING_SHIELD_RADIUS', 'Shield Radius', (v) => `${v}px`],
+        ['PIERCE_DAMAGE_HP_RATIO', 'Self-Damage on Miss', (v) => `${Math.round(v * 100)}% max HP`],
+        ['PIERCE_STICK_DURATION_MS', 'Stick Duration', (v) => toMsText(v)],
+        ['SHARPEN_DAMAGE_BONUS', 'Damage per Stack', (v) => `+${Math.round(v * 100)}%`],
+        ['SHARPEN_SPEED_BONUS', 'Speed per Stack', (v) => `+${Math.round(v * 100)}%`],
+        ['SHARPEN_RELOAD_BONUS', 'Reload per Stack', (v) => `+${Math.round(v * 100)}%`],
+        ['SHARPEN_MAX_STACKS', 'Max Stacks', (v) => `${v}`],
+        ['SHARPEN_DURATION_MS', 'Stack Duration', (v) => toMsText(v)],
+        ['RESISTANCE_IGNORE', 'Resistance Ignore', (v) => `${Math.round(v * 100)}%`],
+
+        // Blu's Basher / Bees
+        ['BEE_DAMAGE_MIN', 'Bee Damage Min', (v) => `${v}`],
+        ['BEE_DAMAGE_MAX', 'Bee Damage Max', (v) => `${v}`],
+        ['BEE_SPEED', 'Bee Speed', (v) => `${v}`],
+        ['BEE_SIZE', 'Bee Size', (v) => `${v}px`],
+        ['BEE_HOMING_RANGE', 'Bee Homing Range', (v) => `${v}px`],
+        ['BEE_HOMING_STRENGTH', 'Bee Homing Strength', (v) => `${v}`],
+        ['BEE_MAX_ACTIVE', 'Max Active Bees', (v) => `${v}`],
+
+        // Afterburn
+        ['AFTERBURN_DAMAGE_MIN', 'Afterburn/Tick Min', (v) => `${v}`],
+        ['AFTERBURN_DAMAGE_MAX', 'Afterburn/Tick Max', (v) => `${v}`],
+        ['AFTERBURN_DURATION_MS', 'Afterburn Duration', (v) => toMsText(v)],
+        ['AFTERBURN_INTERVAL_MS', 'Afterburn Interval', (v) => toMsText(v)],
+        ['AFTERBURN_MULTIPLIER', 'Afterburn x', (v) => `${v.toFixed(2)}`],
+
+        // Airblast
+        ['AIRBLAST_AMMO_COST', 'Airblast Cost', (v) => `${v} ammo`],
+        ['AIRBLAST_COOLDOWN_MS', 'Airblast Cooldown', (v) => toMsText(v)],
+
+        // Ally heals
+        ['ALLY_HEAL_MIN', 'Ally Heal Min', (v) => `${v} HP`],
+        ['ALLY_HEAL_MAX', 'Ally Heal Max', (v) => `${v} HP`],
+        ['ALLY_HEAL_PER_SEC', 'Ally Heal/sec', (v) => `${v} HP`],
+        ['ALLY_HEAL_RADIUS', 'Heal Radius', (v) => `${v}px`],
+
+        // Black burn (special EGO effect)
+        ['BLACK_BURN_DURATION_MS', 'Black Burn Duration', (v) => toMsText(v)],
+        ['BLACK_BURN_INTERVAL_MS', 'Black Burn Interval', (v) => toMsText(v)],
+        ['BLACK_BURN_MIN', 'Black Burn Min', (v) => `${v}`],
+        ['BLACK_BURN_MAX', 'Black Burn Max', (v) => `${v}`],
+
+        // White burn (special EGO effect)
+        ['WHITE_BURN_DURATION_MS', 'White Burn Duration', (v) => toMsText(v)],
+        ['WHITE_BURN_INTERVAL_MS', 'White Burn Interval', (v) => toMsText(v)],
+        ['WHITE_BURN_MIN', 'White Burn Min', (v) => `${v}`],
+        ['WHITE_BURN_MAX', 'White Burn Max', (v) => `${v}`],
+
+        // AOE/Radius effects
+        ['AOE_RADIUS', 'AOE Radius', (v) => `${v}px`],
+        ['AOE_HIT_COOLDOWN_MS', 'AOE Hit Cooldown', (v) => toMsText(v)],
+
+        // Misc effects
+        ['UNLOAD_MS', 'Unload Time', (v) => toMsText(v)],
+        ['TRACER_RANGE', 'Tracer Range', (v) => `${v}px`],
+        ['TRACER_DURATION_MS', 'Tracer Duration', (v) => toMsText(v)],
+        ['STICK_DURATION_MS', 'Stick Duration', (v) => toMsText(v)],
+        ['TICK_INTERVAL_MS', 'Tick Interval', (v) => toMsText(v)],
+        ['SWING_ANIMATION_MS', 'Swing Time', (v) => toMsText(v)],
+        ['SWING_ARC_DEGREES', 'Swing Arc', (v) => `${v}°`],
+
         // EGO properties
         ['PIERCE_COUNT', 'Pierce', (v) => `${v} enemies`],
         ['SLOW_DURATION_MS', 'Slow Duration', (v) => `${v / 1000}s`],
-        ['AFTERBURN_MULTIPLIER', 'Afterburn on Slowed', (v) => `x${v} multiplier`],
         ['WIELDER_SPEED', 'Wielder Speed', (v) => `-${Math.round((1 - v) * 100)}% move speed`],
         ['HOMING_RANGE', 'Homing', (v) => `Slight (${v}px range)`],
         ['CURSE_CYCLE', 'Cursed Shot', (v) => `Every ${v}th shot self-hits`],
