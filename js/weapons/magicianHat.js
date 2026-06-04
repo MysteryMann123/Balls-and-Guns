@@ -68,11 +68,11 @@ const magicianHat = {
     image: 'assets/Magic-Hat-PNG-Image-File-3052888691.png',
     DISPLAY_NAME:               'MAGICIAN HAT',
 
-    description: [
-        'Launches bunny projectiles at speed 10 with 60-75 damage rolls.',
-        'Bunny projectile has slight homing toward nearby enemies (range 420px, strength 0.06).',
-        'Single-shot cadence: 1 ammo with 1.2s reload.',
-        'Every attack teleports the wielder by ~160px with smoke vanish/reappear effects.'
+    description: (w) => [
+        `Launches bunny projectiles at speed ${w.SPEED} with ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} damage rolls.`,
+        `Bunny projectile has slight homing toward nearby enemies (range ${w.HOMING_RANGE}px, strength ${w.HOMING_STRENGTH}).`,
+        `Single-shot cadence: ${w.AMMO} ammo with ${(w.RELOAD_MS / 1000).toFixed(1)}s reload.`,
+        `Every attack teleports the wielder by ~${w.TELEPORT_DISTANCE}px with smoke vanish/reappear effects.`
     ],
 };
 

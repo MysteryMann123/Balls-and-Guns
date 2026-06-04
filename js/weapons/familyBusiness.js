@@ -54,10 +54,10 @@ const familyBusiness = {
     image: 'assets/Familybusiness.PNG',
     DISPLAY_NAME:     'FAMILY BUSINESS',
 
-    description: [
+    description: (w) => [
         'Shotgun variant with faster fire interval than Shotgun.',
-        'Carries 9 shells (~33% more ammo than Shotgun).',
-        'Damage range reduced to 3-19 (~24% lower vs Shotgun).'
+        `Carries ${w.AMMO} shells (~33% more ammo than Shotgun).`,
+        `Damage range reduced to ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} (~24% lower vs Shotgun).`
     ],
 };
 

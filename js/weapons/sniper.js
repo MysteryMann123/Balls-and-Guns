@@ -43,9 +43,9 @@ const sniper = {
     image: 'assets/Sniper_rifle.png',
     DISPLAY_NAME: 'SNIPER',
 
-    description: [
+    description: (w) => [
         'High-damage rifle that fires slow projectile bullets.',
-        'Damage roll per shot: 150-300.',
+        `Damage roll per shot: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX}.`,
         'Projectile travels at moderate speed; longer reload time for precision.'
     ],
 };

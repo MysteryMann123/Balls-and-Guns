@@ -65,11 +65,11 @@ const pipLauncher = {
     image: 'assets/Pip_launcher.png',
     DISPLAY_NAME:       'PIP LAUNCHER',
 
-    description: [
+    description: (w) => [
         'Explosive launcher with team-colored projectile trail and splash falloff by distance.',
-        'Automatically throws an Explosive Flask every 1.5s while firing.',
+        `Automatically throws an Explosive Flask every ${(1500 / 1000).toFixed(1)}s while firing.`,
         'Pip flask debuff: slows enemies to x0.5 and increases pip damage taken by x2 for 3s.',
-        'Nearby allies receive splash healing: 50-80 (falloff scaled).'
+        `Nearby allies receive splash healing: ${w.ALLY_HEAL_MIN}-${w.ALLY_HEAL_MAX} (falloff scaled).`
     ],
 };
 

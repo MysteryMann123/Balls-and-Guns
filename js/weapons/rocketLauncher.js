@@ -49,10 +49,10 @@ const rocketLauncher = {
     image: 'assets/Rocket_launcher.png',
     DISPLAY_NAME:     'ROCKET',
 
-    description: [
+    description: (w) => [
         'Explosive launcher with knockback splash falloff.',
-        'Direct hit damage: 100.',
-        'Splash radius: 90px with falloff damage.',
+        `Direct hit damage: ${w.DIRECT_DAMAGE}.`,
+        `Splash radius: ${w.SPLASH_RADIUS}px with falloff damage.`,
         'Knockback scales by explosion falloff distance.',
         'Splash is area-of-effect but can self-damage the shooter if standing in own explosion.'
     ],

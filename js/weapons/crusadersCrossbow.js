@@ -55,10 +55,10 @@ const crusadersCrossbow = {
     image: 'assets/RED_Crusader\'s_Crossbow.png',
     DISPLAY_NAME:     "CRUSADER'S CROSSBOW",
 
-    description: [
+    description: (w) => [
         'Bolt projectile with huntsman-style trail visuals.',
-        'Enemy hit damage: 100-150.',
-        'Ally hit heal: 75-100 (falloff by distance).',
+        `Enemy hit damage: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX}.`,
+        `Ally hit heal: ${w.HEAL_MIN}-${w.HEAL_MAX} (falloff by distance).`,
         'Automatically switches between ally-heal and enemy-damage modes based on targeting.'
     ],
 };

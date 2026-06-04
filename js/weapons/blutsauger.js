@@ -51,10 +51,10 @@ const blutsauger = {
     image: 'assets/Blutsauger.png',
     DISPLAY_NAME: 'BLUTSAUGER',
 
-    description: [
+    description: (w) => [
         'Balanced SMG that fires projectile bullets with lifesteal on hits.',
-        'Damage per shot: 15.',
-        'Lifesteal per hit: 6.5-11.',
+        `Damage per shot: ${w.DAMAGE}.`,
+        `Lifesteal per hit: ${w.HEAL_MIN}-${w.HEAL_MAX}.`,
         'Lifesteal works against enemy-aligned targets only.'
     ],
 };

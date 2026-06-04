@@ -78,13 +78,13 @@ const medigun = {
     image: 'assets/RED_Medigun.png',
     DISPLAY_NAME:            'MEDIGUN',
 
-    description: [
+    description: (w) => [
         'Beam attachment weapon: heals allies, damages + lifesteals from enemies.',
-        'Ally overheal cap: 125% max HP (visual: lighter bar color).',
-        'Self HP regen when not healing: 4/sec (after 4s idle).',
-        'Regen cap: 14 HP.',
-        'Uber threshold: build from 800 healing OR 700 damage taken.',
-        'Uber invulnerability duration: 6s (applies to holder and target).'
+        `Ally overheal cap: ${Math.round(w.OVERHEAL_MULTIPLIER * 100)}% max HP (visual: lighter bar color).`,
+        `Self HP regen when not healing: ${w.SELF_REGEN_PER_SEC}/sec (after ${(w.SELF_REGEN_DELAY_MS / 1000).toFixed(0)}s idle).`,
+        `Regen cap: ${w.SELF_REGEN_CAP} HP.`,
+        `Uber threshold: build from ${w.UBER_HEAL_THRESHOLD} healing OR ${w.UBER_DAMAGE_THRESHOLD} damage taken.`,
+        `Uber invulnerability duration: ${(w.UBER_DURATION_MS / 1000).toFixed(0)}s (applies to holder and target).`
     ],
 };
 

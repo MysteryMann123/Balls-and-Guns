@@ -51,12 +51,12 @@ const nearMissed = {
     image: 'assets/Directhittransparent.png',
     DISPLAY_NAME:          'NEAR MISSED',
 
-    description: [
+    description: (w) => [
         'Rocket Launcher variant tuned for anti-slow targets.',
-        'Damage penalty: 28% lower than Rocket Launcher (72 vs 100).',
-        'Projectile speed: x0.25 of Rocket Launcher (75% slower).',
-        'Splash radius: x1.88 of Rocket Launcher (+88%).',
-        'Bonus vs slower target: x1.3 direct damage when target is slower than shooter.'
+        `Damage penalty: ${Math.round((1 - (w.DAMAGE / 100)) * 100)}% lower than Rocket Launcher (${w.DAMAGE} vs 100).`,
+        `Projectile speed: x${(w.SPEED / 16).toFixed(2)} of Rocket Launcher (${Math.round((1 - (w.SPEED / 16)) * 100)}% slower).`,
+        `Splash radius: x${(w.SPLASH_RADIUS / 90).toFixed(2)} of Rocket Launcher (+${Math.round(((w.SPLASH_RADIUS / 90) - 1) * 100)}%).`,
+        `Bonus vs slower target: x${w.VS_SLOWER_MULTIPLIER} direct damage when target is slower than shooter.`
     ],
 };
 

@@ -68,11 +68,11 @@ const rocketJumper = {
     image: 'assets/Rocket_Jumper.png',
     DISPLAY_NAME:           'ROCKET JUMPER',
 
-    description: [
+    description: (w) => [
         'Mobility blast rifle: zero splash damage, pure knockback and close-range melee.',
-        'Self impulse from blast: 28 (away from impact).',
-        'Melee damage scales with current speed: 30-300.',
-        'Melee attack cooldown: 0.65s (triggered on enemy contact).',
+        `Self impulse from blast: ${w.SELF_BLAST_IMPULSE} (away from impact).`,
+        `Melee damage scales with current speed: ${w.MELEE_MIN_DAMAGE}-${w.MELEE_MAX_DAMAGE}.`,
+        `Melee attack cooldown: ${(w.MELEE_COOLDOWN_MS / 1000).toFixed(2)}s (triggered on enemy contact).`,
         'Explosion deals zero damage; enemies are only hurt by direct melee contact attacks.'
     ],
 };

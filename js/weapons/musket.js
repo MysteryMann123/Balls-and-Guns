@@ -72,12 +72,12 @@ const musket = {
     image: 'assets/rifle-on-a-transparent-free-png-864369422.png',
     DISPLAY_NAME:              'MUSKET',
 
-    description: [
-        'Smoothbore musket with 1 shot and 2.5s reload.',
-        'Shot damage roll: 400-500.',
-        'Very inaccurate spread (0.38rad) to match smoothbore behavior.',
-        'Bayonet stab: 60-80 damage plus bleed 3-6 per 0.5s for 3s.',
-        'Bleeding targets receive only 50% healing during bleed duration.'
+    description: (w) => [
+        `Smoothbore musket with ${w.AMMO} shot and ${(w.RELOAD_MS / 1000).toFixed(1)}s reload.`,
+        `Shot damage roll: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX}.`,
+        `Very inaccurate spread (${w.SPREAD_ANGLE}rad) to match smoothbore behavior.`,
+        `Bayonet stab: ${w.BAYONET_DAMAGE_MIN}-${w.BAYONET_DAMAGE_MAX} damage plus bleed ${w.BAYONET_BLEED_DAMAGE_MIN}-${w.BAYONET_BLEED_DAMAGE_MAX} per ${(w.BAYONET_BLEED_INTERVAL_MS / 1000).toFixed(1)}s for ${(w.BAYONET_BLEED_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Bleeding targets receive only ${Math.round(w.BAYONET_HEAL_MULTIPLIER * 100)}% healing during bleed duration.`
     ],
 };
 

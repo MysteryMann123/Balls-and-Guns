@@ -51,9 +51,9 @@ const machina = {
     image: 'assets/Machina.png',
     DISPLAY_NAME:       'MACHINA',
 
-    description: [
+    description: (w) => [
         'Piercing rounds with long team-colored tracer rays.',
-        'Damage roll per shot: 150-275.',
+        `Damage roll per shot: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX}.`,
         'Can pass through multiple targets; ignores early shots on same ball.'
     ],
 };

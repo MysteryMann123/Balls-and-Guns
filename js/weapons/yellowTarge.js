@@ -64,12 +64,12 @@ const yellowTarge = {
     image: 'assets/YellowTarge.png',
     DISPLAY_NAME:               "CHARGIN' TARGE",
 
-    description: [
+    description: (w) => [
         'Charge weapon: gains damage and knockback while sliding toward enemies.',
-        'Base damage resistances: 20% all sources, 30% explosive.',
+        `Base damage resistances: ${Math.round(w.DAMAGE_REDUCTION_ALL * 100)}% all sources, ${Math.round(w.DAMAGE_REDUCTION_EXPLOSIVE * 100)}% explosive.`,
         'Charge damage: scales with distance traveled during charge activation.',
-        'Charge trigger range: 1000px (auto targets nearest enemy).',
-        'Charge impulse: 40 (propels toward target).'
+        `Charge trigger range: ${w.CHARGE_TRIGGER_RANGE}px (auto targets nearest enemy).`,
+        `Charge impulse: ${w.CHARGE_IMPULSE} (propels toward target).`
     ],
 };
 

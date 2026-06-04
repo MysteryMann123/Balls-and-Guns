@@ -64,11 +64,11 @@ const forceANature = {
     image: 'assets/Force-A-Nature.png',
     DISPLAY_NAME:     'FORCE-A-NATURE',
 
-    description: [
-        'Double-barrel shotgun variant with 2-shell chamber and 1.6s reload.',
-        'Pellet damage range: 3-32 (shotgun-style falloff, higher max damage).',
-        'Slower unload at 380ms between shots compared to Soda Popper\'s 260ms.',
-        'Applies self-recoil (3.2) and enemy knockback (1.1) on hit.',
+    description: (w) => [
+        `Double-barrel shotgun variant with ${w.AMMO}-shell chamber and ${(w.RELOAD_MS / 1000).toFixed(1)}s reload.`,
+        `Pellet damage range: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} (shotgun-style falloff, higher max damage).`,
+        `Slower unload at ${w.FIRE_RATE}ms between shots compared to Soda Popper's 260ms.`,
+        `Applies self-recoil (${w.SELF_KNOCKBACK}) and enemy knockback (${w.ENEMY_KNOCKBACK}) on hit.`,
         'No Hype meter: pure burst + knockback utility.'
     ],
 };

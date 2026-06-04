@@ -55,11 +55,11 @@ const directHit = {
     image: 'assets/Directhittransparent.png',
     DISPLAY_NAME:         'DIRECT HIT',
 
-    description: [
+    description: (w) => [
         'Rocket variant: faster projectile, tighter splash radius, bonus vs faster targets.',
-        'Speed boost: x1.8 vs standard rocket.',
-        'Splash radius penalty: x0.25 vs standard rocket.',
-        'Bonus vs faster target: x1.5 damage if target is faster than shooter.'
+        `Speed boost: x${(w.SPEED / 16).toFixed(1)} vs standard rocket.`,
+        `Splash radius penalty: x${(w.SPLASH_RADIUS / 90).toFixed(2)} vs standard rocket.`,
+        `Bonus vs faster target: x${w.VS_FASTER_MULTIPLIER} damage if target is faster than shooter.`
     ],
 };
 

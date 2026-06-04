@@ -64,10 +64,10 @@ const sodaPopper = {
     image: 'assets/250px-Soda_Popper.PNG',
     DISPLAY_NAME:           'SODA POPPER',
 
-    description: [
-        'Fast shotgun variant with 2-shell chamber and 1.5s reload.',
-        'Pellet damage range: 2-25 (shotgun-style falloff).',
-        'Hype meter: deal 400 damage to gain x1.25 damage and speed boost for 4s.'
+    description: (w) => [
+        `Fast shotgun variant with ${w.AMMO}-shell chamber and ${(w.RELOAD_MS / 1000).toFixed(1)}s reload.`,
+        `Pellet damage range: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} (shotgun-style falloff).`,
+        `Hype meter: deal ${w.CHARGE_DAMAGE_REQUIRED} damage to gain x${w.HYPE_DAMAGE_MULTIPLIER.toFixed(2)} damage and speed boost for ${(w.HYPE_DURATION_MS / 1000).toFixed(1)}s.`
     ],
 };
 

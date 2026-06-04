@@ -78,13 +78,13 @@ const flamethrower = {
     image: 'assets/RedFlamethrowerpng.png',
     DISPLAY_NAME:          'FLAMETHROWER',
 
-    description: [
+    description: (w) => [
         'Spray-fire weapon with particle spread and afterburn DoT.',
-        'Particles per shot: 4 (spread-based accuracy).',
-        'Fire damage per particle: 2-5.',
-        'Afterburn damage: 5-6 per tick.',
-        'Afterburn interval: 0.5s, duration 3.5s.',
-        'Airblast deflect: costs 20 ammo every 3.5s (reflects projectiles).'
+        `Particles per shot: ${w.PARTICLES_PER_SHOT} (spread-based accuracy).`,
+        `Fire damage per particle: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX}.`,
+        `Afterburn damage: ${w.AFTERBURN_DAMAGE_MIN}-${w.AFTERBURN_DAMAGE_MAX} per tick.`,
+        `Afterburn interval: ${(w.AFTERBURN_INTERVAL_MS / 1000).toFixed(1)}s, duration ${(w.AFTERBURN_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Airblast deflect: costs ${w.AIRBLAST_AMMO_COST} ammo every ${(w.AIRBLAST_COOLDOWN_MS / 1000).toFixed(1)}s (reflects projectiles).`
     ],
 };
 

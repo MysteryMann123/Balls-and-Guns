@@ -55,9 +55,9 @@ const shotgun = {
     image: 'assets/Shotgun_IMG.png',
     DISPLAY_NAME:       'SHOTGUN',
 
-    description: [
-        `Hitscan pellets with falloff from ${C.SHOTGUN_DAMAGE_MAX} to ${C.SHOTGUN_DAMAGE_MIN}.`,
-        `Range cap around ${C.SHOTGUN_HITSCAN_RANGE}px with short tracers.`
+    description: (w) => [
+        `Hitscan pellets with falloff from ${w.DAMAGE_MAX} to ${w.DAMAGE_MIN}.`,
+        `Range cap around ${w.HITSCAN_RANGE}px with short tracers.`
     ],
 };
 

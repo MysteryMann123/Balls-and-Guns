@@ -49,9 +49,9 @@ const huntsman = {
     image: 'assets/Huntsman.png',
     DISPLAY_NAME:      'HUNTSMAN',
 
-    description: [
-        'Arrow projectile with slight wobble and stick duration 1.4s.',
-        'Damage roll per shot: 100-180.'
+    description: (w) => [
+        `Arrow projectile with slight wobble and stick duration ${(w.STICK_DURATION_MS / 1000).toFixed(1)}s.`,
+        `Damage roll per shot: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX}.`
     ],
 };
 

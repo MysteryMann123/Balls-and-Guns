@@ -58,10 +58,10 @@ const widowmaker = {
     image: 'assets/Widowmaker.png',
     DISPLAY_NAME:       'WIDOWMAKER',
 
-    description: [
-        'Consumes 30 ammo per shot and fires 6 pellets.',
-        'Pellet damage range: 5-20 (shotgun-style falloff).',
-        'Refunds ammo equal to damage dealt; reloads for 10s when below 30 ammo.'
+    description: (w) => [
+        `Consumes ${w.AMMO_PER_SHOT} ammo per shot and fires ${w.PELLETS_PER_SHOT} pellets.`,
+        `Pellet damage range: ${w.DAMAGE_MIN}-${w.DAMAGE_MAX} (shotgun-style falloff).`,
+        `Refunds ammo equal to damage dealt; reloads for ${(w.LOW_AMMO_RELOAD_MS / 1000).toFixed(0)}s when below ${w.AMMO_PER_SHOT} ammo.`
     ],
 
     getAmmoCost(weapon) {
