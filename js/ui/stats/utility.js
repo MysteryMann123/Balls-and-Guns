@@ -175,8 +175,8 @@ const UTILITY_STATS = {
         title: 'Speed Boost',
         subtitle: 'Utility Drop',
         chips: [
-            ['Max Speed +', `${speed.PERMANENT}`],
-            ['Min Speed +', `${(speed.PERMANENT * 0.2).toFixed(2)}`]
+            ['Max Speed +', `${speed.PERMANENT_BOOST}`],
+            ['Min Speed +', `${(speed.PERMANENT_BOOST * 0.2).toFixed(2)}`]
         ],
         notes: ['Permanent movement boost for the ball that picks it up.']
     },
