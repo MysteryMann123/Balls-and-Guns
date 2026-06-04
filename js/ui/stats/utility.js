@@ -184,10 +184,10 @@ const UTILITY_STATS = {
         title: 'Explosive Flask',
         subtitle: 'Utility Drop (Consumable)',
         chips: [
-            ['Splash Radius', `${explosiveFlask.SPLASH_RADIUS}`],
-            ['Debuff Duration', `${(explosiveFlask.EFFECT_DURATION_MS / 1000).toFixed(1)}s`],
-            ['Slow', `x${explosiveFlask.SLOW_MULTIPLIER.toFixed(2)} move speed`],
-            ['Vulnerability', `x${explosiveFlask.PICKUP_DAMAGE_MULTIPLIER.toFixed(2)} explosive damage received`]
+            ['Splash Radius', `${C.EXPLOSIVE_FLASK_SPLASH_RADIUS}`],
+            ['Debuff Duration', `${(C.EXPLOSIVE_FLASK_EFFECT_DURATION_MS / 1000).toFixed(1)}s`],
+            ['Slow', `x${C.EXPLOSIVE_FLASK_SLOW_MULTIPLIER.toFixed(2)} move speed`],
+            ['Vulnerability', `x${C.EXPLOSIVE_FLASK_PICKUP_DAMAGE_MULTIPLIER.toFixed(2)} explosive damage received`]
         ],
         notes: [
             'Auto-thrown at the nearest enemy when picked up.',
@@ -198,7 +198,7 @@ const UTILITY_STATS = {
         title: 'Scrumpy Bottle',
         subtitle: 'Utility Drop (Consumable)',
         chips: [
-            ['Throw Damage', `${scrumpyBottle.THROW_DAMAGE_MIN} - ${scrumpyBottle.THROW_DAMAGE_MAX}`],
+            ['Throw Damage', `${scrumpyBottle.BOTTLE_THROW_DAMAGE_MIN} - ${scrumpyBottle.BOTTLE_THROW_DAMAGE_MAX}`],
             ['Puddle Damage/Tick', `${scrumpyBottle.PUDDLE_DAMAGE_MIN} - ${scrumpyBottle.PUDDLE_DAMAGE_MAX}`],
             ['Puddle Duration', `${(scrumpyBottle.PUDDLE_DURATION_MS / 1000).toFixed(1)}s`],
             ['Resistance', `${Math.round(scrumpyBottle.DAMAGE_REDUCTION * 100)}% reduced incoming damage`]
