@@ -1,4 +1,4 @@
-import * as Hitscan from '../mechanics/hitscan.js';
+import * as Hitscan from '../mechanics/shared/hitscan.js';
 
 // --- Derived from shotgun base values ---
 const damageMin      = Math.round(4 * 0.75);  // 75% of shotgun DAMAGE_MIN (4)

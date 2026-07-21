@@ -61,26 +61,10 @@ const harmony = {
     image: 'assets/EGOWeaponHarmony.webp',
     DISPLAY_NAME:       'EGO WEAPON HARMONY',
 
-    onAddHaste(weapon, now, damageTaken, maxHp) {
-        const bonusGain = Math.min(this.HASTE_MAX_BONUS,
-            Math.max(0, damageTaken) / Math.max(1, maxHp));
-        weapon.harmonyHasteBonus = Math.min(this.HASTE_MAX_BONUS,
-            (weapon.harmonyHasteBonus || 0) + bonusGain);
-        weapon.harmonyHasteUntil = Math.max(weapon.harmonyHasteUntil,
-            now + this.HASTE_DURATION_MS);
-    },
-
-    getEffectiveFireRate(weapon, now) {
-        if (now >= weapon.harmonyHasteUntil) return weapon.fireRate;
-        const bonus = Math.min(weapon.harmonyHasteBonus || 0, this.HASTE_MAX_BONUS);
-        return weapon.fireRate * (1 - bonus);
-    },
-
-    getReloadDuration(weapon, now) {
-        if (now >= weapon.harmonyHasteUntil) return weapon.reloadTimeMs;
-        const bonus = Math.min(weapon.harmonyHasteBonus || 0, this.HASTE_MAX_BONUS);
-        return weapon.reloadTimeMs * (1 - bonus);
-    },
+    // No hooks: hasteMaxBonus/hasteDurationMs on the WEAPON_CONFIGS entry in
+    // weapon.js are enough for the engine's declarative haste handling to
+    // reproduce the damage-taken speed boost (see core/ball.js's
+    // takeDamage(), which calls weapon.addHaste()).
 };
 
 export default harmony;

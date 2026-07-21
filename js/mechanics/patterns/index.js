@@ -22,3 +22,4 @@ export * as Randomizer from './randomizer.js';
 export * as Zone from './zone.js';
 export * as Beam from './beam.js';
 export * as Conditional from './conditional.js';
+export * as BurstFire from './burstFire.js';

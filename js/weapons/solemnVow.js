@@ -1,5 +1,5 @@
-import * as Afterburn from '../mechanics/afterburn.js';
-import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
+import * as Afterburn from '../mechanics/shared/afterburn.js';
+import * as MaxHpDamage from '../mechanics/shared/maxHpDamage.js';
 
 // --- Ammo & Timing ---
 const ammo                      = 8;

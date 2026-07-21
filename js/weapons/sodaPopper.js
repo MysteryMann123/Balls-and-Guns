@@ -1,4 +1,4 @@
-import * as Hitscan from '../mechanics/hitscan.js';
+import * as Hitscan from '../mechanics/shared/hitscan.js';
 
 // --- Ammo & Timing ---
 const ammo                   = 2;

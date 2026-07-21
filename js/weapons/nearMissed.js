@@ -1,4 +1,4 @@
-import * as SplashAoe from '../mechanics/splashAoe.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
 
 // --- Derived from rocketLauncher and directHit base values ---
 const ammo              = 4;                        // matches directHit AMMO (4)

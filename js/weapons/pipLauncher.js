@@ -1,5 +1,5 @@
-import * as SplashAoe from '../mechanics/splashAoe.js';
-import * as Tracer from '../mechanics/tracer.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
+import * as Tracer from '../mechanics/shared/tracer.js';
 
 // --- Ammo & Timing ---
 const ammo             = 6;

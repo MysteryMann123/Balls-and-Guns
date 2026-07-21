@@ -1,5 +1,5 @@
-import * as Afterburn from '../mechanics/afterburn.js';
-import * as Pierce from '../mechanics/pierce.js';
+import * as Afterburn from '../mechanics/shared/afterburn.js';
+import * as Pierce from '../mechanics/shared/pierce.js';
 
 // --- Ammo & Timing ---
 const ammo                = 200;

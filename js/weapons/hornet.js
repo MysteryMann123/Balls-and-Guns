@@ -1,5 +1,4 @@
-import * as Afterburn from '../mechanics/afterburn.js';
-import * as DualForm from '../mechanics/dualForm.js';
+import * as Afterburn from '../mechanics/shared/afterburn.js';
 
 // --- General ---
 const reloadMs                  = 2200;
@@ -45,7 +44,6 @@ const hornet = {
     RELOAD_MS:                   reloadMs,
     FIRE_RATE:                   fireRate,
     RANGE_SWITCH_DISTANCE:       rangeSwitchDistance,
-    dualForm:                    DualForm.create(rangeSwitchDistance),
 
     // Shotgun Form
     SHOTGUN_AMMO:                shotgunAmmo,
@@ -86,87 +84,11 @@ const hornet = {
         rifle:   'assets/EGOWeaponHornet.png',
         shotgun: 'assets/Lobotomy_E.G.O_Hornet_Alteration_Shotgun_Sprite.png',
     },
-    CONFIG: {
-        maxAmmo: rifleAmmo,
-        reloadTimeMs: reloadMs,
-        damage: 0,
-        damageMin: rifleDamageMin,
-        damageMax: rifleDamageMax,
-        speed: rifleSpeed,
-        fireRate,
-        color,
-        projectileSize: rifleProjectileSize,
-        pelletsPerShot,
-        spreadAngle,
-    },
+    DISPLAY_NAME: 'EGO WEAPON HORNET',
 
-    getInfo(weaponInstance, now) {
-        const form = weaponInstance.hornetForm || 'rifle';
-        const formLabel = form === 'shotgun' ? 'SHOTGUN' : 'RIFLE';
-        const ammo = form === 'shotgun' ? weaponInstance.hornetShotgunAmmo : weaponInstance.hornetRifleAmmo;
-        const maxAmmo = form === 'shotgun' ? weaponInstance.hornetShotgunMaxAmmo : weaponInstance.hornetRifleMaxAmmo;
-        return `EGO WEAPON HORNET ${formLabel} (${ammo}/${maxAmmo})`;
-    },
-
-    onStartReload(weapon, now, formOverride) {
-        const targetForm    = formOverride || weapon.hornetForm || 'rifle';
-        const currentAmmo   = targetForm === 'shotgun' ? weapon.hornetShotgunAmmo    : weapon.hornetRifleAmmo;
-        const targetMaxAmmo = targetForm === 'shotgun' ? weapon.hornetShotgunMaxAmmo : weapon.hornetRifleMaxAmmo;
-        if (currentAmmo >= targetMaxAmmo) return true;
-        weapon.isReloading = true;
-        weapon.hornetReloadingForm = targetForm;
-        weapon.reloadCompleteAt = now + weapon.reloadTimeMs;
-        weapon.ammo    = currentAmmo;
-        weapon.maxAmmo = targetMaxAmmo;
-        return true;
-    },
-
-    onReloadComplete(weapon, now) {
-        const reloadForm = weapon.hornetReloadingForm || weapon.hornetForm || 'rifle';
-        if (reloadForm === 'shotgun') {
-            weapon.hornetShotgunAmmo = weapon.hornetShotgunMaxAmmo;
-            weapon.ammo    = weapon.hornetShotgunAmmo;
-            weapon.maxAmmo = weapon.hornetShotgunMaxAmmo;
-        } else {
-            weapon.hornetRifleAmmo = weapon.hornetRifleMaxAmmo;
-            weapon.ammo    = weapon.hornetRifleAmmo;
-            weapon.maxAmmo = weapon.hornetRifleMaxAmmo;
-        }
-        weapon.hornetReloadingForm = null;
-        return true;
-    },
-
-    onCanShoot(weapon, now, formOverride) {
-        const activeForm = formOverride || weapon.hornetForm || 'rifle';
-        weapon.hornetForm = activeForm;
-        if (weapon.isReloading) return false;
-        const activeAmmo    = activeForm === 'shotgun' ? weapon.hornetShotgunAmmo    : weapon.hornetRifleAmmo;
-        const activeMaxAmmo = activeForm === 'shotgun' ? weapon.hornetShotgunMaxAmmo : weapon.hornetRifleMaxAmmo;
-        weapon.ammo    = activeAmmo;
-        weapon.maxAmmo = activeMaxAmmo;
-        if (activeAmmo <= 0) {
-            weapon.startReload(now, activeForm);
-            return false;
-        }
-        return now - weapon.lastShotAt >= weapon.fireRate;
-    },
-
-    onShoot(weapon, now, formOverride) {
-        const activeForm = formOverride || weapon.hornetForm || 'rifle';
-        if (activeForm === 'shotgun') {
-            weapon.hornetShotgunAmmo = Math.max(0, weapon.hornetShotgunAmmo - 1);
-            weapon.ammo    = weapon.hornetShotgunAmmo;
-            weapon.maxAmmo = weapon.hornetShotgunMaxAmmo;
-            if (weapon.hornetShotgunAmmo <= 0) weapon.startReload(now, 'shotgun');
-        } else {
-            weapon.hornetRifleAmmo = Math.max(0, weapon.hornetRifleAmmo - 1);
-            weapon.ammo    = weapon.hornetRifleAmmo;
-            weapon.maxAmmo = weapon.hornetRifleMaxAmmo;
-            if (weapon.hornetRifleAmmo <= 0) weapon.startReload(now, 'rifle');
-        }
-        weapon.lastShotAt = now;
-        return true;
-    },
+    // No hooks: `forms`/`defaultForm` on the WEAPON_CONFIGS entry in
+    // weapon.js are enough for the engine's declarative dual-form ammo-pool
+    // handling to reproduce independent rifle/shotgun ammo and reload.
 };
 
 export default hornet;

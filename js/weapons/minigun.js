@@ -1,4 +1,4 @@
-import * as FireRateRamp from '../mechanics/fireRateRamp.js';
+import * as FireRateRamp from '../mechanics/patterns/fireRateRamp.js';
 
 // --- Config ---
 const maxAmmo             = 200;
@@ -62,20 +62,10 @@ const minigun = {
     image: 'assets/Minigun_IMG.png',
     DISPLAY_NAME:         'MINIGUN',
 
-    onAfterAmmoReset(weapon, now) {
-        weapon.currentFireRate = weapon.fireRate;
-    },
-
-    getEffectiveFireRate(weapon, now) {
-        if (now - weapon.lastShotAt > weapon.rampResetDelayMs) {
-            weapon.currentFireRate = weapon.fireRate;
-        }
-        return weapon.currentFireRate;
-    },
-
-    onAfterShot(weapon, now) {
-        weapon.currentFireRate = Math.max(weapon.minFireRate, weapon.currentFireRate - weapon.rampPerShot);
-    },
+    // No hooks: rampPerShot/minFireRate/rampResetDelayMs on the
+    // WEAPON_CONFIGS entry in weapon.js are enough for the engine's
+    // declarative fireRateRamp handling to reproduce the spin-up/idle-reset
+    // behavior.
 };
 
 export default minigun;

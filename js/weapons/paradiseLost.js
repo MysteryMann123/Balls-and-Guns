@@ -1,9 +1,9 @@
-import * as Homing from '../mechanics/homing.js';
-import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
-import * as LifeSteal from '../mechanics/lifesteal.js';
-import * as AllyHeal from '../mechanics/allyHeal.js';
-import * as SelfDamage from '../mechanics/selfDamage.js';
-import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+import * as Homing from '../mechanics/shared/homing.js';
+import * as MaxHpDamage from '../mechanics/shared/maxHpDamage.js';
+import * as LifeSteal from '../mechanics/patterns/lifesteal.js';
+import * as AllyHeal from '../mechanics/patterns/allyHeal.js';
+import * as SelfDamage from '../mechanics/patterns/selfDamage.js';
+import * as TeamAwareHit from '../mechanics/patterns/teamAwareHit.js';
 
 // --- Ammo & Timing ---
 const ammo                = 1;

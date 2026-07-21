@@ -439,14 +439,14 @@ export class Ball {
             this.medigunState.selfRegenAnchorHp = this.hp - adjusted;
         }
 
-        if (this.weapon.type === 'harmony' && adjusted > 0 && sourceWeaponType && sourceWeaponType !== 'harmony') {
-            this.weapon.addHarmonyHaste(now, adjusted, this.maxHP);
-            this.harmony.hasteBonus = this.weapon.harmonyHasteBonus;
-            this.harmony.hasteUntil = this.weapon.harmonyHasteUntil;
+        if (this.weapon.isHasteWeapon() && adjusted > 0 && sourceWeaponType && sourceWeaponType !== this.weapon.type) {
+            this.weapon.addHaste(now, adjusted, this.maxHP);
+            this.harmony.hasteBonus = this.weapon.hasteBonus;
+            this.harmony.hasteUntil = this.weapon.hasteUntil;
 
             if (this.weapon.isReloading) {
                 const remaining = Math.max(0, this.weapon.reloadCompleteAt - now);
-                this.weapon.reloadCompleteAt = now + remaining * (1 - Math.min(W.harmony.HASTE_MAX_BONUS, adjusted / Math.max(1, this.maxHP)));
+                this.weapon.reloadCompleteAt = now + remaining * (1 - Math.min(this.weapon.hasteMaxBonus, adjusted / Math.max(1, this.maxHP)));
             }
         }
 
@@ -971,7 +971,7 @@ export class Ball {
             ctx.drawImage(swordSharpenedImage, -40, -8, 40, 16);
             ctx.restore();
         } else if (this.weapon.type === 'hornet') {
-            const hornetForm = this.weapon.hornetForm || 'rifle';
+            const hornetForm = this.weapon.activeForm || 'rifle';
             if (hornetForm === 'shotgun' && hornetShotgunImage && hornetShotgunImage.complete && hornetShotgunImage.naturalWidth > 0) {
                 // Draw shotgun without flipping
                 ctx.save();
@@ -1020,7 +1020,7 @@ export class Ball {
         } else if (this.weapon.type === 'hypocrisy' && hypocrisyWeaponImage && hypocrisyWeaponImage.complete && hypocrisyWeaponImage.naturalWidth > 0) {
             drawHeldWeapon(hypocrisyWeaponImage, 42, 18, true);
         } else if (this.weapon.type === 'crimsonscar') {
-            const csForm = this.weapon.crimsonScarForm || 'gun';
+            const csForm = this.weapon.activeForm || 'gun';
             const csImg = csForm === 'blade' ? crimsonScarBladeImage : crimsonScarGunImage;
             if (csImg && csImg.complete && csImg.naturalWidth > 0) {
                 drawHeldWeapon(csImg, 42, 18, true);

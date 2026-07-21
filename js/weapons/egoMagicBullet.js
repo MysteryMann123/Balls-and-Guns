@@ -1,7 +1,7 @@
-import * as Homing    from '../mechanics/homing.js';
-import * as Afterburn from '../mechanics/afterburn.js';
-import * as Tracer    from '../mechanics/tracer.js';
-import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+import * as Homing    from '../mechanics/shared/homing.js';
+import * as Afterburn from '../mechanics/shared/afterburn.js';
+import * as Tracer    from '../mechanics/shared/tracer.js';
+import * as TeamAwareHit from '../mechanics/patterns/teamAwareHit.js';
 
 // --- Ammo & Timing ---
 const ammo                     = 7;

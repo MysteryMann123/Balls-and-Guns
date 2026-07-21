@@ -1,6 +1,6 @@
-import * as Knockback from '../mechanics/knockback.js';
-import * as SplashAoe from '../mechanics/splashAoe.js';
-import * as MeleeAttack from '../mechanics/meleeAttack.js';
+import * as Knockback from '../mechanics/patterns/knockback.js';
+import * as SplashAoe from '../mechanics/patterns/splashAoe.js';
+import * as MeleeAttack from '../mechanics/patterns/meleeAttack.js';
 
 // --- Ammo ---
 const ammo                = 4;

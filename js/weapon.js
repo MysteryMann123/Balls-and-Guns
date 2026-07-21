@@ -1,4 +1,7 @@
 import * as W from './weapons/index.js';
+import * as ConditionalReload from './mechanics/patterns/conditionalReload.js';
+import * as FireRateRamp from './mechanics/patterns/fireRateRamp.js';
+import * as BurstFire from './mechanics/patterns/burstFire.js';
 
 const WEAPON_CONFIGS = {
     pistol: {
@@ -85,30 +88,26 @@ const WEAPON_CONFIGS = {
         projectileSize:  W.harmony.PROJECTILE_SIZE,
         pelletsPerShot:  W.harmony.PELLETS_PER_SHOT,
         spreadAngle:     W.harmony.SPREAD_ANGLE,
+        hasteMaxBonus:   W.harmony.HASTE_MAX_BONUS,
+        hasteDurationMs: W.harmony.HASTE_DURATION_MS,
     },
     hornet: {
-        maxAmmo:                   W.hornet.RIFLE_AMMO,
-        reloadTimeMs:              W.hornet.RELOAD_MS,
-        damage:                    0,
-        damageMin:                 W.hornet.RIFLE_DAMAGE_MIN,
-        damageMax:                 W.hornet.RIFLE_DAMAGE_MAX,
-        speed:                     W.hornet.RIFLE_SPEED,
-        fireRate:                  W.hornet.FIRE_RATE,
-        color:                     W.hornet.COLOR,
-        projectileSize:            W.hornet.RIFLE_PROJECTILE_SIZE,
-        pelletsPerShot:            W.hornet.PELLETS_PER_SHOT,
-        spreadAngle:               W.hornet.SPREAD_ANGLE,
-        hornetRangeSwitchDistance: W.hornet.RANGE_SWITCH_DISTANCE,
-        hornetShotgunMaxAmmo:      W.hornet.SHOTGUN_AMMO,
-        hornetRifleMaxAmmo:        W.hornet.RIFLE_AMMO,
-        hornetShotgunAmmo:         W.hornet.SHOTGUN_AMMO,
-        hornetRifleAmmo:           W.hornet.RIFLE_AMMO,
-        hornetShotgunDamageMin:    W.hornet.SHOTGUN_DAMAGE_MIN,
-        hornetShotgunDamageMax:    W.hornet.SHOTGUN_DAMAGE_MAX,
-        hornetShotgunPelletsPerShot: W.hornet.SHOTGUN_PELLETS_PER_SHOT,
-        hornetShotgunSpreadAngle:  W.hornet.SHOTGUN_SPREAD_ANGLE,
-        hornetForm:                W.hornet.INITIAL_FORM,
-        hornetReloadingForm:       null,
+        maxAmmo:         W.hornet.RIFLE_AMMO,
+        reloadTimeMs:    W.hornet.RELOAD_MS,
+        damage:          0,
+        damageMin:       W.hornet.RIFLE_DAMAGE_MIN,
+        damageMax:       W.hornet.RIFLE_DAMAGE_MAX,
+        speed:           W.hornet.RIFLE_SPEED,
+        fireRate:        W.hornet.FIRE_RATE,
+        color:           W.hornet.COLOR,
+        projectileSize:  W.hornet.RIFLE_PROJECTILE_SIZE,
+        pelletsPerShot:  W.hornet.PELLETS_PER_SHOT,
+        spreadAngle:     W.hornet.SPREAD_ANGLE,
+        defaultForm:     W.hornet.INITIAL_FORM,
+        forms: {
+            rifle:   { maxAmmo: W.hornet.RIFLE_AMMO },
+            shotgun: { maxAmmo: W.hornet.SHOTGUN_AMMO },
+        },
     },
     soundofstar: {
         maxAmmo:         W.soundOfStar.MAX_AMMO,
@@ -147,6 +146,10 @@ const WEAPON_CONFIGS = {
         pelletsPerShot:  W.swordSharpened.PELLETS_PER_SHOT,
         spreadAngle:     W.swordSharpened.SPREAD_ANGLE,
         unloadTimeMs:    W.swordSharpened.UNLOAD_MS,
+        stacksField:         'swordSharpenStacks',
+        maxStacks:           W.swordSharpened.SHARPEN_MAX_STACKS,
+        speedBonusPerStack:  W.swordSharpened.SHARPEN_SPEED_BONUS,
+        reloadBonusPerStack: W.swordSharpened.SHARPEN_RELOAD_BONUS,
     },
     shotgun: {
         maxAmmo:         W.shotgun.MAX_AMMO,
@@ -240,6 +243,8 @@ const WEAPON_CONFIGS = {
         projectileSize:  W.widowmaker.PROJECTILE_SIZE,
         pelletsPerShot:  W.widowmaker.PELLETS_PER_SHOT,
         spreadAngle:     W.widowmaker.SPREAD_ANGLE,
+        ammoCostPerShot: W.widowmaker.AMMO_PER_SHOT,
+        lowAmmoReloadMs: W.widowmaker.LOW_AMMO_RELOAD_MS,
     },
     machina: {
         maxAmmo:         W.machina.MAX_AMMO,
@@ -521,17 +526,21 @@ const WEAPON_CONFIGS = {
         piercingCount:   W.adoration.PIERCE_COUNT,
     },
     hypocrisy: {
-        maxAmmo:         W.hypocrisy.AMMO,
-        reloadTimeMs:    W.hypocrisy.RELOAD_MS,
-        damage:          0,
-        damageMin:       W.hypocrisy.DAMAGE_MIN,
-        damageMax:       W.hypocrisy.DAMAGE_MAX,
-        speed:           W.hypocrisy.SPEED,
-        fireRate:        W.hypocrisy.FIRE_RATE_BASE,
-        color:           W.hypocrisy.COLOR,
-        projectileSize:  W.hypocrisy.PROJECTILE_SIZE,
-        pelletsPerShot:  W.hypocrisy.PELLETS_PER_SHOT,
-        spreadAngle:     W.hypocrisy.SPREAD_ANGLE,
+        maxAmmo:          W.hypocrisy.AMMO,
+        reloadTimeMs:     W.hypocrisy.RELOAD_MS,
+        damage:           0,
+        damageMin:        W.hypocrisy.DAMAGE_MIN,
+        damageMax:        W.hypocrisy.DAMAGE_MAX,
+        speed:            W.hypocrisy.SPEED,
+        fireRate:         W.hypocrisy.FIRE_RATE_BASE,
+        color:            W.hypocrisy.COLOR,
+        projectileSize:   W.hypocrisy.PROJECTILE_SIZE,
+        pelletsPerShot:   W.hypocrisy.PELLETS_PER_SHOT,
+        spreadAngle:      W.hypocrisy.SPREAD_ANGLE,
+        currentFireRate:  W.hypocrisy.FIRE_RATE_BASE,
+        minFireRate:      W.hypocrisy.FIRE_RATE_MIN,
+        rampRatePerSec:   W.hypocrisy.RAMP_RATE_MS_PER_SEC,
+        rampResetDelayMs: W.hypocrisy.IDLE_RESET_MS,
     },
     crimsonscar: {
         maxAmmo:         W.crimsonScar.GUN_AMMO,
@@ -545,6 +554,20 @@ const WEAPON_CONFIGS = {
         projectileSize:  W.crimsonScar.GUN_PROJECTILE_SIZE,
         pelletsPerShot:  W.crimsonScar.PELLETS_PER_SHOT,
         spreadAngle:     W.crimsonScar.SPREAD_ANGLE,
+        defaultForm:     'gun',
+        forms: {
+            gun: {
+                maxAmmo:         W.crimsonScar.GUN_AMMO,
+                fireRate:        W.crimsonScar.FIRE_RATE,
+                burstCount:      W.crimsonScar.BURST_COUNT,
+                burstIntervalMs: W.crimsonScar.BURST_INTERVAL_MS,
+            },
+            blade: {
+                maxAmmo:  Infinity,
+                fireRate: W.crimsonScar.BLADE_FIRE_RATE,
+                independentCooldown: true,
+            },
+        },
     },
     flamethrower: {
         maxAmmo:         W.flamethrower.AMMO,
@@ -686,12 +709,223 @@ export class Weapon {
         this.reloadTimeMs = 0;
         this.isReloading = false;
         this.reloadCompleteAt = 0;
-        this.harmonyHasteBonus = 0;
-        this.harmonyHasteUntil = 0;
+        this.hasteBonus = 0;
+        this.hasteUntil = 0;
 
         Object.assign(this, WEAPON_CONFIGS[type] ?? DEALER_CONFIG);
         this.ammo = this.maxAmmo ?? 0;
     }
+
+    // ---- Declarative fallbacks ----
+    //
+    // These implement the same behavior that used to require a weapon module
+    // to write its own onCanShoot/onShoot/getReloadDuration/... hook, purely
+    // from config fields set on the weapon (see WEAPON_CONFIGS above). Each
+    // one is only consulted when the weapon's own module doesn't define the
+    // matching hook, so already-migrated weapons (widowmaker, minigun,
+    // hypocrisy, ...) fall straight through to here with zero code of their
+    // own, while weapons that still need bespoke logic (dealer, soundOfStar)
+    // keep working unchanged via their hooks.
+
+    // Ammo cost per shot: set `ammoCostPerShot` on a weapon's config
+    // (default 1) instead of writing a getAmmoCost() hook.
+    getDeclarativeAmmoCost() {
+        return this.ammoCostPerShot ?? 1;
+    }
+
+    // Low-ammo reload penalty (mechanics/patterns/conditionalReload.js):
+    // set `lowAmmoReloadMs` on a weapon's config instead of writing a
+    // getReloadDuration() hook. Composes with haste (below): conditionalReload
+    // sets the base duration, haste then scales it.
+    getDeclarativeReloadDuration(now) {
+        let duration = this.lowAmmoReloadMs == null
+            ? this.reloadTimeMs
+            : ConditionalReload.getReloadDuration(this, this.reloadTimeMs, {
+                lowAmmoPenalty: true,
+                lowAmmoReloadMs: this.lowAmmoReloadMs,
+            });
+
+        if (this.isHasteWeapon()) duration *= this.getDeclarativeHasteMultiplier(now);
+        if (this.isStackBuffWeapon() && this.reloadBonusPerStack != null) {
+            duration *= 1 - Math.min(0.6, this.reloadBonusPerStack * this.getStackCount());
+        }
+        return duration;
+    }
+
+    // Fire-rate ramp (mechanics/patterns/fireRateRamp.js): set `rampPerShot`
+    // (flat ms/shot, minigun-style) or `rampRatePerSec` (percentage decay,
+    // hypocrisy-style) plus `minFireRate`/`rampResetDelayMs` on a weapon's
+    // config instead of writing getEffectiveFireRate()/onAfterShot()/
+    // onAfterAmmoReset() hooks.
+    isRampWeapon() {
+        return this.rampPerShot != null || this.rampRatePerSec != null;
+    }
+
+    getDeclarativeFireRate(now) {
+        if (this.isRampWeapon()) {
+            this.currentFireRate = FireRateRamp.getEffectiveRate(this.currentFireRate, this.fireRate, this.lastShotAt, now, this.rampResetDelayMs);
+            return this.currentFireRate;
+        }
+        if (this.isHasteWeapon()) return this.fireRate * this.getDeclarativeHasteMultiplier(now);
+        if (this.isStackBuffWeapon() && this.speedBonusPerStack != null) {
+            return this.fireRate * (1 - Math.min(0.6, this.speedBonusPerStack * this.getStackCount()));
+        }
+        if (this.isBurstFireWeapon()) return this.getDeclarativeBurstInterval(now);
+        return this.fireRate;
+    }
+
+    applyDeclarativeRamp() {
+        if (!this.isRampWeapon()) return;
+        this.currentFireRate = this.rampPerShot != null
+            ? FireRateRamp.applyRamp(this.currentFireRate, this.rampPerShot, this.minFireRate)
+            : FireRateRamp.applyPercentageRamp(this.currentFireRate, this.rampRatePerSec, this.minFireRate);
+    }
+
+    resetDeclarativeRamp() {
+        if (!this.isRampWeapon()) return;
+        this.currentFireRate = FireRateRamp.onReload(this.fireRate);
+    }
+
+    // Externally-driven stack multiplier: an external system sets
+    // `this[stacksField]` directly (see gameProjectiles.js's sword-stick
+    // collision, which mirrors a projectile's sharpen stacks onto the
+    // weapon) and the engine just reads it to scale fire rate/reload. Set
+    // `stacksField`/`maxStacks`/`speedBonusPerStack`/`reloadBonusPerStack`
+    // (each bonus capped at 0.6, matching the original hand-rolled cap) on a
+    // weapon's config instead of writing getEffectiveFireRate()/
+    // getReloadDuration() hooks (see swordSharpened.js). NOTE: intentionally
+    // does not check any expiry timestamp — this reproduces the original
+    // swordSharpened.js behavior exactly, where the fire-rate/reload bonus
+    // persists until stacks are overwritten by a new hit, even though the
+    // separate damage bonus in core/ball.js does expire (a pre-existing
+    // asymmetry, preserved as-is rather than "fixed" here).
+    isStackBuffWeapon() {
+        return this.stacksField != null;
+    }
+
+    getStackCount() {
+        const raw = this[this.stacksField] || 0;
+        return Math.max(0, Math.min(this.maxStacks, raw));
+    }
+
+    // Haste: damage taken by the wielder speeds up fire rate and reload,
+    // decaying back to normal after `hasteDurationMs` without a further hit.
+    // Set `hasteMaxBonus`/`hasteDurationMs` on a weapon's config instead of
+    // writing onAddHaste()/getEffectiveFireRate()/getReloadDuration() hooks
+    // (see harmony.js). Triggered externally via addHaste() — see
+    // core/ball.js's takeDamage(), gated by `weapon.hasteMaxBonus != null`
+    // rather than a hardcoded weapon type, so any future haste weapon works
+    // without touching ball.js.
+    isHasteWeapon() {
+        return this.hasteMaxBonus != null;
+    }
+
+    addHaste(now, damageTaken, maxHp) {
+        const ns = _weaponNS[this.type];
+        if (ns?.onAddHaste) {
+            ns.onAddHaste(this, now, damageTaken, maxHp);
+            return;
+        }
+        if (!this.isHasteWeapon()) return;
+        const bonusGain = Math.min(this.hasteMaxBonus, Math.max(0, damageTaken) / Math.max(1, maxHp));
+        this.hasteBonus = Math.min(this.hasteMaxBonus, (this.hasteBonus || 0) + bonusGain);
+        this.hasteUntil = Math.max(this.hasteUntil, now + this.hasteDurationMs);
+    }
+
+    getDeclarativeHasteMultiplier(now) {
+        if (!this.isHasteWeapon()) return 1;
+        if (now >= this.hasteUntil) return 1;
+        const bonus = Math.min(this.hasteBonus || 0, this.hasteMaxBonus);
+        return 1 - bonus;
+    }
+
+    // Burst fire (mechanics/patterns/burstFire.js): set `burstCount`/
+    // `burstIntervalMs` on a weapon's (or a dual-form weapon's per-form)
+    // config instead of writing onCanShoot()/onShoot() hooks to track a
+    // burst counter by hand (see crimsonScar.js gun form). The weapon's own
+    // `fireRate` is used as the between-bursts base rate.
+    isBurstFireWeapon() {
+        return this.burstCount != null;
+    }
+
+    getDeclarativeBurstInterval(now) {
+        if (!this.burstState) this.burstState = BurstFire.createState();
+        return BurstFire.getEffectiveInterval(this.burstState, { BURST_INTERVAL_MS: this.burstIntervalMs, BASE_FIRE_RATE: this.fireRate });
+    }
+
+    applyDeclarativeBurst() {
+        if (!this.burstState) this.burstState = BurstFire.createState();
+        BurstFire.recordShot(this.burstState, { BURST_COUNT: this.burstCount });
+    }
+
+    // Dual-form independent ammo pools: set `forms: { formA: { maxAmmo,
+    // fireRate?, burstCount?, burstIntervalMs? }, formB: { ... } }` and
+    // `defaultForm` on a weapon's config instead of writing onCanShoot/
+    // onShoot/onStartReload/onReloadComplete hooks to track ammo/fire-rate
+    // per form by hand (see hornet.js, crimsonScar.js). Only the ammo pool
+    // is mandatory per form; fireRate/burstCount/burstIntervalMs are opt-in
+    // overrides — a form that omits `fireRate` shares the weapon's global
+    // rate (e.g. hornet's two forms), while a form that declares its own
+    // (e.g. crimsonScar's gun vs blade) gets it swapped in whenever that
+    // form becomes active. A form with `maxAmmo: Infinity` (e.g.
+    // crimsonScar's blade) never reloads and its "fire rate" acts as a
+    // simple attack cooldown — no separate melee-cooldown concept needed.
+    // The active form is exposed as `this.activeForm` for rendering (see
+    // core/ball.js).
+    isDualFormWeapon() {
+        return this.forms != null;
+    }
+
+    getActiveForm(formOverride = null) {
+        return formOverride || this.activeForm || this.defaultForm;
+    }
+
+    // Points this.ammo/this.maxAmmo (and, if declared, this.fireRate/
+    // burstCount/burstIntervalMs) at the given form's config, creating each
+    // pool at its configured maxAmmo on first use, and remembers it as active.
+    syncFormAmmo(form) {
+        if (!this.formAmmo) {
+            this.formAmmo = {};
+            for (const key of Object.keys(this.forms)) {
+                this.formAmmo[key] = this.forms[key].maxAmmo;
+            }
+        }
+        const formConfig = this.forms[form];
+        this.activeForm = form;
+        this.ammo = this.formAmmo[form];
+        this.maxAmmo = formConfig.maxAmmo;
+        if (formConfig.fireRate != null) this.fireRate = formConfig.fireRate;
+        this.burstCount = formConfig.burstCount;
+        this.burstIntervalMs = formConfig.burstIntervalMs;
+    }
+
+    // A form with `independentCooldown: true` (e.g. crimsonScar's blade)
+    // gates its own fire-rate check off a per-form cooldown clock instead of
+    // the weapon's shared `lastShotAt` — so switching into that form doesn't
+    // inherit a cooldown from whatever the other form was just doing. Firing
+    // it still updates the shared clock too (so the *other* form, if it
+    // shares the clock, is still affected) — matching how the original
+    // hand-rolled crimsonScar.js behaved (blade used its own
+    // crimsonScarBladeCooldownUntil but still touched weapon.lastShotAt).
+    getGateClock() {
+        const formConfig = this.isDualFormWeapon() ? this.forms[this.activeForm] : null;
+        if (formConfig?.independentCooldown) {
+            if (!this.formLastShotAt) this.formLastShotAt = {};
+            return this.formLastShotAt[this.activeForm] ?? 0;
+        }
+        return this.lastShotAt;
+    }
+
+    setGateClock(now) {
+        const formConfig = this.isDualFormWeapon() ? this.forms[this.activeForm] : null;
+        if (formConfig?.independentCooldown) {
+            if (!this.formLastShotAt) this.formLastShotAt = {};
+            this.formLastShotAt[this.activeForm] = now;
+        }
+        this.lastShotAt = now;
+    }
+
+    // ---- Core lifecycle ----
 
     updateReload(now) {
         if (!this.isReloading) return;
@@ -702,8 +936,21 @@ export class Weapon {
         const ns = _weaponNS[this.type];
         if (ns?.onReloadComplete?.(this, now)) return;
 
+        if (this.isDualFormWeapon()) {
+            const form = this.reloadingForm ?? this.getActiveForm();
+            this.syncFormAmmo(form);
+            this.ammo = this.maxAmmo;
+            this.formAmmo[form] = this.ammo;
+            this.reloadingForm = null;
+            return;
+        }
+
         this.ammo = this.maxAmmo;
-        ns?.onAfterAmmoReset?.(this, now);
+        if (ns?.onAfterAmmoReset) {
+            ns.onAfterAmmoReset(this, now);
+        } else {
+            this.resetDeclarativeRamp();
+        }
     }
 
     startReload(now, formOverride = null) {
@@ -714,10 +961,20 @@ export class Weapon {
         const ns = _weaponNS[this.type];
         if (ns?.onStartReload?.(this, now, formOverride)) return;
 
+        if (this.isDualFormWeapon()) {
+            const form = this.getActiveForm(formOverride);
+            this.syncFormAmmo(form);
+            if (this.ammo >= this.maxAmmo) return;
+            this.isReloading = true;
+            this.reloadingForm = form;
+            this.reloadCompleteAt = now + this.getDeclarativeReloadDuration(now);
+            return;
+        }
+
         if (this.ammo >= this.maxAmmo) return;
 
         this.isReloading = true;
-        this.reloadCompleteAt = now + (ns?.getReloadDuration?.(this, now) ?? this.reloadTimeMs);
+        this.reloadCompleteAt = now + (ns?.getReloadDuration?.(this, now) ?? this.getDeclarativeReloadDuration(now));
     }
 
     canShoot(now, formOverride = null) {
@@ -726,17 +983,19 @@ export class Weapon {
         const ns = _weaponNS[this.type];
         if (ns?.onCanShoot) return ns.onCanShoot(this, now, formOverride);
 
+        if (this.isDualFormWeapon()) this.syncFormAmmo(this.getActiveForm(formOverride));
+
         if (this.isReloading) return false;
 
-        const ammoCost = ns?.getAmmoCost?.(this) ?? 1;
+        const ammoCost = ns?.getAmmoCost?.(this) ?? this.getDeclarativeAmmoCost();
         if (this.ammo !== Infinity && this.ammo < ammoCost) {
-            this.startReload(now);
+            this.startReload(now, this.isDualFormWeapon() ? this.activeForm : undefined);
             return false;
         }
 
         const hasAmmo = this.ammo === Infinity || this.ammo >= ammoCost;
-        const effectiveFireRate = ns?.getEffectiveFireRate?.(this, now) ?? this.fireRate;
-        return hasAmmo && now - this.lastShotAt >= effectiveFireRate;
+        const effectiveFireRate = ns?.getEffectiveFireRate?.(this, now) ?? this.getDeclarativeFireRate(now);
+        return hasAmmo && now - this.getGateClock() >= effectiveFireRate;
     }
 
     shoot(now, formOverride = null) {
@@ -745,21 +1004,24 @@ export class Weapon {
         const ns = _weaponNS[this.type];
         if (ns?.onShoot?.(this, now, formOverride)) return true;
 
-        const ammoCost = ns?.getAmmoCost?.(this) ?? 1;
+        const ammoCost = ns?.getAmmoCost?.(this) ?? this.getDeclarativeAmmoCost();
         if (this.ammo !== Infinity) {
             this.ammo -= ammoCost;
+            if (this.isDualFormWeapon()) this.formAmmo[this.activeForm] = this.ammo;
             if (this.ammo <= 0 && !ns?.SUPPRESS_AUTO_RELOAD) {
-                this.startReload(now);
+                this.startReload(now, this.isDualFormWeapon() ? this.activeForm : undefined);
             }
         }
 
-        ns?.onAfterShot?.(this, now);
-        this.lastShotAt = now;
+        if (ns?.onAfterShot) {
+            ns.onAfterShot(this, now);
+        } else if (this.isRampWeapon()) {
+            this.applyDeclarativeRamp();
+        } else if (this.isBurstFireWeapon()) {
+            this.applyDeclarativeBurst();
+        }
+        this.setGateClock(now);
         return true;
-    }
-
-    addHarmonyHaste(now, damageTaken, maxHp) {
-        _weaponNS[this.type]?.onAddHaste?.(this, now, damageTaken, maxHp);
     }
 
     refundAmmo(amount) {
@@ -779,6 +1041,11 @@ export class Weapon {
 
         const name = config?.DISPLAY_NAME ?? this.type.toUpperCase();
 
+        if (this.isDualFormWeapon() && !this.isReloading) {
+            this.syncFormAmmo(this.getActiveForm());
+        }
+        const formLabel = this.isDualFormWeapon() ? ` ${this.activeForm.toUpperCase()}` : '';
+
         if (this.isReloading) {
             const remainingSec = (Math.max(0, this.reloadCompleteAt - now) / 1000).toFixed(1);
             return `${name} (RELOADING ${remainingSec}s)`;
@@ -786,6 +1053,6 @@ export class Weapon {
 
         const ammoText = this.ammo === Infinity ? '∞' : this.ammo;
         const maxAmmoText = this.maxAmmo === Infinity ? '∞' : this.maxAmmo;
-        return `${name} (${ammoText}/${maxAmmoText})`;
+        return `${name}${formLabel} (${ammoText}/${maxAmmoText})`;
     }
 }

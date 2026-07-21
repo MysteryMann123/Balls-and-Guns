@@ -1,4 +1,4 @@
-import * as MaxHpDamage from '../mechanics/maxHpDamage.js';
+import * as MaxHpDamage from '../mechanics/shared/maxHpDamage.js';
 
 // --- Config ---
 const maxAmmo        = 12;

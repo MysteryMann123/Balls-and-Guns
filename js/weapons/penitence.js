@@ -1,4 +1,4 @@
-import * as MeleeAttack from '../mechanics/meleeAttack.js';
+import * as MeleeAttack from '../mechanics/patterns/meleeAttack.js';
 
 // --- Config (melee — no projectile) ---
 const maxAmmo        = Infinity;

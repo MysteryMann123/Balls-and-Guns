@@ -9,17 +9,16 @@ export function create(switchDistance) {
 }
 
 // Determines which form should be active based on nearest enemy distance.
-// weaponInstance: has a form property (or similar)
 // nearestEnemyDistance: distance to closest target (infinity if no targets)
 // switchDistance: threshold for form switching
-// Returns the form name (e.g., 'gun' or 'blade')
-export function getActiveForm(currentForm, nearestEnemyDistance, switchDistance) {
-    // If no enemies or far away, use ranged form
+// closeFormName/farFormName: the weapon's own names for its two forms
+// (e.g., 'blade'/'gun', 'shotgun'/'rifle')
+// Returns whichever form name applies at the current distance.
+export function getActiveForm(nearestEnemyDistance, switchDistance, closeFormName = 'melee', farFormName = 'ranged') {
     if (nearestEnemyDistance === Infinity || nearestEnemyDistance > switchDistance) {
-        return 'ranged'; // e.g., 'gun', 'rifle'
+        return farFormName;
     }
-    // If close, use melee form
-    return 'melee'; // e.g., 'blade', 'shotgun'
+    return closeFormName;
 }
 
 // Checks if a form switch is needed.

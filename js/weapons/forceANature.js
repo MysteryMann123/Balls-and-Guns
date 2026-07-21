@@ -1,5 +1,5 @@
-import * as Hitscan from '../mechanics/hitscan.js';
-import * as Knockback from '../mechanics/knockback.js';
+import * as Hitscan from '../mechanics/shared/hitscan.js';
+import * as Knockback from '../mechanics/patterns/knockback.js';
 
 // --- Ammo & Timing ---
 const ammo           = 2;

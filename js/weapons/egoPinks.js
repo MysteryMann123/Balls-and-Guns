@@ -1,4 +1,4 @@
-import * as Tracer from '../mechanics/tracer.js';
+import * as Tracer from '../mechanics/shared/tracer.js';
 
 // --- Config ---
 const maxAmmo        = 1;

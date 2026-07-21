@@ -2,6 +2,7 @@ import * as W from './weapons/index.js';
 import { DealerWeapon } from './weapons/dealer.js';
 import { Projectile } from './core/projectile.js';
 import { Vector } from './core/vector.js';
+import * as DualForm from './mechanics/patterns/dualForm.js';
 
 const _loveHateProjectileImage = new Image();
 _loveHateProjectileImage.src = 'assets/EGOProjectileIntheNameofLoveandHate.webp';
@@ -334,8 +335,8 @@ export function ballShooting(game, now) {
 
         if (shooter.weapon.type === 'hornet') {
             const distanceToTarget = Math.hypot(target.pos.x - shooter.pos.x, target.pos.y - shooter.pos.y);
-            const hornetForm = distanceToTarget <= W.hornet.RANGE_SWITCH_DISTANCE ? 'shotgun' : 'rifle';
-            shooter.weapon.hornetForm = hornetForm;
+            const hornetForm = DualForm.getActiveForm(distanceToTarget, W.hornet.RANGE_SWITCH_DISTANCE, 'shotgun', 'rifle');
+            shooter.weapon.activeForm = hornetForm;
 
             if (!shooter.weapon.shoot(now, hornetForm)) continue;
 
@@ -375,8 +376,8 @@ export function ballShooting(game, now) {
 
         if (shooter.weapon.type === 'crimsonscar') {
             const distToTarget = Math.hypot(target.pos.x - shooter.pos.x, target.pos.y - shooter.pos.y);
-            const crimsonForm = distToTarget <= W.crimsonScar.RANGE_SWITCH_DISTANCE ? 'blade' : 'gun';
-            shooter.weapon.crimsonScarForm = crimsonForm;
+            const crimsonForm = DualForm.getActiveForm(distToTarget, W.crimsonScar.RANGE_SWITCH_DISTANCE, 'blade', 'gun');
+            shooter.weapon.activeForm = crimsonForm;
 
             if (!shooter.weapon.canShoot(now, crimsonForm)) continue;
             if (!shooter.weapon.shoot(now, crimsonForm)) continue;

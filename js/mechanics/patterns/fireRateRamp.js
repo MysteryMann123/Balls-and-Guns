@@ -2,7 +2,13 @@
 // Fire rate gradually speeds up with sustained fire, resets on idle.
 // Useful for weapons that reward continuous shooting (minigun-like behavior).
 //
-// Weapons: minigun
+// Two ramp modes are supported, chosen by which field a weapon declares:
+//   rampPerShot     — flat ms subtracted from the current rate per shot (minigun)
+//   rampRatePerSec  — percentage-style decay: (currentRate/1000) * rampRatePerSec
+//                      subtracted per shot, so the ramp accelerates as the rate
+//                      drops (hypocrisy)
+//
+// Weapons: minigun, hypocrisy
 
 export function create(baseRate, initialRate, minRate, rampPerShot, rampResetDelayMs) {
     return {
@@ -24,10 +30,17 @@ export function getEffectiveRate(currentRate, baseRate, lastShotAt, now, resetDe
     return currentRate;
 }
 
-// Applies ramp-down to fire rate after a shot.
+// Applies flat ramp-down to fire rate after a shot (minigun-style).
 // Returns new fire rate (clamped to min).
 export function applyRamp(currentRate, rampPerShot, minRate) {
     return Math.max(minRate, currentRate - rampPerShot);
+}
+
+// Applies percentage-style ramp-down to fire rate after a shot
+// (hypocrisy-style). Returns new fire rate (clamped to min).
+export function applyPercentageRamp(currentRate, rampRatePerSec, minRate) {
+    const reduction = (currentRate / 1000) * rampRatePerSec;
+    return Math.max(minRate, currentRate - reduction);
 }
 
 // Resets fire rate to initial after reload.

@@ -1,5 +1,5 @@
-import * as Slow from '../mechanics/slow.js';
-import * as Pierce from '../mechanics/pierce.js';
+import * as Slow from '../mechanics/shared/slow.js';
+import * as Pierce from '../mechanics/shared/pierce.js';
 
 // --- Ammo & Timing ---
 const ammo                   = 1;

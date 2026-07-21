@@ -32,3 +32,4 @@ export * as Randomizer from './patterns/randomizer.js';
 export * as Zone from './patterns/zone.js';
 export * as Beam from './patterns/beam.js';
 export * as Conditional from './patterns/conditional.js';
+export * as BurstFire from './patterns/burstFire.js';

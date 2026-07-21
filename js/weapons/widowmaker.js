@@ -1,5 +1,4 @@
-import * as Hitscan from '../mechanics/hitscan.js';
-import * as ConditionalReload from '../mechanics/conditionalReload.js';
+import * as Hitscan from '../mechanics/shared/hitscan.js';
 
 // --- Ammo & Timing ---
 const ammo             = 200;
@@ -41,7 +40,6 @@ const widowmaker = {
     FIRE_RATE:          fireRate,
     RELOAD_MS:          reloadMs,
     LOW_AMMO_RELOAD_MS: lowAmmoReloadMs,
-    conditionalReload:  ConditionalReload.create(reloadMs),
 
     // Projectile
     PELLETS_PER_SHOT:   pelletsPerShot,
@@ -58,16 +56,11 @@ const widowmaker = {
     image: 'assets/Widowmaker.png',
     DISPLAY_NAME:       'WIDOWMAKER',
 
-    getAmmoCost(weapon) {
-        return this.AMMO_PER_SHOT;
-    },
-
-    getReloadDuration(weapon, now) {
-        return weapon.ammo < this.AMMO_PER_SHOT ? this.LOW_AMMO_RELOAD_MS : weapon.reloadTimeMs;
-    },
-
+    // No hooks: ammoCostPerShot + lowAmmoReloadMs on the WEAPON_CONFIGS
+    // entry in weapon.js are enough for the engine's declarative ammo-cost
+    // and conditionalReload handling to reproduce this weapon's burst-fire
+    // ammo drain and slow reload-when-empty behavior.
     SUPPRESS_AUTO_RELOAD: true,
 };
-
 
 export default widowmaker;

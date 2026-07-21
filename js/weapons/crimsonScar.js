@@ -1,7 +1,6 @@
-import * as BleedDot from '../mechanics/bleedDot.js';
-import * as Mark from '../mechanics/mark.js';
-import * as DualForm from '../mechanics/dualForm.js';
-import * as MeleeAttack from '../mechanics/meleeAttack.js';
+import * as BleedDot from '../mechanics/shared/bleedDot.js';
+import * as Mark from '../mechanics/patterns/mark.js';
+import * as MeleeAttack from '../mechanics/patterns/meleeAttack.js';
 
 // --- General ---
 const rangeSwitchDistance    = 100;
@@ -45,7 +44,6 @@ const spreadAngle    = 0.04;
 const crimsonScar = {
     // General
     RANGE_SWITCH_DISTANCE:    rangeSwitchDistance,
-    dualForm:                 DualForm.create(rangeSwitchDistance),
     RELOAD_MS:                reloadMs,
     SPEED_BONUS:              speedBonus,
     DAMAGE_TAKEN_PENALTY:     damageTakenPenalty,
@@ -93,60 +91,13 @@ const crimsonScar = {
     },
     DISPLAY_NAME:             'EGO WEAPON CRIMSONSCAR',
 
-    CONFIG: {
-        maxAmmo: gunAmmo,
-        reloadTimeMs: reloadMs,
-        damage: 0,
-        damageMin: gunDamageMin,
-        damageMax: gunDamageMax,
-        speed: gunSpeed,
-        fireRate,
-        color,
-        projectileSize: gunProjectileSize,
-        pelletsPerShot,
-        spreadAngle,
-    },
-
-    getInfo(weaponInstance, now) {
-        const form = weaponInstance.crimsonScarForm || 'gun';
-        const ammoText = `${weaponInstance.ammo}/${weaponInstance.maxAmmo}`;
-        if (weaponInstance.isReloading) {
-            const remainingSec = (Math.max(0, weaponInstance.reloadCompleteAt - now) / 1000).toFixed(1);
-            return `EGO CRIMSONSCAR [${ammoText}] (RELOADING ${remainingSec}s)`;
-        }
-        const formLabel = form === 'blade' ? 'BLADE' : 'GUN';
-        return `EGO CRIMSONSCAR [${ammoText}] [${formLabel}]`;
-    },
-
-    onCanShoot(weapon, now, formOverride) {
-        const form = formOverride || weapon.crimsonScarForm || 'gun';
-        weapon.crimsonScarForm = form;
-        if (form === 'blade') {
-            return now >= (weapon.crimsonScarBladeCooldownUntil ?? 0);
-        }
-        if (weapon.isReloading) return false;
-        if (weapon.ammo <= 0) { weapon.startReload(now); return false; }
-        const inBurst = (weapon.crimsonScarBurstLeft ?? 0) > 0;
-        const interval = inBurst ? this.BURST_INTERVAL_MS : this.FIRE_RATE;
-        return now - (weapon.lastShotAt ?? 0) >= interval;
-    },
-
-    onShoot(weapon, now, formOverride) {
-        const form = formOverride || weapon.crimsonScarForm || 'gun';
-        weapon.lastShotAt = now;
-        if (form === 'blade') {
-            weapon.crimsonScarBladeCooldownUntil = now + this.BLADE_FIRE_RATE;
-            return true;
-        }
-        if ((weapon.crimsonScarBurstLeft ?? 0) === 0) {
-            weapon.crimsonScarBurstLeft = this.BURST_COUNT - 1;
-        } else {
-            weapon.crimsonScarBurstLeft--;
-        }
-        weapon.ammo = Math.max(0, weapon.ammo - 1);
-        if (weapon.ammo <= 0) weapon.startReload(now);
-        return true;
-    },
+    // No hooks: forms.gun/forms.blade on the WEAPON_CONFIGS entry in
+    // weapon.js are enough for the engine's declarative dual-form +
+    // burst-fire handling to reproduce gun-form's ammo/burst-fire and
+    // blade-form's ammo-less attack cooldown (blade's `maxAmmo: Infinity`
+    // means it never reloads, and its per-form fireRate acts as the
+    // cooldown that used to be tracked by hand as
+    // crimsonScarBladeCooldownUntil).
 };
 
 export default crimsonScar;

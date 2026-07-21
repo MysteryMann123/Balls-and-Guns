@@ -1,5 +1,5 @@
-import * as Homing from '../mechanics/homing.js';
-import * as TeamAwareHit from '../mechanics/teamAwareHit.js';
+import * as Homing from '../mechanics/shared/homing.js';
+import * as TeamAwareHit from '../mechanics/patterns/teamAwareHit.js';
 
 // --- Ammo & Timing ---
 const ammo                    = 1;

@@ -1,5 +1,5 @@
-import * as LifeSteal from '../mechanics/lifesteal.js';
-import * as AllyHeal from '../mechanics/allyHeal.js';
+import * as LifeSteal from '../mechanics/patterns/lifesteal.js';
+import * as AllyHeal from '../mechanics/patterns/allyHeal.js';
 
 // --- Ammo & Timing ---
 const ammo                 = 1;

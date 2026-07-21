@@ -51,52 +51,10 @@ const hypocrisy = {
     image: 'assets/EGOWeaponHypocrisy.webp',
     DISPLAY_NAME:          'EGO WEAPON HYPOCRISY',
 
-    CONFIG: {
-        maxAmmo: ammo,
-        reloadTimeMs: reloadMs,
-        damage: 0,
-        damageMin,
-        damageMax,
-        speed,
-        fireRate: fireRateBase,
-        color,
-        projectileSize,
-        pelletsPerShot,
-        spreadAngle,
-    },
-
-    getInfo(weaponInstance, now) {
-        const rateMs = Math.round(weaponInstance.hypocrisyCurrentRate ?? hypocrisy.FIRE_RATE_BASE);
-        const ammoText = `${weaponInstance.ammo}/${weaponInstance.maxAmmo}`;
-        if (weaponInstance.isReloading) {
-            const remainingSec = (Math.max(0, weaponInstance.reloadCompleteAt - now) / 1000).toFixed(1);
-            return `EGO WEAPON HYPOCRISY [${ammoText}] (RELOADING ${remainingSec}s)`;
-        }
-        return `EGO WEAPON HYPOCRISY [${ammoText}] fire:${rateMs}ms`;
-    },
-
-    onAfterAmmoReset(weapon, now) {
-        weapon.hypocrisyCurrentRate = this.FIRE_RATE_BASE;
-    },
-
-    onCanShoot(weapon, now, formOverride) {
-        if (weapon.isReloading) return false;
-        if (weapon.ammo <= 0) { weapon.startReload(now); return false; }
-        if (weapon.hypocrisyCurrentRate === undefined) weapon.hypocrisyCurrentRate = this.FIRE_RATE_BASE;
-        const timeSinceLast = weapon.lastShotAt ? now - weapon.lastShotAt : Infinity;
-        if (timeSinceLast > this.IDLE_RESET_MS) weapon.hypocrisyCurrentRate = this.FIRE_RATE_BASE;
-        return timeSinceLast >= weapon.hypocrisyCurrentRate;
-    },
-
-    onShoot(weapon, now, formOverride) {
-        if (weapon.hypocrisyCurrentRate === undefined) weapon.hypocrisyCurrentRate = this.FIRE_RATE_BASE;
-        weapon.ammo = Math.max(0, weapon.ammo - 1);
-        const reductionPerShot = (weapon.hypocrisyCurrentRate / 1000) * this.RAMP_RATE_MS_PER_SEC;
-        weapon.hypocrisyCurrentRate = Math.max(this.FIRE_RATE_MIN, weapon.hypocrisyCurrentRate - reductionPerShot);
-        weapon.lastShotAt = now;
-        if (weapon.ammo <= 0) weapon.startReload(now);
-        return true;
-    },
+    // No hooks: rampRatePerSec/minFireRate/rampResetDelayMs on the
+    // WEAPON_CONFIGS entry in weapon.js are enough for the engine's
+    // declarative fireRateRamp handling (percentage-decay mode) to
+    // reproduce the accelerating-fire/idle-reset behavior.
 };
 
 export default hypocrisy;

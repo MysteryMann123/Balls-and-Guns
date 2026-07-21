@@ -1,4 +1,4 @@
-import * as Knockback from '../mechanics/knockback.js';
+import * as Knockback from '../mechanics/patterns/knockback.js';
 
 // --- Charge ---
 const chargeReloadMs        = 2500;

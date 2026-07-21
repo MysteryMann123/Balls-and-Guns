@@ -86,16 +86,11 @@ const swordSharpened = {
     },
     DISPLAY_NAME:                 'EGO SWORD SHARPENED BY TEARS',
 
-    getEffectiveFireRate(weapon, now) {
-        const stacks = Math.max(0, Math.min(this.SHARPEN_MAX_STACKS, weapon.swordSharpenStacks || 0));
-        return weapon.fireRate * (1 - Math.min(0.6, this.SHARPEN_SPEED_BONUS * stacks));
-    },
-
-    getReloadDuration(weapon, now) {
-        const stacks = Math.max(0, Math.min(this.SHARPEN_MAX_STACKS, weapon.swordSharpenStacks || 0));
-        const reloadBonus = Math.min(0.6, this.SHARPEN_RELOAD_BONUS * stacks);
-        return weapon.reloadTimeMs * (1 - reloadBonus);
-    },
+    // No hooks: stacksField/maxStacks/speedBonusPerStack/reloadBonusPerStack
+    // on the WEAPON_CONFIGS entry in weapon.js are enough for the engine's
+    // declarative stack-buff handling to reproduce the sharpen speed/reload
+    // bonus (gameProjectiles.js sets weapon.swordSharpenStacks directly when
+    // the sword sticks in an enemy).
 };
 
 

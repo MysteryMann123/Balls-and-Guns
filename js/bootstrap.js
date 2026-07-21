@@ -6,25 +6,25 @@ import { Vector } from './core/vector.js';
 import { PhysicsEngine } from './core/physics.js';
 
 // 2. Mechanics (no dependencies)
-import * as Afterburn from './mechanics/afterburn.js';
-import * as BleedDot from './mechanics/bleedDot.js';
-import * as Hitscan from './mechanics/hitscan.js';
-import * as Homing from './mechanics/homing.js';
-import * as MaxHpDamage from './mechanics/maxHpDamage.js';
-import * as Pierce from './mechanics/pierce.js';
-import * as Slow from './mechanics/slow.js';
-import * as Tracer from './mechanics/tracer.js';
-import * as LifeSteal from './mechanics/lifesteal.js';
-import * as AllyHeal from './mechanics/allyHeal.js';
-import * as Knockback from './mechanics/knockback.js';
-import * as Mark from './mechanics/mark.js';
-import * as SplashAoe from './mechanics/splashAoe.js';
-import * as DualForm from './mechanics/dualForm.js';
-import * as FireRateRamp from './mechanics/fireRateRamp.js';
-import * as ConditionalReload from './mechanics/conditionalReload.js';
-import * as MeleeAttack from './mechanics/meleeAttack.js';
-import * as SelfDamage from './mechanics/selfDamage.js';
-import * as TeamAwareHit from './mechanics/teamAwareHit.js';
+import * as Afterburn from './mechanics/shared/afterburn.js';
+import * as BleedDot from './mechanics/shared/bleedDot.js';
+import * as Hitscan from './mechanics/shared/hitscan.js';
+import * as Homing from './mechanics/shared/homing.js';
+import * as MaxHpDamage from './mechanics/shared/maxHpDamage.js';
+import * as Pierce from './mechanics/shared/pierce.js';
+import * as Slow from './mechanics/shared/slow.js';
+import * as Tracer from './mechanics/shared/tracer.js';
+import * as LifeSteal from './mechanics/patterns/lifesteal.js';
+import * as AllyHeal from './mechanics/patterns/allyHeal.js';
+import * as Knockback from './mechanics/patterns/knockback.js';
+import * as Mark from './mechanics/patterns/mark.js';
+import * as SplashAoe from './mechanics/patterns/splashAoe.js';
+import * as DualForm from './mechanics/patterns/dualForm.js';
+import * as FireRateRamp from './mechanics/patterns/fireRateRamp.js';
+import * as ConditionalReload from './mechanics/patterns/conditionalReload.js';
+import * as MeleeAttack from './mechanics/patterns/meleeAttack.js';
+import * as SelfDamage from './mechanics/patterns/selfDamage.js';
+import * as TeamAwareHit from './mechanics/patterns/teamAwareHit.js';
 
 // 3. Weapons (depends on mechanics via weapon files)
 import * as W from './weapons/index.js';

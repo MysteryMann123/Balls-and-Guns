@@ -1,4 +1,4 @@
-import * as Slow from '../mechanics/slow.js';
+import * as Slow from '../mechanics/shared/slow.js';
 
 // --- Derived from revolver base values ---
 const damage           = Math.round(55 * 0.8); // 80% of revolver DAMAGE (55)

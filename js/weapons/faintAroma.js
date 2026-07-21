@@ -1,4 +1,4 @@
-import * as Pierce from '../mechanics/pierce.js';
+import * as Pierce from '../mechanics/shared/pierce.js';
 
 // --- Config ---
 const maxAmmo        = 1;

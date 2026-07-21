@@ -1,4 +1,4 @@
-import * as BleedDot from '../mechanics/bleedDot.js';
+import * as BleedDot from '../mechanics/shared/bleedDot.js';
 
 // --- Ammo & Timing ---
 const ammo                   = 1;
